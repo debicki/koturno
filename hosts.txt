@@ -1,0 +1,7 @@
+# >< Koturno ><
+
+# Example hosts file
+
+8.8.8.8             This is primary Google DNS
+8.8.4.4             This is secondary Google DNS
+www.github.com      Best version control system website ;)
