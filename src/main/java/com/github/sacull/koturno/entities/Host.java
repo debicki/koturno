@@ -16,7 +16,7 @@ public class Host {
     private InetAddress destination;
     private String description;
 
-    @OneToMany(mappedBy = "host")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
     private List<Inaccessibility> inaccessibilities = new ArrayList<>();
 
     protected Host() {

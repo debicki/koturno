@@ -2,6 +2,7 @@ package com.github.sacull.koturno;
 
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.services.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,18 +10,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 @SpringBootApplication
+@EnableAsync
 public class KoturnoApplication implements CommandLineRunner {
 
 	@Autowired
 	HostRepository hostRepository;
+
+	@Autowired
+	BackgroundChecker backgroundChecker;
 
 	Logger logger = LoggerFactory.getLogger("KoturnoApplication");
 
@@ -61,5 +71,18 @@ public class KoturnoApplication implements CommandLineRunner {
 				hostRepository.save(host);
 			}
 		}
+
+		CompletableFuture<String> firstChecker = backgroundChecker.start();
+	}
+
+	@Bean
+	public Executor taskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("Checker-");
+		executor.initialize();
+		return executor;
 	}
 }
