@@ -2,6 +2,7 @@ package com.github.sacull.koturno.entities;
 
 import javax.persistence.*;
 import java.net.InetAddress;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Host {
     private Long id;
 
     private InetAddress destination;
+    private LocalDateTime timeOfLastScan;
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
@@ -24,6 +26,7 @@ public class Host {
 
     public Host(InetAddress destination, String description, List<Inaccessibility> inaccessibilities) {
         this.destination = destination;
+        this.timeOfLastScan = LocalDateTime.MIN;
         this.description = description;
         this.inaccessibilities = inaccessibilities;
     }
@@ -38,6 +41,14 @@ public class Host {
 
     public void setDestination(InetAddress destination) {
         this.destination = destination;
+    }
+
+    public LocalDateTime getTimeOfLastScan() {
+        return timeOfLastScan;
+    }
+
+    public void setTimeOfLastScan(LocalDateTime timeOfLastScan) {
+        this.timeOfLastScan = timeOfLastScan;
     }
 
     public String getDescription() {
@@ -65,6 +76,14 @@ public class Host {
                 (this.destination.getAddress()[1] & 0xFF) + "." +
                 (this.destination.getAddress()[2] & 0xFF) + "." +
                 (this.destination.getAddress()[3] & 0xFF);
+    }
+
+    public String getDateOfLastScan() {
+        return timeOfLastScan.toLocalDate().toString();
+    }
+
+    public String getHourOfLastScan() {
+        return timeOfLastScan.toLocalTime().toString().substring(0,8);
     }
 
     @Override

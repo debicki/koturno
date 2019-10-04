@@ -15,9 +15,8 @@ public class Inaccessibility {
     private Host host;
 
     private LocalDateTime start;
-
     private LocalDateTime end;
-
+    private Boolean active;
     private String description;
 
     protected Inaccessibility() {
@@ -27,6 +26,7 @@ public class Inaccessibility {
         this.host = host;
         this.start = start;
         this.end = end;
+        this.active = true;
         this.description = description;
     }
 
@@ -58,12 +58,36 @@ public class Inaccessibility {
         this.end = end;
     }
 
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public String getDescription() {
         return this.description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDayOfBegin() {
+        return start.toLocalDate().toString();
+    }
+
+    public String getDayOfEnd() {
+        return end.toLocalDate().toString();
+    }
+
+    public String getHourOfBegin() {
+        return start.toLocalTime().toString().substring(0,8);
+    }
+
+    public String getHourOfEnd() {
+        return end.toLocalTime().toString().substring(0,8);
     }
 
     @Override

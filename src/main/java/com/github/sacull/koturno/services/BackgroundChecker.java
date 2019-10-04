@@ -46,6 +46,7 @@ public class BackgroundChecker {
                 if (isReachable && hostsWhichWasOffline.contains(host.getId())) {
                     hostsWhichWasOffline.remove(host.getId());
                     this.updateEndTime(host);
+                    this.closeInaccessibility(host);
                     logger.info("Host {} is removed from offline hosts list", host.getDestination());
                 } else if (!isReachable && hostsWhichWasOffline.contains(host.getId())) {
                     this.updateEndTime(host);
@@ -55,6 +56,8 @@ public class BackgroundChecker {
                     this.setStartTime(host);
                     logger.info("Host {} is added to offline hosts list", host.getDestination());
                 }
+                host.setTimeOfLastScan(LocalDateTime.now());
+                hostRepository.save(host);
             }
             try {
                 Thread.sleep(1000);
@@ -72,11 +75,21 @@ public class BackgroundChecker {
     }
 
     private void updateEndTime(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(
+        Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
+        inaccessibilityToUpdate.setEnd(LocalDateTime.now());
+        inaccessibilityRepository.save(inaccessibilityToUpdate);
+    }
+
+    private void closeInaccessibility(Host host) {
+        Inaccessibility inaccessibilityToClose = this.getLastInaccessibility(host);
+        inaccessibilityToClose.setActive(false);
+        inaccessibilityRepository.save(inaccessibilityToClose);
+    }
+
+    private Inaccessibility getLastInaccessibility(Host host) {
+        return inaccessibilityRepository.getById(
                 host.getInaccessibilities()
                         .get(host.getInaccessibilities().size() - 1)
                         .getId());
-        inaccessibilityToUpdate.setEnd(LocalDateTime.now());
-        inaccessibilityRepository.save(inaccessibilityToUpdate);
     }
 }
