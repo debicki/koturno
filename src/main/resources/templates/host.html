@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Korutno Host</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<p>
+    <span th:text="${host.hostname}" class="host-info-comments"></span>
+    <br>
+    <span th:text="${host.IPv4}" class="host-info-additional-comments"></span>
+</p>
+<div th:if="${hostInaccessibilities.size() == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
+<div th:unless="${hostInaccessibilities.size() == 0}" class="table-with-elements" align="center">
+    <table border="2">
+        <thead>
+        <tr>
+            <th>Lp.</th>
+            <th>Data początku</th>
+            <th>Godzina początku</th>
+            <th>Data końca</th>
+            <th>Godzina końca</th>
+            <th>Opis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hostInaccessibility : ${hostInaccessibilities}">
+            <td th:text="${hostInaccessibilityStat.index + 1}"></td>
+            <td th:text="${hostInaccessibility.dayOfBegin}"></td>
+            <td th:text="${hostInaccessibility.hourOfBegin}"></td>
+            <td th:text="${hostInaccessibility.dayOfBegin}"></td>
+            <td th:text="${hostInaccessibility.hourOfEnd}"></td>
+            <td th:text="${hostInaccessibility.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

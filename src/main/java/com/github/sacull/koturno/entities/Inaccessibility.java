@@ -22,10 +22,10 @@ public class Inaccessibility {
     protected Inaccessibility() {
     }
 
-    public Inaccessibility(Host host, LocalDateTime start, LocalDateTime end, String description) {
+    public Inaccessibility(Host host, String description) {
         this.host = host;
-        this.start = start;
-        this.end = end;
+        this.start = LocalDateTime.now();
+        this.end = LocalDateTime.now();
         this.active = true;
         this.description = description;
     }

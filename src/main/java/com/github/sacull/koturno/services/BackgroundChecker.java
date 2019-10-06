@@ -46,15 +46,19 @@ public class BackgroundChecker {
                 if (isReachable && hostsWhichWasOffline.contains(host.getId())) {
                     hostsWhichWasOffline.remove(host.getId());
                     this.updateEndTime(host);
-                    this.closeInaccessibility(host);
-                    logger.info("Host {} is removed from offline hosts list", host.getDestination());
-                } else if (!isReachable && hostsWhichWasOffline.contains(host.getId())) {
-                    this.updateEndTime(host);
-                    logger.info("Host {} has updated offline status", host.getDestination());
+                    if (host.getHostname().equals("")) {
+                        logger.info("Host {} is removed from offline hosts list", host.getIPv4());
+                    } else {
+                        logger.info("Host {} is removed from offline hosts list", host.getHostname());
+                    }
                 } else if (!isReachable && !hostsWhichWasOffline.contains(host.getId())) {
                     hostsWhichWasOffline.add(host.getId());
                     this.setStartTime(host);
-                    logger.info("Host {} is added to offline hosts list", host.getDestination());
+                    if (host.getHostname().equals("")) {
+                        logger.info("Host {} is added to offline hosts list", host.getIPv4());
+                    } else {
+                        logger.info("Host {} is added to offline hosts list", host.getHostname());
+                    }
                 }
                 host.setTimeOfLastScan(LocalDateTime.now());
                 hostRepository.save(host);
@@ -68,7 +72,7 @@ public class BackgroundChecker {
     }
 
     private void setStartTime(Host host) {
-        Inaccessibility inaccessibilityToOpen = new Inaccessibility(host, LocalDateTime.now(), LocalDateTime.now(), "");
+        Inaccessibility inaccessibilityToOpen = new Inaccessibility(host, "");
         host.addInaccessibility(inaccessibilityToOpen);
         inaccessibilityRepository.save(inaccessibilityToOpen);
         hostRepository.save(host);
@@ -77,13 +81,8 @@ public class BackgroundChecker {
     private void updateEndTime(Host host) {
         Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
         inaccessibilityToUpdate.setEnd(LocalDateTime.now());
+        inaccessibilityToUpdate.setActive(false);
         inaccessibilityRepository.save(inaccessibilityToUpdate);
-    }
-
-    private void closeInaccessibility(Host host) {
-        Inaccessibility inaccessibilityToClose = this.getLastInaccessibility(host);
-        inaccessibilityToClose.setActive(false);
-        inaccessibilityRepository.save(inaccessibilityToClose);
     }
 
     private Inaccessibility getLastInaccessibility(Host host) {

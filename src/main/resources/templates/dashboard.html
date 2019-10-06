@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koturno Dashboard</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<div th:if="${offlineHosts.size() == 0}" class="additional-comments">Wszystkie hosty są ONLINE</div>
+<div th:unless="${offlineHosts.size() == 0}"  class="table-with-elements" align="center">
+    <table border="2">
+        <thead>
+        <tr>
+            <th>Lp.</th>
+            <th>Hostname</th>
+            <th>Adres</th>
+            <th>Ostatnio online</th>
+            <th>Opis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="offlineHost : ${offlineHosts}">
+            <td th:text="${offlineHostStat.index + 1}"></td>
+            <td th:text="${offlineHost.hostname}"></td>
+            <td th:text="${offlineHost.IPv4}"></td>
+            <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
+            <td th:text="${offlineHost.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

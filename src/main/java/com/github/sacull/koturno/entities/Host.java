@@ -1,7 +1,6 @@
 package com.github.sacull.koturno.entities;
 
 import javax.persistence.*;
-import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,8 @@ public class Host {
     @GeneratedValue
     private Long id;
 
-    private InetAddress destination;
+    private String hostname;
+    private String IPv4;
     private LocalDateTime timeOfLastScan;
     private String description;
 
@@ -24,8 +24,9 @@ public class Host {
     protected Host() {
     }
 
-    public Host(InetAddress destination, String description, List<Inaccessibility> inaccessibilities) {
-        this.destination = destination;
+    public Host(String hostname, String IPv4, String description, List<Inaccessibility> inaccessibilities) {
+        this.hostname = hostname;
+        this.IPv4 = IPv4;
         this.timeOfLastScan = LocalDateTime.MIN;
         this.description = description;
         this.inaccessibilities = inaccessibilities;
@@ -35,12 +36,20 @@ public class Host {
         return this.id;
     }
 
-    public InetAddress getDestination() {
-        return this.destination;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setDestination(InetAddress destination) {
-        this.destination = destination;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public String getIPv4() {
+        return IPv4;
+    }
+
+    public void setIPv4(String IPv4) {
+        this.IPv4 = IPv4;
     }
 
     public LocalDateTime getTimeOfLastScan() {
@@ -67,17 +76,6 @@ public class Host {
         this.inaccessibilities.add(inaccessibility);
     }
 
-    public String getHostname() {
-        return this.destination.getHostName();
-    }
-
-    public String getAddress() {
-        return (this.destination.getAddress()[0] & 0xFF) + "." +
-                (this.destination.getAddress()[1] & 0xFF) + "." +
-                (this.destination.getAddress()[2] & 0xFF) + "." +
-                (this.destination.getAddress()[3] & 0xFF);
-    }
-
     public String getDateOfLastScan() {
         return timeOfLastScan.toLocalDate().toString();
     }
@@ -89,11 +87,12 @@ public class Host {
     @Override
     public String toString() {
         return "Host{" +
-                "id=" + this.id +
-                ", hostname='" + this.getHostname() + '\'' +
-                ", address='" + this.getAddress() + '\'' +
-                ", description='" + this.description + '\'' +
-                ", inaccessibilities=" + this.inaccessibilities +
+                "id=" + id +
+                ", hostname='" + hostname + '\'' +
+                ", IPv4='" + IPv4 + '\'' +
+                ", timeOfLastScan=" + timeOfLastScan +
+                ", description='" + description + '\'' +
+                ", inaccessibilities=" + inaccessibilities +
                 '}';
     }
 }

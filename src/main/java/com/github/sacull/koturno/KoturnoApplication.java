@@ -15,8 +15,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -51,13 +49,9 @@ public class KoturnoApplication implements CommandLineRunner {
 					logger.error("Error while loading hosts from file");
 				}
 			} else if (args[0].equalsIgnoreCase("-a")) {
-				try {
-					for (int i = 1; i < args.length; i++) {
-						hostsToAdd.add(new Host(InetAddress.getByName(args[i]), null, null));
-						logger.info("Host {} added", args[i]);
-					}
-				} catch (UnknownHostException e) {
-					logger.error("Error while parsing host");
+				for (int i = 1; i < args.length; i++) {
+					hostsToAdd.add(new Host("", args[i], null, null));
+					logger.info("Host {} added", args[i]);
 				}
 			} else {
 				logger.error("Not recognized parameter");

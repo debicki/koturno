@@ -4,6 +4,7 @@ import com.github.sacull.koturno.entities.Host;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -49,7 +50,7 @@ public class LifeChecker {
 
     private boolean isReachable(Host host, int timeout){
         try {
-            if (host.getDestination().isReachable(timeout)) {
+            if (InetAddress.getByName(host.getIPv4()).isReachable(timeout)) {
                 return true;
             }
         } catch (IOException e) {
@@ -61,7 +62,7 @@ public class LifeChecker {
     private boolean isReachableByTcp(Host host, int port, int timeout) {
         try {
             Socket socket = new Socket();
-            SocketAddress socketAddress = new InetSocketAddress(host.getAddress(), port);
+            SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(host.getIPv4()), port);
             socket.connect(socketAddress, timeout);
             socket.close();
             return true;
@@ -75,9 +76,9 @@ public class LifeChecker {
             String cmd;
 
             if(System.getProperty("os.name").startsWith("Windows")) {
-                cmd = "cmd /C ping -n 1 " + host.getAddress() + " | find \"TTL\"";
+                cmd = "cmd /C ping -n 1 " + host.getIPv4() + " | find \"TTL\"";
             } else {
-                cmd = "ping -c 1 " + host.getAddress();
+                cmd = "ping -c 1 " + host.getIPv4();
             }
 
             Process myProcess = Runtime.getRuntime().exec(cmd);
