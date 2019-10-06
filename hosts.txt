@@ -2,8 +2,15 @@
 
 # Example hosts file
 
+# That examples give DNS addresses as address in dashboard, empty field 'hostname' and all comment to comment field
 8.8.8.8             This is primary Google DNS
 8.8.4.4             This is secondary Google DNS
+
+# That example give sentence 'www.github.com' as address, 'GitHub' in 'hostname' field and comment without 'Github*'
 www.github.com      GitHub*Best version control system website ;)
+
+# That example give sentence 'google.com' as address and empty 'hostname' and 'description field'
 google.com
+
+# That example give sentence 'gmail.com' as address, empty field 'hostname' and all comment to comment field
 gmail.com           Postal
