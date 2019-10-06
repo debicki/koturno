@@ -24,6 +24,7 @@
             <th>Od</th>
             <th>Do</th>
             <th>Opis</th>
+            <th>Szczegóły</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
             <td th:text="${revInaccessibility.hourOfBegin}"></td>
             <td th:text="${revInaccessibility.hourOfEnd}"></td>
             <td th:text="${revInaccessibility.description}"></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${revInaccessibility.id})}">zobacz</a></td>
         </tr>
         </tbody>
     </table>

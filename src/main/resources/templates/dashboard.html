@@ -23,6 +23,7 @@
             <th>Adres</th>
             <th>Ostatnio online</th>
             <th>Opis</th>
+            <th>Szczegóły</th>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +33,7 @@
             <td th:text="${offlineHost.IPv4}"></td>
             <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${offlineHost.description}"></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${offlineHost.id})}">zobacz</a></td>
         </tr>
         </tbody>
     </table>

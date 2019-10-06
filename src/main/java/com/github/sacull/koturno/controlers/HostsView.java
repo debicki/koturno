@@ -3,6 +3,7 @@ package com.github.sacull.koturno.controlers;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.utils.LifeChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class HostsView {
 
     @Autowired
     HostRepository hostRepository;
+
+    @Autowired
+    InaccessibilityRepository inaccessibilityRepository;
 
     @Autowired
     LifeChecker lifeChecker;
@@ -54,6 +58,15 @@ public class HostsView {
         }
         model.addAttribute("hostInaccessibilities", hostInaccessibilities);
         return "host";
+    }
+
+    @GetMapping("/inaccessibility/{id}")
+    public String showInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibility = inaccessibilityRepository.getById(Long.valueOf(id));
+        model.addAttribute("inaccessibility", inaccessibility);
+        Host host = hostRepository.getById(inaccessibility.getHost().getId());
+        model.addAttribute("host", host);
+        return "inaccessibility";
     }
 
     @GetMapping("/hosts")

@@ -29,6 +29,7 @@
             <th>Data końca</th>
             <th>Godzina końca</th>
             <th>Opis</th>
+            <th>Szczegóły</th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +40,7 @@
             <td th:text="${hostInaccessibility.dayOfBegin}"></td>
             <td th:text="${hostInaccessibility.hourOfEnd}"></td>
             <td th:text="${hostInaccessibility.description}"></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${hostInaccessibility.id})}">zobacz</a></td>
         </tr>
         </tbody>
     </table>
