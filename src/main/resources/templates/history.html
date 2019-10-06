@@ -19,7 +19,7 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Aktywna</th>
+            <th>Status</th>
             <th>Adres</th>
             <th>Od</th>
             <th>Do</th>
@@ -30,7 +30,8 @@
         <tbody>
         <tr th:each="revInaccessibility : ${revInaccessibilities}">
             <td th:text="${revInaccessibilityStat.index + 1}"></td>
-            <td th:text="${revInaccessibility.active}"></td>
+            <td th:if="${revInaccessibility.active} == true">aktywny</td>
+            <td th:unless="${revInaccessibility.active} == true">archiwalny</td>
             <td th:text="${revInaccessibility.host.IPv4}"></td>
             <td th:text="${revInaccessibility.hourOfBegin}"></td>
             <td th:text="${revInaccessibility.hourOfEnd}"></td>

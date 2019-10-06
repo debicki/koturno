@@ -60,8 +60,6 @@ public class BackgroundChecker {
                         logger.info("Host {} is added to offline hosts list", host.getHostname());
                     }
                 }
-                host.setTimeOfLastScan(LocalDateTime.now());
-                hostRepository.save(host);
             }
             try {
                 Thread.sleep(1000);

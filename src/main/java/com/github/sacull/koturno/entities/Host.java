@@ -15,7 +15,7 @@ public class Host {
 
     private String hostname;
     private String IPv4;
-    private LocalDateTime timeOfLastScan;
+    private LocalDateTime whenCreated;
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
@@ -27,7 +27,7 @@ public class Host {
     public Host(String hostname, String IPv4, String description, List<Inaccessibility> inaccessibilities) {
         this.hostname = hostname;
         this.IPv4 = IPv4;
-        this.timeOfLastScan = LocalDateTime.MIN;
+        this.whenCreated = LocalDateTime.now();
         this.description = description;
         this.inaccessibilities = inaccessibilities;
     }
@@ -52,12 +52,8 @@ public class Host {
         this.IPv4 = IPv4;
     }
 
-    public LocalDateTime getTimeOfLastScan() {
-        return timeOfLastScan;
-    }
-
-    public void setTimeOfLastScan(LocalDateTime timeOfLastScan) {
-        this.timeOfLastScan = timeOfLastScan;
+    public LocalDateTime getWhenCreated() {
+        return whenCreated;
     }
 
     public String getDescription() {
@@ -76,12 +72,8 @@ public class Host {
         this.inaccessibilities.add(inaccessibility);
     }
 
-    public String getDateOfLastScan() {
-        return timeOfLastScan.toLocalDate().toString();
-    }
-
-    public String getHourOfLastScan() {
-        return timeOfLastScan.toLocalTime().toString().substring(0,8);
+    public String getDayWhenCreated() {
+        return whenCreated.toLocalDate().toString();
     }
 
     @Override
@@ -90,7 +82,7 @@ public class Host {
                 "id=" + id +
                 ", hostname='" + hostname + '\'' +
                 ", IPv4='" + IPv4 + '\'' +
-                ", timeOfLastScan=" + timeOfLastScan +
+                ", whenCreated=" + whenCreated +
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
                 '}';

@@ -17,6 +17,9 @@
     <span th:text="${host.hostname}" class="host-info-comments"></span>
     <br>
     <span th:text="${host.IPv4}" class="host-info-additional-comments"></span>
+    <br>
+    <span>Dodany dnia: </span>
+    <span th:text="${host.dayWhenCreated}"></span>
 </p>
 <div th:if="${hostInaccessibilities.size() == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
 <div th:unless="${hostInaccessibilities.size() == 0}" class="table-with-elements" align="center">
@@ -37,8 +40,10 @@
             <td th:text="${hostInaccessibilityStat.index + 1}"></td>
             <td th:text="${hostInaccessibility.dayOfBegin}"></td>
             <td th:text="${hostInaccessibility.hourOfBegin}"></td>
-            <td th:text="${hostInaccessibility.dayOfBegin}"></td>
-            <td th:text="${hostInaccessibility.hourOfEnd}"></td>
+            <td th:if="${hostInaccessibility.isActive() == false}" th:text="${hostInaccessibility.dayOfEnd}"></td>
+            <td th:unless="${hostInaccessibility.isActive() == false}">trwa</td>
+            <td th:if="${hostInaccessibility.isActive() == false}" th:text="${hostInaccessibility.hourOfEnd}"></td>
+            <td th:unless="${hostInaccessibility.isActive() == false}">trwa</td>
             <td th:text="${hostInaccessibility.description}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${hostInaccessibility.id})}">zobacz</a></td>
         </tr>
