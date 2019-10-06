@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Korutno Inaccessibility</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<p>
+    <a th:href="@{/host/{id}(id=${host.id})}"><span th:text="${host.hostname}"></span></a>
+    <br>
+    <a th:href="@{/host/{id}(id=${host.id})}"><span th:text="${host.IPv4}"></span></a>
+    <br>
+    <span>Data początku: </span>
+    <span th:text="${inaccessibility.dayOfBegin}"></span>
+    <br>
+    <span>Godzina początku: </span>
+    <span th:text="${inaccessibility.hourOfBegin}"></span>
+    <br>
+    <span>Data końca: </span>
+    <span th:text="${inaccessibility.dayOfBegin}"></span>
+    <br>
+    <span>Godzina końca: </span>
+    <span th:text="${inaccessibility.hourOfBegin}"></span>
+    <br>
+</p>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koturno Hosts</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<div th:if="${hosts.size() == 0}" class="additional-comments">Brak hostów w bazie danych!</div>
+<div th:unless="${hosts.size() == 0}" class="table-with-elements" align="center">
+    <table border="2">
+        <thead>
+        <tr>
+            <th>Lp.</th>
+            <th>Hostname</th>
+            <th>Adres</th>
+            <th>Opis</th>
+            <th>Szczegóły</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="host : ${hosts}">
+            <td th:text="${hostStat.index + 1}"></td>
+            <td th:text="${host.hostname}"></td>
+            <td th:text="${host.IPv4}"></td>
+            <td th:text="${host.description}"></td>
+            <td><a th:href="@{/host/{id}(id=${host.id})}">zobacz</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
