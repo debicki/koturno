@@ -34,7 +34,9 @@
     <br>
     <span>Opis: </span>
     <span th:if="${inaccessibility.description.length() > 0}" th:text="${inaccessibility.description}"></span>
-    <span th:unless="${inaccessibility.description.length() > 0}">brak</span>
+    <span th:unless="${inaccessibility.description.length() > 0}">
+        <a th:href="@{/inaccessibility/edit/{id}(id=${inaccessibility.id})}">dodaj</a>
+    </span>
 </p>
 </body>
 </html>

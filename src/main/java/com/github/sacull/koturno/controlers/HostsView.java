@@ -5,14 +5,20 @@ import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.utils.LifeChecker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +36,8 @@ public class HostsView {
 
     @Autowired
     LifeChecker lifeChecker;
+
+    Logger logger = LoggerFactory.getLogger("HostView");
 
     @GetMapping("/")
     public String showDashboard(Model model) {
@@ -67,6 +75,24 @@ public class HostsView {
         Host host = hostRepository.getById(inaccessibility.getHost().getId());
         model.addAttribute("host", host);
         return "inaccessibility";
+    }
+
+    @GetMapping("/inaccessibility/edit/{id}")
+    public String editInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibility = inaccessibilityRepository.getById(Long.valueOf(id));
+        model.addAttribute("inaccessibility", inaccessibility);
+        return "iedit";
+    }
+
+    @PostMapping("/inaccessibility/update/{id}")
+    public String updateInaccessibility(Model model,
+                                        @PathVariable String id,
+                                        @Valid Inaccessibility inaccessibility) {
+        logger.warn(inaccessibility.toString());
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(Long.parseLong(id));
+        inaccessibilityToUpdate.setDescription(inaccessibility.getDescription());
+        inaccessibilityRepository.save(inaccessibilityToUpdate);
+        return showDashboard(model);
     }
 
     @GetMapping("/hosts")
