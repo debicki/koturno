@@ -2,8 +2,8 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Korutno Host</title>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <title>Koturno Host</title>
+    <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
 <div class="dashboard-title">Koturno</div>
@@ -20,6 +20,14 @@
     <br>
     <span>Dodany dnia: </span>
     <span th:text="${host.dayWhenCreated}"></span>
+    <br>
+    <span>Status: </span>
+    <span th:if="${host.active == true}">aktywny</span>
+    <span th:unless="${host.active == true}">nieaktywny</span>
+    <br>
+    <span>Opis: </span>
+    <span th:if="${host.description.length() > 0}" th:text="${host.description}"></span>
+    <span th:unless="${host.description.length() > 0}">brak</span>
 </p>
 <div th:if="${hostInaccessibilities.size() == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
 <div th:unless="${hostInaccessibilities.size() == 0}" class="table-with-elements" align="center">

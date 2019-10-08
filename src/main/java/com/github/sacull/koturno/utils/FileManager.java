@@ -31,6 +31,7 @@ public class FileManager {
 
     static private Host parse (String line) {
         int charCounter = 0;
+        line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();
         StringBuilder hostname = new StringBuilder();
         StringBuilder description = new StringBuilder();

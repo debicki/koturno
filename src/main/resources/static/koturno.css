@@ -1,0 +1,31 @@
+.koturno-style {
+    color: black;
+    font-variant: small-caps;
+    text-align: center;
+    font-size: 20px;
+}
+
+.dashboard-title {
+    font-size: 70px;
+}
+
+.additional-comments {
+    font-size: 25px;
+}
+
+.main-menu {
+    font-size: 30px;
+    line-height: 100px;
+}
+
+.host-info-comments {
+    font-size: 50px;
+}
+
+.host-info-additional-comments {
+    font-size: 40px;
+}
+
+.error-code {
+    font-size: 150px;
+}

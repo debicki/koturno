@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -41,6 +42,7 @@ public class BackgroundChecker {
         List<Host> hosts = query.getResultList();
         List<Long> hostsWhichWasOffline = new ArrayList<>();
         while (true) {
+            logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
                 if (isReachable && hostsWhichWasOffline.contains(host.getId())) {
@@ -51,7 +53,7 @@ public class BackgroundChecker {
                     } else {
                         logger.info("Host {} is removed from offline hosts list", host.getHostname());
                     }
-                } else if (!isReachable && !hostsWhichWasOffline.contains(host.getId())) {
+                } else if (host.isActive() && !isReachable && !hostsWhichWasOffline.contains(host.getId())) {
                     hostsWhichWasOffline.add(host.getId());
                     this.setStartTime(host);
                     if (host.getHostname().equals("")) {

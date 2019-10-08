@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Koturno History</title>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
 <div class="dashboard-title">Koturno</div>
@@ -13,33 +13,42 @@
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
-<div th:if="${revInaccessibilities.size() == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
-<div th:unless="${revInaccessibilities.size() == 0}" class="table-with-elements" align="center">
+<div th:if="${numberOfinaccessibilities == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
+<div th:unless="${numberOfinaccessibilities == 0}" class="table-with-elements" align="center">
     <table border="2">
         <thead>
         <tr>
             <th>Lp.</th>
             <th>Status</th>
+            <th>Hostname</th>
             <th>Adres</th>
             <th>Od</th>
             <th>Do</th>
-            <th>Opis</th>
             <th>Szczegóły</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="revInaccessibility : ${revInaccessibilities}">
-            <td th:text="${revInaccessibilityStat.index + 1}"></td>
-            <td th:if="${revInaccessibility.active} == true">aktywny</td>
-            <td th:unless="${revInaccessibility.active} == true">archiwalny</td>
-            <td th:text="${revInaccessibility.host.IPv4}"></td>
-            <td th:text="${revInaccessibility.hourOfBegin}"></td>
-            <td th:text="${revInaccessibility.hourOfEnd}"></td>
-            <td th:text="${revInaccessibility.description}"></td>
-            <td><a th:href="@{/inaccessibility/{id}(id=${revInaccessibility.id})}">zobacz</a></td>
+        <tr th:each="activeInaccessibility : ${activeInaccessibilities}">
+            <td th:text="${activeInaccessibilityStat.index + 1}"></td>
+            <td>aktywny</td>
+            <td th:text="${activeInaccessibility.host.hostname}"></td>
+            <td th:text="${activeInaccessibility.host.IPv4}"></td>
+            <td th:text="${activeInaccessibility.hourOfBegin}"></td>
+            <td>trwa</td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${activeInaccessibility.id})}">zobacz</a></td>
+        </tr>
+        <tr th:each="inactiveInaccessibility : ${inactiveInaccessibilities}">
+            <td th:text="${inactiveInaccessibilityStat.index + activeInaccessibilities.size() + 1}"></td>
+            <td>archiwalny</td>
+            <td th:text="${inactiveInaccessibility.host.hostname}"></td>
+            <td th:text="${inactiveInaccessibility.host.IPv4}"></td>
+            <td th:text="${inactiveInaccessibility.hourOfBegin}"></td>
+            <td th:text="${inactiveInaccessibility.hourOfEnd}"></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${inactiveInaccessibility.id})}">zobacz</a></td>
         </tr>
         </tbody>
     </table>
 </div>
+<script src="koturno.js"></script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Korutno Inaccessibility</title>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <title>Koturno Inaccessibility</title>
+    <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
 <div class="dashboard-title">Koturno</div>
@@ -14,9 +14,9 @@
     <a th:href="@{/history}">Historia</a>
 </div>
 <p>
-    <a th:href="@{/host/{id}(id=${host.id})}"><span th:text="${host.hostname}"></span></a>
+    <a th:href="@{/host/{id}(id=${host.id})}" class="host-info-additional-comments"><span th:text="${host.hostname}"></span></a>
     <br>
-    <a th:href="@{/host/{id}(id=${host.id})}"><span th:text="${host.IPv4}"></span></a>
+    <a th:href="@{/host/{id}(id=${host.id})}" class="additional-comments"><span th:text="${host.IPv4}"></span></a>
     <br>
     <span>Data początku: </span>
     <span th:text="${inaccessibility.dayOfBegin}"></span>
@@ -25,11 +25,16 @@
     <span th:text="${inaccessibility.hourOfBegin}"></span>
     <br>
     <span>Data końca: </span>
-    <span th:text="${inaccessibility.dayOfBegin}"></span>
+    <span th:if="${inaccessibility.active == true}">trwa</span>
+    <span th:unless="${inaccessibility.active == true}" th:text="${inaccessibility.dayOfEnd}"></span>
     <br>
     <span>Godzina końca: </span>
-    <span th:text="${inaccessibility.hourOfBegin}"></span>
+    <span th:if="${inaccessibility.active == true}">trwa</span>
+    <span th:unless="${inaccessibility.active == true}" th:text="${inaccessibility.hourOfEnd}"></span>
     <br>
+    <span>Opis: </span>
+    <span th:if="${inaccessibility.description.length() > 0}" th:text="${inaccessibility.description}"></span>
+    <span th:unless="${inaccessibility.description.length() > 0}">brak</span>
 </p>
 </body>
 </html>

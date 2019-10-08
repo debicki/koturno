@@ -79,11 +79,19 @@ public class HostsView {
     @GetMapping("/history")
     public String showHistory(Model model) {
         List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
-        List<Inaccessibility> revInaccessibilities = new ArrayList<>();
+        Integer numberOfinaccessibilities = inaccessibilities.size();
+        List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
+        List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
         for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
-            revInaccessibilities.add(inaccessibilities.get(i));
+            if (inaccessibilities.get(i).isActive()) {
+                activeInaccessibilities.add(inaccessibilities.get(i));
+            } else {
+                inactiveInaccessibilities.add(inaccessibilities.get(i));
+            }
         }
-        model.addAttribute("revInaccessibilities", revInaccessibilities);
+        model.addAttribute("numberOfinaccessibilities", numberOfinaccessibilities);
+        model.addAttribute("activeInaccessibilities", activeInaccessibilities);
+        model.addAttribute("inactiveInaccessibilities", inactiveInaccessibilities);
         return "history";
     }
 

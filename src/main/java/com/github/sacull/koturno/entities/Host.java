@@ -16,6 +16,7 @@ public class Host {
     private String hostname;
     private String IPv4;
     private LocalDateTime whenCreated;
+    private boolean active;
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
@@ -28,6 +29,7 @@ public class Host {
         this.hostname = hostname;
         this.IPv4 = IPv4;
         this.whenCreated = LocalDateTime.now();
+        this.active = true;
         this.description = description;
         this.inaccessibilities = inaccessibilities;
     }
@@ -54,6 +56,14 @@ public class Host {
 
     public LocalDateTime getWhenCreated() {
         return whenCreated;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getDescription() {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Koturno Dashboard</title>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
 <div class="dashboard-title">Koturno</div>
@@ -33,10 +33,11 @@
             <td th:text="${offlineHost.IPv4}"></td>
             <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${offlineHost.description}"></td>
-            <td><a th:href="@{/inaccessibility/{id}(id=${offlineHost.id})}">zobacz</a></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).getId()})}">zobacz</a></td>
         </tr>
         </tbody>
     </table>
 </div>
+<script src="koturno.js"></script>
 </body>
 </html>
