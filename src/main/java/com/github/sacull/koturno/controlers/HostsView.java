@@ -5,16 +5,12 @@ import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.utils.LifeChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -36,8 +32,6 @@ public class HostsView {
 
     @Autowired
     LifeChecker lifeChecker;
-
-    Logger logger = LoggerFactory.getLogger("HostView");
 
     @GetMapping("/")
     public String showDashboard(Model model) {
@@ -88,10 +82,28 @@ public class HostsView {
     public String updateInaccessibility(Model model,
                                         @PathVariable String id,
                                         @Valid Inaccessibility inaccessibility) {
-        logger.warn(inaccessibility.toString());
         Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityToUpdate.setDescription(inaccessibility.getDescription());
         inaccessibilityRepository.save(inaccessibilityToUpdate);
+        return showDashboard(model);
+    }
+
+    @GetMapping("/host/edit/{id}")
+    public String editHost(Model model, @PathVariable String id) {
+        Host host = hostRepository.getById(Long.valueOf(id));
+        model.addAttribute("host", host);
+        return "hedit";
+    }
+
+    @PostMapping("/host/update/{id}")
+    public String updateHost(Model model,
+                             @PathVariable String id,
+                             @Valid Host host) {
+        Host hostToUpdate = hostRepository.getById(Long.parseLong(id));
+//        hostToUpdate.setActive(host.isActive());
+        hostToUpdate.setHostname(host.getHostname());
+        hostToUpdate.setDescription(host.getDescription());
+        hostRepository.save(hostToUpdate);
         return showDashboard(model);
     }
 

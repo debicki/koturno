@@ -19,10 +19,16 @@
     <a th:href="@{/history}">Historia</a>
 </div>
 <div>
-    <span>Opis</span>
-    <form action="#" th:action="@{/inaccessibility/update/{id}(id=${inaccessibility.id})}"
-          th:object="${inaccessibility}" method="post" id="comment">
-        <input type="text" name="opis" th:field="*{description}" th:value="${inaccessibility.description}">
+    <form action="#" th:action="@{/host/update/{id}(id=${host.id})}"
+          th:object="${host}" method="post" id="comment">
+        <span>Hostname</span>
+        <br>
+        <input type="text" name="hostname" th:field="*{hostname}" th:value="${host.hostname}">
+        <br>
+        <br>
+        <span>Opis</span>
+        <br>
+        <input type="text" name="opis" th:field="*{description}" th:value="${host.description}">
     </form>
 </div>
 <br>

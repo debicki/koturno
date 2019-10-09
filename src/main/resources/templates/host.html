@@ -28,6 +28,8 @@
     <span>Opis: </span>
     <span th:if="${host.description.length() > 0}" th:text="${host.description}"></span>
     <span th:unless="${host.description.length() > 0}">brak</span>
+    <br>
+    <a th:href="@{/host/edit/{id}(id=${host.id})}">edytuj</a>
 </p>
 <div th:if="${hostInaccessibilities.size() == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
 <div th:unless="${hostInaccessibilities.size() == 0}" class="table-with-elements" align="center">
