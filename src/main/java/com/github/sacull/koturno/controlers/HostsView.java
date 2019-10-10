@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,42 @@ public class HostsView {
         Host host = hostRepository.getById(inaccessibility.getHost().getId());
         model.addAttribute("host", host);
         return "inaccessibility";
+    }
+
+    @GetMapping("/inaccessibility/edit/{id}")
+    public String editInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibility = inaccessibilityRepository.getById(Long.valueOf(id));
+        model.addAttribute("inaccessibility", inaccessibility);
+        return "iedit";
+    }
+
+    @PostMapping("/inaccessibility/update/{id}")
+    public String updateInaccessibility(Model model,
+                                        @PathVariable String id,
+                                        @Valid Inaccessibility inaccessibility) {
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(Long.parseLong(id));
+        inaccessibilityToUpdate.setDescription(inaccessibility.getDescription());
+        inaccessibilityRepository.save(inaccessibilityToUpdate);
+        return showDashboard(model);
+    }
+
+    @GetMapping("/host/edit/{id}")
+    public String editHost(Model model, @PathVariable String id) {
+        Host host = hostRepository.getById(Long.valueOf(id));
+        model.addAttribute("host", host);
+        return "hedit";
+    }
+
+    @PostMapping("/host/update/{id}")
+    public String updateHost(Model model,
+                             @PathVariable String id,
+                             @Valid Host host) {
+        Host hostToUpdate = hostRepository.getById(Long.parseLong(id));
+//        hostToUpdate.setActive(host.isActive());
+        hostToUpdate.setHostname(host.getHostname());
+        hostToUpdate.setDescription(host.getDescription());
+        hostRepository.save(hostToUpdate);
+        return showDashboard(model);
     }
 
     @GetMapping("/hosts")

@@ -29,3 +29,31 @@
 .error-code {
     font-size: 150px;
 }
+
+.small-button-label {
+    color: blue;
+    cursor: pointer;
+}
+
+.small-button {
+    width: 75px;
+    height: 25px;
+    margin: auto;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+.selected-page {
+    color: grey;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}

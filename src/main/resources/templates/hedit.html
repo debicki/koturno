@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koturno Edit</title>
+    <link rel="stylesheet" href="/koturno.css"/>
+    <script>
+        function send() {
+            document.getElementById("comment").submit();
+        }
+    </script>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Podgląd</a>
+    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<div>
+    <form action="#" th:action="@{/host/update/{id}(id=${host.id})}"
+          th:object="${host}" method="post" id="comment">
+        <span>Hostname</span>
+        <br>
+        <input type="text" name="hostname" th:field="*{hostname}" th:value="${host.hostname}">
+        <br>
+        <br>
+        <span>Opis</span>
+        <br>
+        <textarea type="text" name="opis" th:field="*{description}"
+                  th:value="${host.description}" rows="12" cols="60"></textarea>
+    </form>
+</div>
+<br>
+<div class="small-button">
+    <div onclick="send()" class="small-button-label">Zapisz</div>
+</div>
+</body>
+</html>

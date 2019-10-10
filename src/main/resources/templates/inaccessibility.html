@@ -9,7 +9,7 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
@@ -34,7 +34,13 @@
     <br>
     <span>Opis: </span>
     <span th:if="${inaccessibility.description.length() > 0}" th:text="${inaccessibility.description}"></span>
-    <span th:unless="${inaccessibility.description.length() > 0}">brak</span>
+    <br th:if="${inaccessibility.description.length() > 0}">
+    <span th:if="${inaccessibility.description.length() > 0}">
+        <a th:href="@{/inaccessibility/edit/{id}(id=${inaccessibility.id})}">edytuj</a>
+    </span>
+    <span th:unless="${inaccessibility.description.length() > 0}">
+        <a th:href="@{/inaccessibility/edit/{id}(id=${inaccessibility.id})}">dodaj</a>
+    </span>
 </p>
 </body>
 </html>

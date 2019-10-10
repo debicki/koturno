@@ -9,7 +9,7 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/}" class="selected-page">Podgląd</a>
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
@@ -22,8 +22,8 @@
             <th>Hostname</th>
             <th>Adres</th>
             <th>Ostatnio online</th>
-            <th>Opis</th>
-            <th>Szczegóły</th>
+            <th>Opis hosta</th>
+            <th>Szczegóły niedostępności</th>
         </tr>
         </thead>
         <tbody>
