@@ -9,9 +9,9 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Wszystkie hosty</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history}" class="selected-page">Historia</a>
 </div>
 <div th:if="${numberOfinaccessibilities == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
 <div th:unless="${numberOfinaccessibilities == 0}" class="table-with-elements" align="center">
@@ -23,6 +23,8 @@
             <th>Hostname</th>
             <th>Adres</th>
             <th>Od</th>
+            <th>Od</th>
+            <th>Do</th>
             <th>Do</th>
             <th>Szczegóły</th>
         </tr>
@@ -33,7 +35,9 @@
             <td>aktywny</td>
             <td th:text="${activeInaccessibility.host.hostname}"></td>
             <td th:text="${activeInaccessibility.host.IPv4}"></td>
+            <td th:text="${activeInaccessibility.dayOfBegin}"></td>
             <td th:text="${activeInaccessibility.hourOfBegin}"></td>
+            <td>trwa</td>
             <td>trwa</td>
             <td><a th:href="@{/inaccessibility/{id}(id=${activeInaccessibility.id})}">zobacz</a></td>
         </tr>
@@ -42,7 +46,9 @@
             <td>archiwalny</td>
             <td th:text="${inactiveInaccessibility.host.hostname}"></td>
             <td th:text="${inactiveInaccessibility.host.IPv4}"></td>
+            <td th:text="${inactiveInaccessibility.dayOfBegin}"></td>
             <td th:text="${inactiveInaccessibility.hourOfBegin}"></td>
+            <td th:text="${inactiveInaccessibility.dayOfEnd}"></td>
             <td th:text="${inactiveInaccessibility.hourOfEnd}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${inactiveInaccessibility.id})}">zobacz</a></td>
         </tr>

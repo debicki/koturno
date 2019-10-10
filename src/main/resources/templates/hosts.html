@@ -9,8 +9,8 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
-    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/}">Podgląd</a>
+    <a th:href="@{/hosts}" class="selected-page">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
 <div th:if="${hosts.size() == 0}" class="additional-comments">Brak hostów w bazie danych!</div>
@@ -19,6 +19,7 @@
         <thead>
         <tr>
             <th>Lp.</th>
+            <th>Aktywny</th>
             <th>Hostname</th>
             <th>Adres</th>
             <th>Opis</th>
@@ -28,6 +29,8 @@
         <tbody>
         <tr th:each="host : ${hosts}">
             <td th:text="${hostStat.index + 1}"></td>
+            <td th:if="${host.active} == true">tak</td>
+            <td th:unless="${host.active} == true">nie</td>
             <td th:text="${host.hostname}"></td>
             <td th:text="${host.IPv4}"></td>
             <td th:text="${host.description}"></td>

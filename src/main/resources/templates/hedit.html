@@ -14,7 +14,7 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
@@ -28,7 +28,8 @@
         <br>
         <span>Opis</span>
         <br>
-        <input type="text" name="opis" th:field="*{description}" th:value="${host.description}">
+        <textarea type="text" name="opis" th:field="*{description}"
+                  th:value="${host.description}" rows="12" cols="60"></textarea>
     </form>
 </div>
 <br>

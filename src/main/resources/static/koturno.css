@@ -45,3 +45,15 @@ a {
     color: blue;
     text-decoration: none;
 }
+
+.selected-page {
+    color: grey;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}

@@ -14,7 +14,7 @@
 <div class="dashboard-title">Koturno</div>
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
-    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
@@ -22,7 +22,8 @@
     <span>Opis</span>
     <form action="#" th:action="@{/inaccessibility/update/{id}(id=${inaccessibility.id})}"
           th:object="${inaccessibility}" method="post" id="comment">
-        <input type="text" name="opis" th:field="*{description}" th:value="${inaccessibility.description}">
+        <textarea type="text" name="opis" th:field="*{description}"
+                  th:value="${inaccessibility.description}" rows="12" cols="60"></textarea>
     </form>
 </div>
 <br>
