@@ -15,8 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -40,26 +41,38 @@ public class BackgroundChecker {
     public CompletableFuture<String> start() {
         TypedQuery<Host> query = em.createQuery("SELECT h FROM Host h", Host.class);
         List<Host> hosts = query.getResultList();
-        List<Long> hostsWhichWasOffline = new ArrayList<>();
+        Map<Long, Integer> problematicHosts = new HashMap<>();
         while (true) {
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
-                if (isReachable && hostsWhichWasOffline.contains(host.getId())) {
-                    hostsWhichWasOffline.remove(host.getId());
-                    this.updateEndTime(host);
-                    if (host.getHostname().equals("")) {
-                        logger.info("Host {} is removed from offline hosts list", host.getIPv4());
+                if (isReachable && problematicHosts.containsKey(host.getId())) {
+                    if (problematicHosts.get(host.getId()) <= 1) {
+                        problematicHosts.remove(host.getId());
+                        this.updateEndTime(host);
+                        if (host.getHostname().equals("")) {
+                            logger.info("Host {} is removed from problematic hosts list", host.getIPv4());
+                        } else {
+                            logger.info("Host {} is removed from problematic hosts list", host.getHostname());
+                        }
+                    } else if (problematicHosts.get(host.getId()) == 2) {
+                        problematicHosts.replace(host.getId(), 1);
                     } else {
-                        logger.info("Host {} is removed from offline hosts list", host.getHostname());
+                        problematicHosts.replace(host.getId(), 2);
                     }
-                } else if (host.isActive() && !isReachable && !hostsWhichWasOffline.contains(host.getId())) {
-                    hostsWhichWasOffline.add(host.getId());
+                } else if (host.isActive() && !isReachable && !problematicHosts.containsKey(host.getId())) {
+                    problematicHosts.put(host.getId(), 1);
                     this.setStartTime(host);
                     if (host.getHostname().equals("")) {
-                        logger.info("Host {} is added to offline hosts list", host.getIPv4());
+                        logger.info("Host {} is added to problematic hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is added to offline hosts list", host.getHostname());
+                        logger.info("Host {} is added to problematic hosts list", host.getHostname());
+                    }
+                } else if (host.isActive() && !isReachable && problematicHosts.containsKey(host.getId())) {
+                    if (problematicHosts.get(host.getId()) <= 1) {
+                        problematicHosts.replace(host.getId(), 2);
+                    } else {
+                        problematicHosts.replace(host.getId(), 3);
                     }
                 }
             }
