@@ -15,9 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -41,38 +40,37 @@ public class BackgroundChecker {
     public CompletableFuture<String> start() {
         TypedQuery<Host> query = em.createQuery("SELECT h FROM Host h", Host.class);
         List<Host> hosts = query.getResultList();
-        Map<Long, Integer> problematicHosts = new HashMap<>();
+        List<Long> offlineHosts = new ArrayList<>();
+        List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
-                if (isReachable && problematicHosts.containsKey(host.getId())) {
-                    if (problematicHosts.get(host.getId()) <= 1) {
-                        problematicHosts.remove(host.getId());
-                        this.updateEndTime(host);
-                        if (host.getHostname().equals("")) {
-                            logger.info("Host {} is removed from problematic hosts list", host.getIPv4());
-                        } else {
-                            logger.info("Host {} is removed from problematic hosts list", host.getHostname());
-                        }
-                    } else if (problematicHosts.get(host.getId()) == 2) {
-                        problematicHosts.replace(host.getId(), 1);
+                if (isReachable && instabilityHosts.contains(host.getId())) {
+                    offlineHosts.remove(host.getId());
+                    instabilityHosts.remove(host.getId());
+                    this.updateEndTime(host);
+                    if (host.getHostname().equals("")) {
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getIPv4());
                     } else {
-                        problematicHosts.replace(host.getId(), 2);
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getHostname());
                     }
-                } else if (host.isActive() && !isReachable && !problematicHosts.containsKey(host.getId())) {
-                    problematicHosts.put(host.getId(), 1);
+                } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
+                    instabilityHosts.add(host.getId());
                     this.setStartTime(host);
                     if (host.getHostname().equals("")) {
-                        logger.info("Host {} is added to problematic hosts list", host.getIPv4());
+                        logger.info("Host {} is added to instability hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is added to problematic hosts list", host.getHostname());
+                        logger.info("Host {} is added to instability hosts list", host.getHostname());
                     }
-                } else if (host.isActive() && !isReachable && problematicHosts.containsKey(host.getId())) {
-                    if (problematicHosts.get(host.getId()) <= 1) {
-                        problematicHosts.replace(host.getId(), 2);
+                } else if (host.isActive() && !isReachable &&
+                        instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
+                    offlineHosts.add(host.getId());
+                    this.setOfflineStatus(host);
+                    if (host.getHostname().equals("")) {
+                        logger.info("Host {} is added to offline hosts list", host.getIPv4());
                     } else {
-                        problematicHosts.replace(host.getId(), 3);
+                        logger.info("Host {} is added to offline hosts list", host.getHostname());
                     }
                 }
             }
@@ -89,6 +87,12 @@ public class BackgroundChecker {
         host.addInaccessibility(inaccessibilityToOpen);
         inaccessibilityRepository.save(inaccessibilityToOpen);
         hostRepository.save(host);
+    }
+
+    private void setOfflineStatus(Host host) {
+        Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
+        inaccessibilityToUpdate.setOfflineStatus(true);
+        inaccessibilityRepository.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {

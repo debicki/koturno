@@ -13,7 +13,7 @@ import java.net.SocketAddress;
 public class LifeChecker {
 
     public boolean isReachable(Host host){
-        for (int i = 50; i <= 500; i += 50) {
+        for (int i = 50; i <= 150; i += 50) {
             if (this.isReachable(host, i)) {
                 return true;
             }
@@ -22,7 +22,7 @@ public class LifeChecker {
     }
 
     public boolean isReachableByTcp(Host host) {
-        for (int i = 50; i <= 500; i += 50) {
+            for (int i = 50; i <= 150; i += 50) {
             if (this.isReachableByTcp(host, 7, i)) {
                 return true;
             }
@@ -31,7 +31,7 @@ public class LifeChecker {
     }
 
     public boolean isReachableByTcp(Host host, int port) {
-        for (int i = 50; i <= 500; i += 50) {
+        for (int i = 50; i <= 150; i += 50) {
             if (this.isReachableByTcp(host, port, i)) {
                 return true;
             }
@@ -40,7 +40,7 @@ public class LifeChecker {
     }
 
     public boolean isReachableByPing(Host host) {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             if (this.isReachableByExternalPing(host)) {
                 return true;
             }
