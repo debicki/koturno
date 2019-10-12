@@ -46,7 +46,7 @@ public class BackgroundChecker {
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
-                if (isReachable && instabilityHosts.contains(host.getId())) {
+                if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
                     offlineHosts.remove(host.getId());
                     instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);

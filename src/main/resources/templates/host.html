@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno Host</title>
+    <title>Koturno - Informacje hosta</title>
     <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
@@ -22,8 +22,10 @@
     <span th:text="${host.dayWhenCreated}"></span>
     <br>
     <span>Status: </span>
-    <span th:if="${host.active == true}">aktywny</span>
-    <span th:unless="${host.active == true}">nieaktywny</span>
+    <span th:if="${host.active == true}">aktywny </span>
+    <span th:if="${host.active == true}"><a th:href="@{/host/deactivate/{id}(id=${host.getId()})}">zmień</a></td></span>
+    <span th:unless="${host.active == true}">nieaktywny </span>
+    <span th:unless="${host.active == true}"><a th:href="@{/host/activate/{id}(id=${host.getId()})}">zmień</a></td></span>
     <br>
     <span>Opis: </span>
     <span th:if="${host.description.length() > 0}" th:text="${host.description}"></span>

@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno Dashboard</title>
+    <title>Koturno - Podgląd</title>
     <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
@@ -15,6 +15,7 @@
 </div>
 <div th:if="${offlineHosts.size() == 0}" class="additional-comments">Wszystkie hosty są ONLINE</div>
 <div th:unless="${offlineHosts.size() == 0}"  class="table-with-elements" align="center">
+    <span class="additional-comments">Hosty OFFLINE</span>
     <table border="2">
         <thead>
         <tr>
@@ -24,6 +25,7 @@
             <th>Ostatnio online</th>
             <th>Opis hosta</th>
             <th>Szczegóły niedostępności</th>
+            <th>Pozostałe akcje</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +36,36 @@
             <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${offlineHost.description}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).getId()})}">zobacz</a></td>
+            <td><a th:href="@{/inaccessibility/ignore/{id}(id=${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).getId()})}">ignoruj</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div th:if="${instabilityHosts.size() == 0}" class="additional-comments">Pozostałe hosty są STABILNE</div>
+<div th:unless="${instabilityHosts.size() == 0}"  class="table-with-elements" align="center">
+    <span class="additional-comments">Hosty NIESTABILNE</span>
+    <table border="2">
+        <thead>
+        <tr>
+            <th>Lp.</th>
+            <th>Hostname</th>
+            <th>Adres</th>
+            <th>Ostatnio stabilny</th>
+            <th>Opis hosta</th>
+            <th>Szczegóły niedostępności</th>
+            <th>Pozostałe akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="instabilityHost : ${instabilityHosts}">
+            <td th:text="${instabilityHostStat.index + 1}"></td>
+            <td th:text="${instabilityHost.hostname}"></td>
+            <td th:text="${instabilityHost.IPv4}"></td>
+            <td th:text="${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
+            <td th:text="${instabilityHost.description}"></td>
+            <td><a th:href="@{/inaccessibility/{id}(id=${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).getId()})}">zobacz</a></td>
+            <td><a th:href="@{/inaccessibility/ignore/{id}(id=${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).getId()})}">ignoruj</a></td>
         </tr>
         </tbody>
     </table>
