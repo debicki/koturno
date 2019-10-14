@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno Inaccessibility</title>
+    <title>Koturno - Informacja niedostępności</title>
     <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
@@ -30,6 +30,10 @@
     <br>
     <span>Godzina końca: </span>
     <span th:if="${inaccessibility.active == true}">trwa</span>
+    <br th:if="${inaccessibility.active == true}">
+    <span th:if="${inaccessibility.active == true}">
+        <a th:href="@{/inaccessibility/ignore/{id}(id=${host.inaccessibilities.get(host.inaccessibilities.size() - 1).getId()})}">ignoruj</a>
+    </span>
     <span th:unless="${inaccessibility.active == true}" th:text="${inaccessibility.hourOfEnd}"></span>
     <br>
     <span>Opis: </span>

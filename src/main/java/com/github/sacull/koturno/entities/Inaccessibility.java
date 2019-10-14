@@ -17,6 +17,7 @@ public class Inaccessibility {
     private LocalDateTime start;
     private LocalDateTime end;
     private Boolean active;
+    private Boolean offlineStatus;
     private String description;
 
     protected Inaccessibility() {
@@ -27,6 +28,7 @@ public class Inaccessibility {
         this.start = LocalDateTime.now();
         this.end = LocalDateTime.now();
         this.active = true;
+        this.offlineStatus = false;
         this.description = description;
     }
 
@@ -64,6 +66,14 @@ public class Inaccessibility {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean isOfflineStatus() {
+        return offlineStatus;
+    }
+
+    public void setOfflineStatus(Boolean offlineStatus) {
+        this.offlineStatus = offlineStatus;
     }
 
     public String getDescription() {

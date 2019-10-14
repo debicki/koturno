@@ -37,13 +37,19 @@ public class HostsView {
     public String showDashboard(Model model) {
         List<Host> hosts = this.getAllHosts();
         List<Host> offlineHosts = new ArrayList<>();
+        List<Host> instabilityHosts = new ArrayList<>();
         for (Host host : hosts) {
             if (host.getInaccessibilities().size() > 0 &&
                     host.getInaccessibilities().get(host.getInaccessibilities().size() - 1).isActive()) {
-                offlineHosts.add(host);
+                if (host.getInaccessibilities().get(host.getInaccessibilities().size() - 1).isOfflineStatus()) {
+                    offlineHosts.add(host);
+                } else {
+                    instabilityHosts.add(host);
+                }
             }
         }
         model.addAttribute("offlineHosts", offlineHosts);
+        model.addAttribute("instabilityHosts", instabilityHosts);
         return "dashboard";
     }
 
@@ -51,13 +57,7 @@ public class HostsView {
     public String showHost(Model model, @PathVariable String id) {
         Host host = hostRepository.getById(Long.valueOf(id));
         model.addAttribute("host", host);
-        List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
-        List<Inaccessibility> hostInaccessibilities = new ArrayList<>();
-        for (Inaccessibility inaccessibility : inaccessibilities) {
-            if (inaccessibility.getHost().getId().equals(Long.valueOf(id))) {
-                hostInaccessibilities.add(inaccessibility);
-            }
-        }
+        List<Inaccessibility> hostInaccessibilities = host.getInaccessibilities();
         model.addAttribute("hostInaccessibilities", hostInaccessibilities);
         return "host";
     }
@@ -88,6 +88,14 @@ public class HostsView {
         return showDashboard(model);
     }
 
+    @GetMapping("/inaccessibility/ignore/{id}")
+    public String ignoreInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibilityToIgnore = inaccessibilityRepository.getById(Long.parseLong(id));
+        inaccessibilityToIgnore.setActive(false);
+        inaccessibilityRepository.save(inaccessibilityToIgnore);
+        return showDashboard(model);
+    }
+
     @GetMapping("/host/edit/{id}")
     public String editHost(Model model, @PathVariable String id) {
         Host host = hostRepository.getById(Long.valueOf(id));
@@ -100,11 +108,29 @@ public class HostsView {
                              @PathVariable String id,
                              @Valid Host host) {
         Host hostToUpdate = hostRepository.getById(Long.parseLong(id));
-//        hostToUpdate.setActive(host.isActive());
         hostToUpdate.setHostname(host.getHostname());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
         return showDashboard(model);
+    }
+
+    @GetMapping("host/activate/{id}")
+    public String activateHost(Model model, @PathVariable String id) {
+        Host hostToActivate = hostRepository.getById(Long.parseLong(id));
+        hostToActivate.setActive(true);
+        hostRepository.save(hostToActivate);
+        return showHosts(model);
+    }
+
+    @GetMapping("host/deactivate/{id}")
+    public String deactivateHost(Model model, @PathVariable String id) {
+        Host hostToDeactivate = hostRepository.getById(Long.parseLong(id));
+        hostToDeactivate.setActive(false);
+        Inaccessibility inaccessibilityToDeactivate = this.getLastHostInaccessibility(hostToDeactivate);
+        inaccessibilityToDeactivate.setActive(false);
+        inaccessibilityRepository.save(inaccessibilityToDeactivate);
+        hostRepository.save(hostToDeactivate);
+        return showHosts(model);
     }
 
     @GetMapping("/hosts")
@@ -142,5 +168,12 @@ public class HostsView {
         TypedQuery<Inaccessibility> inaccessibilityQuery =
                 em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
         return inaccessibilityQuery.getResultList();
+    }
+
+    private Inaccessibility getLastHostInaccessibility(Host host) {
+        return inaccessibilityRepository.getById(
+                host.getInaccessibilities()
+                        .get(host.getInaccessibilities().size() - 1)
+                        .getId());
     }
 }

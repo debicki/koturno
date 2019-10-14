@@ -40,22 +40,33 @@ public class BackgroundChecker {
     public CompletableFuture<String> start() {
         TypedQuery<Host> query = em.createQuery("SELECT h FROM Host h", Host.class);
         List<Host> hosts = query.getResultList();
-        List<Long> hostsWhichWasOffline = new ArrayList<>();
+        List<Long> offlineHosts = new ArrayList<>();
+        List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
-                if (isReachable && hostsWhichWasOffline.contains(host.getId())) {
-                    hostsWhichWasOffline.remove(host.getId());
+                if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
+                    offlineHosts.remove(host.getId());
+                    instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);
                     if (host.getHostname().equals("")) {
-                        logger.info("Host {} is removed from offline hosts list", host.getIPv4());
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is removed from offline hosts list", host.getHostname());
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getHostname());
                     }
-                } else if (host.isActive() && !isReachable && !hostsWhichWasOffline.contains(host.getId())) {
-                    hostsWhichWasOffline.add(host.getId());
+                } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
+                    instabilityHosts.add(host.getId());
                     this.setStartTime(host);
+                    if (host.getHostname().equals("")) {
+                        logger.info("Host {} is added to instability hosts list", host.getIPv4());
+                    } else {
+                        logger.info("Host {} is added to instability hosts list", host.getHostname());
+                    }
+                } else if (host.isActive() && !isReachable &&
+                        instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
+                    offlineHosts.add(host.getId());
+                    this.setOfflineStatus(host);
                     if (host.getHostname().equals("")) {
                         logger.info("Host {} is added to offline hosts list", host.getIPv4());
                     } else {
@@ -76,6 +87,12 @@ public class BackgroundChecker {
         host.addInaccessibility(inaccessibilityToOpen);
         inaccessibilityRepository.save(inaccessibilityToOpen);
         hostRepository.save(host);
+    }
+
+    private void setOfflineStatus(Host host) {
+        Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
+        inaccessibilityToUpdate.setOfflineStatus(true);
+        inaccessibilityRepository.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {
