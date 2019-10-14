@@ -13,6 +13,9 @@
     <a th:href="@{/hosts}" class="selected-page">Wszystkie hosty</a>
     <a th:href="@{/history}">Historia</a>
 </div>
+<span><a th:href="@{/host/new}">Nowy host</a></span>
+<br>
+<br>
 <div th:if="${hosts.size() == 0}" class="additional-comments">Brak hostów w bazie danych!</div>
 <div th:unless="${hosts.size() == 0}" class="table-with-elements" align="center">
     <table border="2">

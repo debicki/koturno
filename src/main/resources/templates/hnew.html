@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno - Edycja hosta</title>
+    <title>Koturno - Dodawanie hosta</title>
     <link rel="stylesheet" href="/koturno.css"/>
     <script src="/sender.js"></script>
 </head>
@@ -15,11 +15,15 @@
     <a th:href="@{/history}">Historia</a>
 </div>
 <div>
-    <form action="#" th:action="@{/host/update/{id}(id=${host.id})}"
+    <form action="#" th:action="@{/host/add}"
           th:object="${host}" method="post" id="comment">
         <span>Hostname</span>
         <br>
         <input type="text" name="hostname" th:field="*{hostname}" th:value="${host.hostname}">
+        <br>
+        <span>Adres</span>
+        <br>
+        <input type="text" name="hostname" th:field="*{IPv4}" th:value="${host.IPv4}">
         <br>
         <br>
         <span>Opis</span>
@@ -31,6 +35,10 @@
 <br>
 <div class="small-button">
     <div onclick="send()" class="small-button-label">Zapisz</div>
+</div>
+<br>
+<div>
+    <a href="#">Dodaj z pliku</a>
 </div>
 </body>
 </html>

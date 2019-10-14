@@ -96,6 +96,22 @@ public class HostsView {
         return showDashboard(model);
     }
 
+    @GetMapping("/host/new")
+    public String addHost(Model model) {
+        Host host = new Host("Tu wpisz hostname",
+                "Tu wpisz adres - to pole nie może być puste!",
+                "Tu wpisz opis",
+                null);
+        model.addAttribute(host);
+        return "hnew";
+    }
+
+    @PostMapping("host/add")
+    public String updateHost(Model model, @Valid Host host) {
+        hostRepository.save(host);
+        return showDashboard(model);
+    }
+
     @GetMapping("/host/edit/{id}")
     public String editHost(Model model, @PathVariable String id) {
         Host host = hostRepository.getById(Long.valueOf(id));
