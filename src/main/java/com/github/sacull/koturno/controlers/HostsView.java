@@ -98,9 +98,9 @@ public class HostsView {
 
     @GetMapping("/host/new")
     public String addHost(Model model) {
-        Host host = new Host("Tu wpisz hostname",
-                "Tu wpisz adres - to pole nie może być puste!",
-                "Tu wpisz opis",
+        Host host = new Host("",
+                "To pole nie może być puste!",
+                "",
                 null);
         model.addAttribute(host);
         return "hnew";
@@ -108,6 +108,7 @@ public class HostsView {
 
     @PostMapping("host/add")
     public String updateHost(Model model, @Valid Host host) {
+        // TODO: 14.10.2019 Add host's address validation
         hostRepository.save(host);
         return showDashboard(model);
     }
@@ -143,9 +144,11 @@ public class HostsView {
         Host hostToDeactivate = hostRepository.getById(Long.parseLong(id));
         hostToDeactivate.setActive(false);
         Inaccessibility inaccessibilityToDeactivate = this.getLastHostInaccessibility(hostToDeactivate);
-        inaccessibilityToDeactivate.setActive(false);
-        inaccessibilityRepository.save(inaccessibilityToDeactivate);
-        hostRepository.save(hostToDeactivate);
+        if (inaccessibilityToDeactivate != null) {
+            inaccessibilityToDeactivate.setActive(false);
+            inaccessibilityRepository.save(inaccessibilityToDeactivate);
+            hostRepository.save(hostToDeactivate);
+        }
         return showHosts(model);
     }
 
@@ -187,9 +190,13 @@ public class HostsView {
     }
 
     private Inaccessibility getLastHostInaccessibility(Host host) {
-        return inaccessibilityRepository.getById(
-                host.getInaccessibilities()
-                        .get(host.getInaccessibilities().size() - 1)
-                        .getId());
+        if (host.getInaccessibilities().size() > 0) {
+            return inaccessibilityRepository.getById(
+                    host.getInaccessibilities()
+                            .get(host.getInaccessibilities().size() - 1)
+                            .getId());
+        } else {
+            return null;
+        }
     }
 }
