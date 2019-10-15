@@ -13,8 +13,8 @@
     <a th:href="@{/hosts}">Wszystkie hosty</a>
     <a th:href="@{/history}" class="selected-page">Historia</a>
 </div>
-<div th:if="${numberOfinaccessibilities == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
-<div th:unless="${numberOfinaccessibilities == 0}" class="table-with-elements" align="center">
+<div th:if="${numberOfInaccessibilities == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
+<div th:unless="${numberOfInaccessibilities == 0}" class="table-with-elements" align="center">
     <table border="2">
         <thead>
         <tr>

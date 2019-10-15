@@ -14,3 +14,5 @@ google.com
 
 # That example give sentence 'gmail.com' as address, empty field 'hostname' and all comment to comment field
 gmail.com           Postal
+
+1.2.3.4

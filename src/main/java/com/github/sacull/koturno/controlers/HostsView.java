@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -58,6 +59,7 @@ public class HostsView {
         Host host = hostRepository.getById(Long.valueOf(id));
         model.addAttribute("host", host);
         List<Inaccessibility> hostInaccessibilities = host.getInaccessibilities();
+        Collections.reverse(hostInaccessibilities);
         model.addAttribute("hostInaccessibilities", hostInaccessibilities);
         return "host";
     }
@@ -97,7 +99,7 @@ public class HostsView {
     }
 
     @GetMapping("/host/new")
-    public String addHost(Model model) {
+    public String newHost(Model model) {
         Host host = new Host("",
                 "To pole nie może być puste!",
                 "",
@@ -107,10 +109,10 @@ public class HostsView {
     }
 
     @PostMapping("host/add")
-    public String updateHost(Model model, @Valid Host host) {
+    public String addHost(Model model, @Valid Host host) {
         // TODO: 14.10.2019 Add host's address validation
         hostRepository.save(host);
-        return showDashboard(model);
+        return "asummary";
     }
 
     @GetMapping("/host/edit/{id}")
@@ -162,7 +164,7 @@ public class HostsView {
     @GetMapping("/history")
     public String showHistory(Model model) {
         List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
-        Integer numberOfinaccessibilities = inaccessibilities.size();
+        Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
         for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
@@ -172,7 +174,7 @@ public class HostsView {
                 inactiveInaccessibilities.add(inaccessibilities.get(i));
             }
         }
-        model.addAttribute("numberOfinaccessibilities", numberOfinaccessibilities);
+        model.addAttribute("numberOfInaccessibilities", numberOfInaccessibilities);
         model.addAttribute("activeInaccessibilities", activeInaccessibilities);
         model.addAttribute("inactiveInaccessibilities", inactiveInaccessibilities);
         return "history";
