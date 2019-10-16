@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 public class InaccessibilityRepository {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     public Inaccessibility getById(Long id) {
         return em.find(Inaccessibility.class, id);

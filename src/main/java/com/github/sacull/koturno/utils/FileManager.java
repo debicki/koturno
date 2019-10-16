@@ -22,8 +22,9 @@ public class FileManager {
         String line;
         while ((line = fileContent.readLine()) != null) {
             if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hotsToAdd = parse(line);
-                result.add(hotsToAdd);
+                Host hostToAdd = parse(line);
+                result.add(hostToAdd);
+                logger.info("Host {} został dodany", hostToAdd.getIPv4());
             }
         }
         return result;

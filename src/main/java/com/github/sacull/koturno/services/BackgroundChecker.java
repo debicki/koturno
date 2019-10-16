@@ -23,16 +23,16 @@ import java.util.concurrent.CompletableFuture;
 public class BackgroundChecker {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Autowired
-    HostRepository hostRepository;
+    private HostRepository hostRepository;
 
     @Autowired
-    InaccessibilityRepository inaccessibilityRepository;
+    private InaccessibilityRepository inaccessibilityRepository;
 
     @Autowired
-    LifeChecker lifeChecker;
+    private LifeChecker lifeChecker;
 
     private Logger logger = LoggerFactory.getLogger("BackgroundChecker");
 

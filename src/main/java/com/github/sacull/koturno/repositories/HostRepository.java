@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 public class HostRepository {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     public Host getById(Long id) {
         return em.find(Host.class, id);

@@ -72,7 +72,7 @@ public class LifeChecker {
     }
 
     private boolean isReachableByExternalPing(Host host) {
-        try{
+        try {
             String cmd;
 
             if(System.getProperty("os.name").startsWith("Windows")) {

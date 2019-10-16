@@ -5,6 +5,8 @@ import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.utils.LifeChecker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,16 +25,18 @@ import java.util.List;
 public class HostsView {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Autowired
-    HostRepository hostRepository;
+    private HostRepository hostRepository;
 
     @Autowired
-    InaccessibilityRepository inaccessibilityRepository;
+    private InaccessibilityRepository inaccessibilityRepository;
 
     @Autowired
-    LifeChecker lifeChecker;
+    private LifeChecker lifeChecker;
+
+    private Logger logger = LoggerFactory.getLogger("HostsView");
 
     @GetMapping("/")
     public String showDashboard(Model model) {
@@ -87,6 +91,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityToUpdate.setDescription(inaccessibility.getDescription());
         inaccessibilityRepository.save(inaccessibilityToUpdate);
+        logger.info("Inaccessability {} was updated", inaccessibilityToUpdate.getId());
         return showDashboard(model);
     }
 
@@ -95,6 +100,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToIgnore = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityToIgnore.setActive(false);
         inaccessibilityRepository.save(inaccessibilityToIgnore);
+        logger.info("Inaccessability {} was ignored", inaccessibilityToIgnore.getId());
         return showDashboard(model);
     }
 
@@ -110,9 +116,14 @@ public class HostsView {
 
     @PostMapping("host/add")
     public String addHost(Model model, @Valid Host host) {
-        // TODO: 14.10.2019 Add host's address validation
-        hostRepository.save(host);
-        return "asummary";
+        if (!this.hostExists(host)) {
+            hostRepository.save(host);
+            logger.info("Host {} was added", host.getIPv4());
+            return "asummary";
+        } else {
+            logger.info("Host {} wasn't added", host.getIPv4());
+            return "aesummary";
+        }
     }
 
     @GetMapping("/host/edit/{id}")
@@ -130,6 +141,7 @@ public class HostsView {
         hostToUpdate.setHostname(host.getHostname());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
+        logger.info("Host {} was updated", hostToUpdate.getIPv4());
         return showDashboard(model);
     }
 
@@ -138,6 +150,7 @@ public class HostsView {
         Host hostToActivate = hostRepository.getById(Long.parseLong(id));
         hostToActivate.setActive(true);
         hostRepository.save(hostToActivate);
+        logger.info("Host {} was activated", hostToActivate.getIPv4());
         return showHosts(model);
     }
 
@@ -151,6 +164,7 @@ public class HostsView {
             inaccessibilityRepository.save(inaccessibilityToDeactivate);
             hostRepository.save(hostToDeactivate);
         }
+        logger.info("Host {} was deactivated", hostToDeactivate.getIPv4());
         return showHosts(model);
     }
 
@@ -200,5 +214,15 @@ public class HostsView {
         } else {
             return null;
         }
+    }
+
+    private boolean hostExists(Host host) {
+        List<Host> hostsInDatabase = this.getAllHosts();
+        for (Host hostFromDatabase : hostsInDatabase) {
+            if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

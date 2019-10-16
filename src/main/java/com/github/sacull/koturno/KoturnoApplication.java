@@ -25,12 +25,12 @@ import java.util.concurrent.Executor;
 public class KoturnoApplication implements CommandLineRunner {
 
 	@Autowired
-	HostRepository hostRepository;
+	private HostRepository hostRepository;
 
 	@Autowired
-	BackgroundChecker backgroundChecker;
+	private BackgroundChecker backgroundChecker;
 
-	Logger logger = LoggerFactory.getLogger("KoturnoApplication");
+	private Logger logger = LoggerFactory.getLogger("KoturnoApplication");
 
 	public static void main(String[] args) {
 		SpringApplication.run(KoturnoApplication.class, args);
