@@ -104,6 +104,14 @@ public class HostsView {
         return showDashboard(model);
     }
 
+    @GetMapping("/inaccessibility/delete/{id}")
+    public String deleteInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
+        inaccessibilityRepository.deleteById(Long.parseLong(id));
+        logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
+        return showDashboard(model);
+    }
+
     @GetMapping("/host/new")
     public String newHost(Model model) {
         Host host = new Host("",
