@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table (name = "hosts")
-public class Host {
+public class Host implements Comparable<Host>{
 
     @Id
     @GeneratedValue
@@ -96,5 +96,10 @@ public class Host {
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Host o) {
+        return this.getHostname().compareTo(o.getHostname());
     }
 }

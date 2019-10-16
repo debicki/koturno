@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -179,6 +180,7 @@ public class HostsView {
     @GetMapping("/hosts")
     public String showHosts(Model model) {
         List<Host> hosts = this.getAllHosts();
+        Collections.sort(hosts);
         model.addAttribute("hosts", hosts);
         return "hosts";
     }
