@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -58,6 +59,7 @@ public class HostsView {
         Host host = hostRepository.getById(Long.valueOf(id));
         model.addAttribute("host", host);
         List<Inaccessibility> hostInaccessibilities = host.getInaccessibilities();
+        Collections.reverse(hostInaccessibilities);
         model.addAttribute("hostInaccessibilities", hostInaccessibilities);
         return "host";
     }
@@ -96,6 +98,23 @@ public class HostsView {
         return showDashboard(model);
     }
 
+    @GetMapping("/host/new")
+    public String newHost(Model model) {
+        Host host = new Host("",
+                "To pole nie może być puste!",
+                "",
+                null);
+        model.addAttribute(host);
+        return "hnew";
+    }
+
+    @PostMapping("host/add")
+    public String addHost(Model model, @Valid Host host) {
+        // TODO: 14.10.2019 Add host's address validation
+        hostRepository.save(host);
+        return "asummary";
+    }
+
     @GetMapping("/host/edit/{id}")
     public String editHost(Model model, @PathVariable String id) {
         Host host = hostRepository.getById(Long.valueOf(id));
@@ -127,9 +146,11 @@ public class HostsView {
         Host hostToDeactivate = hostRepository.getById(Long.parseLong(id));
         hostToDeactivate.setActive(false);
         Inaccessibility inaccessibilityToDeactivate = this.getLastHostInaccessibility(hostToDeactivate);
-        inaccessibilityToDeactivate.setActive(false);
-        inaccessibilityRepository.save(inaccessibilityToDeactivate);
-        hostRepository.save(hostToDeactivate);
+        if (inaccessibilityToDeactivate != null) {
+            inaccessibilityToDeactivate.setActive(false);
+            inaccessibilityRepository.save(inaccessibilityToDeactivate);
+            hostRepository.save(hostToDeactivate);
+        }
         return showHosts(model);
     }
 
@@ -143,7 +164,7 @@ public class HostsView {
     @GetMapping("/history")
     public String showHistory(Model model) {
         List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
-        Integer numberOfinaccessibilities = inaccessibilities.size();
+        Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
         for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
@@ -153,7 +174,7 @@ public class HostsView {
                 inactiveInaccessibilities.add(inaccessibilities.get(i));
             }
         }
-        model.addAttribute("numberOfinaccessibilities", numberOfinaccessibilities);
+        model.addAttribute("numberOfInaccessibilities", numberOfInaccessibilities);
         model.addAttribute("activeInaccessibilities", activeInaccessibilities);
         model.addAttribute("inactiveInaccessibilities", inactiveInaccessibilities);
         return "history";
@@ -171,9 +192,13 @@ public class HostsView {
     }
 
     private Inaccessibility getLastHostInaccessibility(Host host) {
-        return inaccessibilityRepository.getById(
-                host.getInaccessibilities()
-                        .get(host.getInaccessibilities().size() - 1)
-                        .getId());
+        if (host.getInaccessibilities().size() > 0) {
+            return inaccessibilityRepository.getById(
+                    host.getInaccessibilities()
+                            .get(host.getInaccessibilities().size() - 1)
+                            .getId());
+        } else {
+            return null;
+        }
     }
 }
