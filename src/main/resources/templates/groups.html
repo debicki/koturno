@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno - Dodawanie hosta</title>
+    <title>Koturno - Grupy</title>
     <link rel="stylesheet" href="/koturno.css"/>
 </head>
 <body class="koturno-style">
@@ -11,11 +11,11 @@
 <div class="main-menu">
     <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Hosty</a>
-    <a th:href="@{/groups}">Grupy</a>
+    <a th:href="@{/groups}" class="selected-page">Grupy</a>
     <a th:href="@{/history}">Historia</a>
 </div>
-<p>Host został dodany</p>
-<br>
-<a th:href="@{/hosts}">Wróć</a>
+<div>
+    <p class="additional-comments">Jeszcze nieobsługiwane</p>
+</div>
 </body>
 </html>

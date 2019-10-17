@@ -110,7 +110,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityRepository.deleteById(Long.parseLong(id));
         logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
-        return showDashboard(model);
+        return showHistory(model);
     }
 
     @GetMapping("/host/new")
@@ -183,6 +183,12 @@ public class HostsView {
         Collections.sort(hosts);
         model.addAttribute("hosts", hosts);
         return "hosts";
+    }
+
+    @GetMapping("/groups")
+    public String showGroups(Model model) {
+
+        return "groups";
     }
 
     @GetMapping("/history")
