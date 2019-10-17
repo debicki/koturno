@@ -19,6 +19,9 @@ public class Host implements Comparable<Host>{
     private boolean active;
     private String description;
 
+    @ManyToOne
+    private HGroup hostGroup;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
     private List<Inaccessibility> inaccessibilities = new ArrayList<>();
 
@@ -72,6 +75,14 @@ public class Host implements Comparable<Host>{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public HGroup getHostGroup() {
+        return hostGroup;
+    }
+
+    public void setHostGroup(HGroup hostGroup) {
+        this.hostGroup = hostGroup;
     }
 
     public List<Inaccessibility> getInaccessibilities() {

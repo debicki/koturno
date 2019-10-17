@@ -20,6 +20,9 @@ public class Inaccessibility {
     private Boolean offlineStatus;
     private String description;
 
+    @ManyToOne
+    private IGroup inaccessibilityGroup;
+
     protected Inaccessibility() {
     }
 
@@ -82,6 +85,14 @@ public class Inaccessibility {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public IGroup getInaccessibilityGroup() {
+        return inaccessibilityGroup;
+    }
+
+    public void setInaccessibilityGroup(IGroup inaccessibilityGroup) {
+        this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
     public String getDayOfBegin() {
