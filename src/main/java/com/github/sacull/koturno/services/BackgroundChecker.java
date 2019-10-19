@@ -3,6 +3,7 @@ package com.github.sacull.koturno.services;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.repositories.IGroupRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.utils.LifeChecker;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class BackgroundChecker {
 
     @Autowired
     private InaccessibilityRepository inaccessibilityRepository;
+
+    @Autowired
+    private IGroupRepository iGroupRepository;
 
     @Autowired
     private LifeChecker lifeChecker;
@@ -83,29 +87,23 @@ public class BackgroundChecker {
     }
 
     private void setStartTime(Host host) {
-        Inaccessibility inaccessibilityToOpen = new Inaccessibility(host, "");
+        Inaccessibility inaccessibilityToOpen =
+                new Inaccessibility(host, "", iGroupRepository.getDefaultInaccessibilityGroup());
         host.addInaccessibility(inaccessibilityToOpen);
         inaccessibilityRepository.save(inaccessibilityToOpen);
         hostRepository.save(host);
     }
 
     private void setOfflineStatus(Host host) {
-        Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getLastInaccessibility(host);
         inaccessibilityToUpdate.setOfflineStatus(true);
         inaccessibilityRepository.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {
-        Inaccessibility inaccessibilityToUpdate = this.getLastInaccessibility(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getLastInaccessibility(host);
         inaccessibilityToUpdate.setEnd(LocalDateTime.now());
         inaccessibilityToUpdate.setActive(false);
         inaccessibilityRepository.save(inaccessibilityToUpdate);
-    }
-
-    private Inaccessibility getLastInaccessibility(Host host) {
-        return inaccessibilityRepository.getById(
-                host.getInaccessibilities()
-                        .get(host.getInaccessibilities().size() - 1)
-                        .getId());
     }
 }

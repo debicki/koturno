@@ -118,6 +118,7 @@ public class HostsView {
         Host host = new Host("",
                 "To pole nie może być puste!",
                 "",
+                null,
                 null);
         model.addAttribute(host);
         return "hnew";
@@ -167,7 +168,7 @@ public class HostsView {
     public String deactivateHost(Model model, @PathVariable String id) {
         Host hostToDeactivate = hostRepository.getById(Long.parseLong(id));
         hostToDeactivate.setActive(false);
-        Inaccessibility inaccessibilityToDeactivate = this.getLastHostInaccessibility(hostToDeactivate);
+        Inaccessibility inaccessibilityToDeactivate = inaccessibilityRepository.getLastHostInaccessibility(hostToDeactivate);
         if (inaccessibilityToDeactivate != null) {
             inaccessibilityToDeactivate.setActive(false);
             inaccessibilityRepository.save(inaccessibilityToDeactivate);
@@ -219,17 +220,6 @@ public class HostsView {
         TypedQuery<Inaccessibility> inaccessibilityQuery =
                 em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
         return inaccessibilityQuery.getResultList();
-    }
-
-    private Inaccessibility getLastHostInaccessibility(Host host) {
-        if (host.getInaccessibilities().size() > 0) {
-            return inaccessibilityRepository.getById(
-                    host.getInaccessibilities()
-                            .get(host.getInaccessibilities().size() - 1)
-                            .getId());
-        } else {
-            return null;
-        }
     }
 
     private boolean hostExists(Host host) {

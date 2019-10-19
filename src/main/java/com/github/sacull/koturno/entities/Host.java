@@ -28,12 +28,17 @@ public class Host implements Comparable<Host>{
     protected Host() {
     }
 
-    public Host(String hostname, String IPv4, String description, List<Inaccessibility> inaccessibilities) {
+    public Host(String hostname,
+                String IPv4,
+                String description,
+                HGroup hostGroup,
+                List<Inaccessibility> inaccessibilities) {
         this.hostname = hostname;
         this.IPv4 = IPv4;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
+        this.hostGroup = hostGroup;
         this.inaccessibilities = inaccessibilities;
     }
 

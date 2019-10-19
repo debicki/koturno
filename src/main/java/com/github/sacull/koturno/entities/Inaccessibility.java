@@ -26,13 +26,16 @@ public class Inaccessibility {
     protected Inaccessibility() {
     }
 
-    public Inaccessibility(Host host, String description) {
+    public Inaccessibility(Host host,
+                           String description,
+                           IGroup inaccessibilityGroup) {
         this.host = host;
         this.start = LocalDateTime.now();
         this.end = LocalDateTime.now();
         this.active = true;
         this.offlineStatus = false;
         this.description = description;
+        this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
     public Long getId() {
