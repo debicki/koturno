@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -35,12 +36,27 @@ public class HGroupRepository {
         return group;
     }
 
+    public List<HGroup> getAllGroups() {
+        TypedQuery<HGroup> getAllGroupsQuery = em.createQuery("SELECT h FROM HGroup h", HGroup.class);
+        return getAllGroupsQuery.getResultList();
+    }
+
     public HGroup getDefaultHostGroup() {
         TypedQuery<HGroup> getAllGroupsQuery =
                 em.createQuery("SELECT g FROM HGroup g", HGroup.class);
         Optional<HGroup> defaultGroup = getAllGroupsQuery.getResultStream()
                 .filter(g -> g.getDescription().equals("default"))
                 .findFirst();
-        return defaultGroup.orElseGet(() -> this.save(new HGroup("default", new ArrayList<>())));
+        return defaultGroup.orElseGet(() -> this.save(new HGroup("default", "", new ArrayList<>())));
+    }
+
+    public HGroup getByName(String name) {
+        List<HGroup> groupsList = this.getAllGroups();
+        for (HGroup group : groupsList) {
+            if (group.getName().equals(name)) {
+                return group;
+            }
+        }
+        return null;
     }
 }

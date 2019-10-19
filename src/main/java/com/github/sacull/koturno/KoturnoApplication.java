@@ -1,5 +1,6 @@
 package com.github.sacull.koturno;
 
+import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
@@ -50,6 +51,9 @@ public class KoturnoApplication implements CommandLineRunner {
 		logger.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
 		List<Host> hostsInDatabase = hostRepository.getAllHosts();
+		List<HGroup> hostsGroupsList = hGroupRepository.getAllGroups();
+		List<HGroup> groupsToUpdate = new ArrayList<>();
+		HGroup defaultGroup = hGroupRepository.getDefaultHostGroup();
 		if (args.length >= 2) {
 			if (args[0].equalsIgnoreCase("-f")) {
 				try {
@@ -58,7 +62,18 @@ public class KoturnoApplication implements CommandLineRunner {
 						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareIPv4(host)).collect(Collectors.toList());
 					}
 					for (Host host : hostsToAdd) {
-						host.setHostGroup(hGroupRepository.getDefaultHostGroup());
+						if (host.getHostname().equals("") || host.getHostname() == null) {
+							host.setHostGroup(defaultGroup);
+						} else {
+							HGroup group = hGroupRepository.getByName(host.getHostname());
+							if (group == null) {
+								group = new HGroup(host.getHostname(), "", new ArrayList<>());
+							}
+							host.setHostGroup(group);
+							if (!groupsToUpdate.contains(group)) {
+								groupsToUpdate.add(group);
+							}
+						}
 					}
 					logger.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
 				} catch (IOException ex) {
@@ -72,7 +87,7 @@ public class KoturnoApplication implements CommandLineRunner {
 					hostToAdd = new Host("",
 							args[i],
 							"",
-							hGroupRepository.getDefaultHostGroup(),
+							defaultGroup,
 							new ArrayList<>());
 					for (Host host : hostsInDatabase) {
 						if (host.compareIPv4(hostToAdd)) {
@@ -81,6 +96,9 @@ public class KoturnoApplication implements CommandLineRunner {
 					}
 					if (!isFound) {
 						hostsToAdd.add(hostToAdd);
+						if (!groupsToUpdate.contains(defaultGroup)) {
+							groupsToUpdate.add(defaultGroup);
+						}
 						logger.info("Host {} added", args[i]);
 					} else {
 						logger.info("Host {} isn't added, because database contains that IPv4 address", args[i]);
@@ -93,6 +111,11 @@ public class KoturnoApplication implements CommandLineRunner {
 			logger.error("Incomplete parameter");
 		}
 
+		if (groupsToUpdate.size() > 0) {
+			for (HGroup group : groupsToUpdate) {
+				hGroupRepository.save(group);
+			}
+		}
 		if (hostsToAdd.size() > 0) {
 			for (Host host : hostsToAdd) {
 				hostRepository.save(host);

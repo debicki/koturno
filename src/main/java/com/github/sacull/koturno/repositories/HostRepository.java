@@ -35,9 +35,7 @@ public class HostRepository {
     }
 
     public List<Host> getAllHosts() {
-        TypedQuery<Host> hostQuery = em.createQuery("SELECT h FROM Host h", Host.class);
-        return hostQuery.getResultList();
+        TypedQuery<Host> getAllHostsQuery = em.createQuery("SELECT h FROM Host h", Host.class);
+        return getAllHostsQuery.getResultList();
     }
-
-
 }

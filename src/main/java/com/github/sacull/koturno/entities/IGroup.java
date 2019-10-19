@@ -12,6 +12,7 @@ public class IGroup {
     @GeneratedValue
     private Long id;
 
+    private String name;
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "inaccessibilityGroup")
@@ -20,13 +21,22 @@ public class IGroup {
     protected IGroup() {
     }
 
-    public IGroup(String description, List<Inaccessibility> inaccessibilities) {
+    public IGroup(String name, String description, List<Inaccessibility> inaccessibilities) {
+        this.name = name;
         this.description = description;
         this.inaccessibilities = inaccessibilities;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -47,8 +57,9 @@ public class IGroup {
 
     @Override
     public String toString() {
-        return "HGroup{" +
+        return "IGroup{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
                 '}';

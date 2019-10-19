@@ -12,6 +12,7 @@ public class HGroup {
     @GeneratedValue
     private Long id;
 
+    private String name;
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hostGroup")
@@ -20,13 +21,22 @@ public class HGroup {
     protected HGroup() {
     }
 
-    public HGroup(String description, List<Host> hosts) {
+    public HGroup(String name, String description, List<Host> hosts) {
+        this.name = name;
         this.description = description;
         this.hosts = hosts;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -49,6 +59,7 @@ public class HGroup {
     public String toString() {
         return "HGroup{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", hosts=" + hosts +
                 '}';

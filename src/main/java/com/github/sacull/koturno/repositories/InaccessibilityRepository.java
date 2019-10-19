@@ -36,9 +36,9 @@ public class InaccessibilityRepository {
     }
 
     public List<Inaccessibility> getAllInaccessibilities() {
-        TypedQuery<Inaccessibility> inaccessibilityQuery =
+        TypedQuery<Inaccessibility> getAllInaccessibilitiesQuery =
                 em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
-        return inaccessibilityQuery.getResultList();
+        return getAllInaccessibilitiesQuery.getResultList();
     }
 
     public Inaccessibility getLastInaccessibility(Host host) {

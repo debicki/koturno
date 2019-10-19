@@ -36,12 +36,17 @@ public class IGroupRepository {
         return group;
     }
 
+    public List<IGroup> getAllGroups() {
+        TypedQuery<IGroup> getAllGroupsQuery = em.createQuery("SELECT h FROM IGroup h", IGroup.class);
+        return getAllGroupsQuery.getResultList();
+    }
+
     public IGroup getDefaultInaccessibilityGroup() {
         TypedQuery<IGroup> getAllGroupsQuery =
                 em.createQuery("SELECT g FROM IGroup g", IGroup.class);
         Optional<IGroup> defaultGroup = getAllGroupsQuery.getResultStream()
-                .filter(g -> g.getDescription().equals("default"))
+                .filter(g -> g.getName().equals("default"))
                 .findFirst();
-        return defaultGroup.orElseGet(() -> this.save(new IGroup("default", new ArrayList<>())));
+        return defaultGroup.orElseGet(() -> this.save(new IGroup("default", "", new ArrayList<>())));
     }
 }
