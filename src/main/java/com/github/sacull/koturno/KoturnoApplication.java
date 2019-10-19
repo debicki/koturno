@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableAsync
@@ -48,26 +49,42 @@ public class KoturnoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		logger.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
+		List<Host> hostsInDatabase = hostRepository.getAllHosts();
 		if (args.length >= 2) {
 			if (args[0].equalsIgnoreCase("-f")) {
 				try {
 					hostsToAdd = FileManager.loadHosts(args[1]);
+					for (Host host : hostsInDatabase) {
+						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareIPv4(host)).collect(Collectors.toList());
+					}
 					for (Host host : hostsToAdd) {
 						host.setHostGroup(hGroupRepository.getDefaultHostGroup());
 					}
-					logger.info("Hosts from file {} added", args[1]);
+					logger.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
 				} catch (IOException ex) {
 					logger.error("Error while loading hosts from file");
 				}
 			} else if (args[0].equalsIgnoreCase("-a")) {
+				Host hostToAdd;
+				boolean isFound;
 				for (int i = 1; i < args.length; i++) {
-					hostsToAdd.add(
-							new Host("",
-									args[i],
-									"",
-									hGroupRepository.getDefaultHostGroup(),
-									new ArrayList<>()));
-					logger.info("Host {} added", args[i]);
+					isFound = false;
+					hostToAdd = new Host("",
+							args[i],
+							"",
+							hGroupRepository.getDefaultHostGroup(),
+							new ArrayList<>());
+					for (Host host : hostsInDatabase) {
+						if (host.compareIPv4(hostToAdd)) {
+							isFound = true;
+						}
+					}
+					if (!isFound) {
+						hostsToAdd.add(hostToAdd);
+						logger.info("Host {} added", args[i]);
+					} else {
+						logger.info("Host {} isn't added, because database contains that IPv4 address", args[i]);
+					}
 				}
 			} else {
 				logger.error("Not recognized parameter");

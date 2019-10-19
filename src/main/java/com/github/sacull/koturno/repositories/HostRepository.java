@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -31,4 +33,11 @@ public class HostRepository {
         }
         return host;
     }
+
+    public List<Host> getAllHosts() {
+        TypedQuery<Host> hostQuery = em.createQuery("SELECT h FROM Host h", Host.class);
+        return hostQuery.getResultList();
+    }
+
+
 }

@@ -24,7 +24,7 @@ public class FileManager {
             if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
                 Host hostToAdd = parse(line);
                 result.add(hostToAdd);
-                logger.info("Host {} został dodany", hostToAdd.getIPv4());
+                logger.info("Host {} was processed", hostToAdd.getIPv4());
             }
         }
         return result;

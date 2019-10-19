@@ -41,7 +41,7 @@ public class HostsView {
 
     @GetMapping("/")
     public String showDashboard(Model model) {
-        List<Host> hosts = this.getAllHosts();
+        List<Host> hosts = hostRepository.getAllHosts();
         List<Host> offlineHosts = new ArrayList<>();
         List<Host> instabilityHosts = new ArrayList<>();
         for (Host host : hosts) {
@@ -180,7 +180,7 @@ public class HostsView {
 
     @GetMapping("/hosts")
     public String showHosts(Model model) {
-        List<Host> hosts = this.getAllHosts();
+        List<Host> hosts = hostRepository.getAllHosts();
         Collections.sort(hosts);
         model.addAttribute("hosts", hosts);
         return "hosts";
@@ -194,7 +194,7 @@ public class HostsView {
 
     @GetMapping("/history")
     public String showHistory(Model model) {
-        List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
+        List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
         Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
@@ -211,19 +211,8 @@ public class HostsView {
         return "history";
     }
 
-    private List<Host> getAllHosts() {
-        TypedQuery<Host> hostQuery = em.createQuery("SELECT h FROM Host h", Host.class);
-        return hostQuery.getResultList();
-    }
-
-    private List<Inaccessibility> getAllInaccessibilities() {
-        TypedQuery<Inaccessibility> inaccessibilityQuery =
-                em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
-        return inaccessibilityQuery.getResultList();
-    }
-
     private boolean hostExists(Host host) {
-        List<Host> hostsInDatabase = this.getAllHosts();
+        List<Host> hostsInDatabase = hostRepository.getAllHosts();
         for (Host hostFromDatabase : hostsInDatabase) {
             if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
                 return true;

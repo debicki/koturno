@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -31,6 +33,12 @@ public class InaccessibilityRepository {
             em.merge(inaccessibility);
         }
         return inaccessibility;
+    }
+
+    public List<Inaccessibility> getAllInaccessibilities() {
+        TypedQuery<Inaccessibility> inaccessibilityQuery =
+                em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
+        return inaccessibilityQuery.getResultList();
     }
 
     public Inaccessibility getLastInaccessibility(Host host) {

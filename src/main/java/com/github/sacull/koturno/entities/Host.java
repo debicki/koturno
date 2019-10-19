@@ -118,4 +118,8 @@ public class Host implements Comparable<Host>{
     public int compareTo(Host o) {
         return this.getHostname().compareTo(o.getHostname());
     }
+
+    public boolean compareIPv4(Host h) {
+        return this.getIPv4().equalsIgnoreCase(h.getIPv4());
+    }
 }
