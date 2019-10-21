@@ -1,10 +1,11 @@
 package com.github.sacull.koturno.controlers;
 
+import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.utils.LifeChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class HostsView {
     private InaccessibilityRepository inaccessibilityRepository;
 
     @Autowired
-    private LifeChecker lifeChecker;
+    private HGroupRepository hGroupRepository;
 
     private Logger logger = LoggerFactory.getLogger("HostsView");
 
@@ -178,6 +177,13 @@ public class HostsView {
         return showHosts(model);
     }
 
+    @GetMapping("/group/{id}")
+    public String showGroup(Model model, @PathVariable String id) {
+        HGroup group = hGroupRepository.getById(Long.parseLong(id));
+        model.addAttribute("group", group);
+        return "group";
+    }
+
     @GetMapping("/hosts")
     public String showHosts(Model model) {
         List<Host> hosts = hostRepository.getAllHosts();
@@ -188,7 +194,8 @@ public class HostsView {
 
     @GetMapping("/groups")
     public String showGroups(Model model) {
-
+        List<HGroup> groups = hGroupRepository.getAllGroups();
+        model.addAttribute("groups", groups);
         return "groups";
     }
 

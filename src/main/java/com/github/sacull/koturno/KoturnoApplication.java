@@ -51,7 +51,6 @@ public class KoturnoApplication implements CommandLineRunner {
 		logger.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
 		List<Host> hostsInDatabase = hostRepository.getAllHosts();
-		List<HGroup> hostsGroupsList = hGroupRepository.getAllGroups();
 		List<HGroup> groupsToUpdate = new ArrayList<>();
 		HGroup defaultGroup = hGroupRepository.getDefaultHostGroup();
 		if (args.length >= 2) {
@@ -64,6 +63,9 @@ public class KoturnoApplication implements CommandLineRunner {
 					for (Host host : hostsToAdd) {
 						if (host.getHostname().equals("") || host.getHostname() == null) {
 							host.setHostGroup(defaultGroup);
+							if (!groupsToUpdate.contains(defaultGroup)) {
+								groupsToUpdate.add(defaultGroup);
+							}
 						} else {
 							HGroup group = hGroupRepository.getByName(host.getHostname());
 							if (group == null) {

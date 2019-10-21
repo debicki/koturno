@@ -15,7 +15,29 @@
     <a th:href="@{/history}">Historia</a>
 </div>
 <div>
-    <p class="additional-comments">Jeszcze nieobsługiwane</p>
+    <div th:if="${groups.size() == 0}" class="additional-comments">Lista grup jest pusta!</div>
+    <div th:unless="${groups.size() == 0}" class="table-with-elements" align="center">
+        <table border="2">
+            <thead>
+            <tr>
+                <th>Lp.</th>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Liczba hostów</th>
+                <th>Szczegóły</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="group : ${groups}">
+                <td th:text="${groupStat.index + 1}"></td>
+                <td th:text="${group.name}"></td>
+                <td th:text="${group.description}"></td>
+                <td th:text="${group.hosts.size()}"></td>
+                <td><a th:href="@{/group/{id}(id=${group.id})}">zobacz</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

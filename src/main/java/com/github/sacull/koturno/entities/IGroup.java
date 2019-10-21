@@ -15,7 +15,7 @@ public class IGroup {
     private String name;
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "inaccessibilityGroup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "inaccessibilityGroup")
     private List<Inaccessibility> inaccessibilities = new ArrayList<>();
 
     protected IGroup() {

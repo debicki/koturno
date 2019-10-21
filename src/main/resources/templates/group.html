@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koturno - Informacje grupy</title>
+    <link rel="stylesheet" href="/koturno.css"/>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Podgląd</a>
+    <a th:href="@{/hosts}">Hosty</a>
+    <a th:href="@{/groups}">Grupy</a>
+    <a th:href="@{/history}">Historia</a>
+</div>
+<div>
+    <p class="additional-comments">Nazwa grupy: <span th:text="${group.name}"></span></p>
+    <p class="additional-comments">Opis grupy: <span th:text="${group.description}"></span></p>
+    <div th:if="${group.hosts.size() == 0}" class="additional-comments">Grupa jest pusta!</div>
+    <p th:text="${group.hosts.size()}"></p>
+    <div th:unless="${group.hosts.size() == 0}" class="table-with-elements" align="center">
+        <table border="2">
+            <thead>
+            <tr>
+                <th>Lp.</th>
+                <th>Hostname</th>
+                <th>Adres</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="host : ${group.hosts}">
+                <td th:text="${hostStat.index + 1}"></td>
+                <td th:text="${host.hostname}"></td>
+                <td th:text="${host.IPv4}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

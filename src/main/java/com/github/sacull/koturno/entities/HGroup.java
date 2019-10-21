@@ -15,7 +15,7 @@ public class HGroup {
     private String name;
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hostGroup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hostGroup")
     private List<Host> hosts = new ArrayList<>();
 
     protected HGroup() {

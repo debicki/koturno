@@ -45,7 +45,7 @@ public class HGroupRepository {
         TypedQuery<HGroup> getAllGroupsQuery =
                 em.createQuery("SELECT g FROM HGroup g", HGroup.class);
         Optional<HGroup> defaultGroup = getAllGroupsQuery.getResultStream()
-                .filter(g -> g.getDescription().equals("default"))
+                .filter(g -> g.getName().equals("default"))
                 .findFirst();
         return defaultGroup.orElseGet(() -> this.save(new HGroup("default", "", new ArrayList<>())));
     }
