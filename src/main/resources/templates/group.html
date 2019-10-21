@@ -15,11 +15,14 @@
     <a th:href="@{/history}">Historia</a>
 </div>
 <div>
-    <p class="additional-comments">Nazwa grupy: <span th:text="${group.name}"></span></p>
-    <p class="additional-comments">Opis grupy:
+    <p><span class="additional-comments">Nazwa grupy: <span th:text="${group.name}"></span></span>
+    <br>
+    <span class="additional-comments">Opis grupy:
         <span th:if="${group.description.length() > 0}" th:text="${group.description}"></span>
         <span th:unless="${group.description.length() > 0}"> brak opisu</span>
+    </span>
     </p>
+    <p><a th:href="@{/group/add}">Dodaj hosta</a></p>
     <div th:if="${group.hosts.size() == 0}" class="additional-comments">Grupa jest pusta!</div>
     <div th:unless="${group.hosts.size() == 0}" class="table-with-elements" align="center">
         <table border="2">

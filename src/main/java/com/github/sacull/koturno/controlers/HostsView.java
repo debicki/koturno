@@ -184,6 +184,18 @@ public class HostsView {
         return "group";
     }
 
+    @GetMapping("/group/add")
+    public String addHostToGroup(Model model) {
+
+        return "gadd";
+    }
+
+    @GetMapping("/group/new")
+    public String addGroup(Model model) {
+
+        return "gnew";
+    }
+
     @GetMapping("/hosts")
     public String showHosts(Model model) {
         List<Host> hosts = hostRepository.getAllHosts();
