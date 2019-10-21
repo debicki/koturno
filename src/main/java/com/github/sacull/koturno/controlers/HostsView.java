@@ -1,10 +1,13 @@
 package com.github.sacull.koturno.controlers;
 
+import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.utils.LifeChecker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,20 +25,22 @@ import java.util.List;
 public class HostsView {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     @Autowired
-    HostRepository hostRepository;
+    private HostRepository hostRepository;
 
     @Autowired
-    InaccessibilityRepository inaccessibilityRepository;
+    private InaccessibilityRepository inaccessibilityRepository;
 
     @Autowired
-    LifeChecker lifeChecker;
+    private HGroupRepository hGroupRepository;
+
+    private Logger logger = LoggerFactory.getLogger("HostsView");
 
     @GetMapping("/")
     public String showDashboard(Model model) {
-        List<Host> hosts = this.getAllHosts();
+        List<Host> hosts = hostRepository.getAllHosts();
         List<Host> offlineHosts = new ArrayList<>();
         List<Host> instabilityHosts = new ArrayList<>();
         for (Host host : hosts) {
@@ -87,6 +91,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityToUpdate.setDescription(inaccessibility.getDescription());
         inaccessibilityRepository.save(inaccessibilityToUpdate);
+        logger.info("Inaccessability {} was updated", inaccessibilityToUpdate.getId());
         return showDashboard(model);
     }
 
@@ -95,7 +100,16 @@ public class HostsView {
         Inaccessibility inaccessibilityToIgnore = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityToIgnore.setActive(false);
         inaccessibilityRepository.save(inaccessibilityToIgnore);
+        logger.info("Inaccessability {} was ignored", inaccessibilityToIgnore.getId());
         return showDashboard(model);
+    }
+
+    @GetMapping("/inaccessibility/delete/{id}")
+    public String deleteInaccessibility(Model model, @PathVariable String id) {
+        Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
+        inaccessibilityRepository.deleteById(Long.parseLong(id));
+        logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
+        return showHistory(model);
     }
 
     @GetMapping("/host/new")
@@ -103,6 +117,7 @@ public class HostsView {
         Host host = new Host("",
                 "To pole nie może być puste!",
                 "",
+                null,
                 null);
         model.addAttribute(host);
         return "hnew";
@@ -110,9 +125,14 @@ public class HostsView {
 
     @PostMapping("host/add")
     public String addHost(Model model, @Valid Host host) {
-        // TODO: 14.10.2019 Add host's address validation
-        hostRepository.save(host);
-        return "asummary";
+        if (!this.hostExists(host)) {
+            hostRepository.save(host);
+            logger.info("Host {} was added", host.getIPv4());
+            return "asummary";
+        } else {
+            logger.info("Host {} wasn't added", host.getIPv4());
+            return "aesummary";
+        }
     }
 
     @GetMapping("/host/edit/{id}")
@@ -130,6 +150,7 @@ public class HostsView {
         hostToUpdate.setHostname(host.getHostname());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
+        logger.info("Host {} was updated", hostToUpdate.getIPv4());
         return showDashboard(model);
     }
 
@@ -138,6 +159,7 @@ public class HostsView {
         Host hostToActivate = hostRepository.getById(Long.parseLong(id));
         hostToActivate.setActive(true);
         hostRepository.save(hostToActivate);
+        logger.info("Host {} was activated", hostToActivate.getIPv4());
         return showHosts(model);
     }
 
@@ -145,25 +167,41 @@ public class HostsView {
     public String deactivateHost(Model model, @PathVariable String id) {
         Host hostToDeactivate = hostRepository.getById(Long.parseLong(id));
         hostToDeactivate.setActive(false);
-        Inaccessibility inaccessibilityToDeactivate = this.getLastHostInaccessibility(hostToDeactivate);
+        Inaccessibility inaccessibilityToDeactivate = inaccessibilityRepository.getLastHostInaccessibility(hostToDeactivate);
         if (inaccessibilityToDeactivate != null) {
             inaccessibilityToDeactivate.setActive(false);
             inaccessibilityRepository.save(inaccessibilityToDeactivate);
             hostRepository.save(hostToDeactivate);
         }
+        logger.info("Host {} was deactivated", hostToDeactivate.getIPv4());
         return showHosts(model);
+    }
+
+    @GetMapping("/group/{id}")
+    public String showGroup(Model model, @PathVariable String id) {
+        HGroup group = hGroupRepository.getById(Long.parseLong(id));
+        model.addAttribute("group", group);
+        return "group";
     }
 
     @GetMapping("/hosts")
     public String showHosts(Model model) {
-        List<Host> hosts = this.getAllHosts();
+        List<Host> hosts = hostRepository.getAllHosts();
+        Collections.sort(hosts);
         model.addAttribute("hosts", hosts);
         return "hosts";
     }
 
+    @GetMapping("/groups")
+    public String showGroups(Model model) {
+        List<HGroup> groups = hGroupRepository.getAllGroups();
+        model.addAttribute("groups", groups);
+        return "groups";
+    }
+
     @GetMapping("/history")
     public String showHistory(Model model) {
-        List<Inaccessibility> inaccessibilities = this.getAllInaccessibilities();
+        List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
         Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
@@ -180,25 +218,13 @@ public class HostsView {
         return "history";
     }
 
-    private List<Host> getAllHosts() {
-        TypedQuery<Host> hostQuery = em.createQuery("SELECT h FROM Host h", Host.class);
-        return hostQuery.getResultList();
-    }
-
-    private List<Inaccessibility> getAllInaccessibilities() {
-        TypedQuery<Inaccessibility> inaccessibilityQuery =
-                em.createQuery("SELECT i FROM Inaccessibility i", Inaccessibility.class);
-        return inaccessibilityQuery.getResultList();
-    }
-
-    private Inaccessibility getLastHostInaccessibility(Host host) {
-        if (host.getInaccessibilities().size() > 0) {
-            return inaccessibilityRepository.getById(
-                    host.getInaccessibilities()
-                            .get(host.getInaccessibilities().size() - 1)
-                            .getId());
-        } else {
-            return null;
+    private boolean hostExists(Host host) {
+        List<Host> hostsInDatabase = hostRepository.getAllHosts();
+        for (Host hostFromDatabase : hostsInDatabase) {
+            if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
+                return true;
+            }
         }
+        return false;
     }
 }

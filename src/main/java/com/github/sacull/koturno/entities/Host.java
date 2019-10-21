@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table (name = "hosts")
-public class Host {
+public class Host implements Comparable<Host>{
 
     @Id
     @GeneratedValue
@@ -19,18 +19,26 @@ public class Host {
     private boolean active;
     private String description;
 
+    @ManyToOne
+    private HGroup hostGroup;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
     private List<Inaccessibility> inaccessibilities = new ArrayList<>();
 
     protected Host() {
     }
 
-    public Host(String hostname, String IPv4, String description, List<Inaccessibility> inaccessibilities) {
+    public Host(String hostname,
+                String IPv4,
+                String description,
+                HGroup hostGroup,
+                List<Inaccessibility> inaccessibilities) {
         this.hostname = hostname;
         this.IPv4 = IPv4;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
+        this.hostGroup = hostGroup;
         this.inaccessibilities = inaccessibilities;
     }
 
@@ -74,6 +82,14 @@ public class Host {
         this.description = description;
     }
 
+    public HGroup getHostGroup() {
+        return hostGroup;
+    }
+
+    public void setHostGroup(HGroup hostGroup) {
+        this.hostGroup = hostGroup;
+    }
+
     public List<Inaccessibility> getInaccessibilities() {
         return this.inaccessibilities;
     }
@@ -96,5 +112,14 @@ public class Host {
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Host o) {
+        return this.getHostname().compareTo(o.getHostname());
+    }
+
+    public boolean compareIPv4(Host h) {
+        return this.getIPv4().equalsIgnoreCase(h.getIPv4());
     }
 }

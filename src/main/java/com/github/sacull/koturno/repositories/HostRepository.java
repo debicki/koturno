@@ -5,14 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
 public class HostRepository {
 
     @Autowired
-    EntityManager em;
+    private EntityManager em;
 
     public Host getById(Long id) {
         return em.find(Host.class, id);
@@ -30,5 +32,10 @@ public class HostRepository {
             em.merge(host);
         }
         return host;
+    }
+
+    public List<Host> getAllHosts() {
+        TypedQuery<Host> getAllHostsQuery = em.createQuery("SELECT h FROM Host h", Host.class);
+        return getAllHostsQuery.getResultList();
     }
 }

@@ -22,8 +22,9 @@ public class FileManager {
         String line;
         while ((line = fileContent.readLine()) != null) {
             if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hotsToAdd = parse(line);
-                result.add(hotsToAdd);
+                Host hostToAdd = parse(line);
+                result.add(hostToAdd);
+                logger.info("Host {} was processed", hostToAdd.getIPv4());
             }
         }
         return result;
@@ -55,6 +56,6 @@ public class FileManager {
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
-        return new Host(hostname.toString(), address.toString(), description.toString(), null);
+        return new Host(hostname.toString(), address.toString(), description.toString(), null, new ArrayList<>());
     }
 }

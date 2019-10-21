@@ -20,16 +20,22 @@ public class Inaccessibility {
     private Boolean offlineStatus;
     private String description;
 
+    @ManyToOne
+    private IGroup inaccessibilityGroup;
+
     protected Inaccessibility() {
     }
 
-    public Inaccessibility(Host host, String description) {
+    public Inaccessibility(Host host,
+                           String description,
+                           IGroup inaccessibilityGroup) {
         this.host = host;
         this.start = LocalDateTime.now();
         this.end = LocalDateTime.now();
         this.active = true;
         this.offlineStatus = false;
         this.description = description;
+        this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
     public Long getId() {
@@ -82,6 +88,14 @@ public class Inaccessibility {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public IGroup getInaccessibilityGroup() {
+        return inaccessibilityGroup;
+    }
+
+    public void setInaccessibilityGroup(IGroup inaccessibilityGroup) {
+        this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
     public String getDayOfBegin() {

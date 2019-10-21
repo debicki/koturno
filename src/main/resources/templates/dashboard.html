@@ -11,7 +11,8 @@
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
     <a th:href="@{/}" class="selected-page">Podgląd</a>
-    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/hosts}">Hosty</a>
+    <a th:href="@{/groups}">Grupy</a>
     <a th:href="@{/history}">Historia</a>
 </div>
 <div th:if="${offlineHosts.size() == 0}" class="additional-comments">Wszystkie hosty są ONLINE</div>

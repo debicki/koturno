@@ -10,13 +10,17 @@
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
     <a th:href="@{/}">Podgląd</a>
-    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/hosts}">Hosty</a>
+    <a th:href="@{/groups}">Grupy</a>
     <a th:href="@{/history}">Historia</a>
 </div>
 <p>
     <span th:text="${host.hostname}" class="host-info-comments"></span>
     <br>
     <span th:text="${host.IPv4}" class="host-info-additional-comments"></span>
+    <br>
+    <span>Grupa: </span>
+    <a th:href="@{/group/{id}(id=${host.getHostGroup().getId()})}"><span th:text="${host.hostGroup.name}"></span></a>
     <br>
     <span>Dodany dnia: </span>
     <span th:text="${host.dayWhenCreated}"></span>

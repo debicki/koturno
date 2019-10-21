@@ -10,7 +10,8 @@
 <div class="additional-comments">Prototyp</div>
 <div class="main-menu">
     <a th:href="@{/}">Podgląd</a>
-    <a th:href="@{/hosts}">Wszystkie hosty</a>
+    <a th:href="@{/hosts}">Hosty</a>
+    <a th:href="@{/groups}">Grupy</a>
     <a th:href="@{/history}" class="selected-page">Historia</a>
 </div>
 <div th:if="${numberOfInaccessibilities == 0}" class="additional-comments">Brak zarejestrowanych niedostępności w bazie danych!</div>
@@ -27,6 +28,7 @@
             <th>Do</th>
             <th>Do</th>
             <th>Szczegóły</th>
+            <th>Pozostałe akcje</th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +42,7 @@
             <td>trwa</td>
             <td>trwa</td>
             <td><a th:href="@{/inaccessibility/{id}(id=${activeInaccessibility.id})}">zobacz</a></td>
+            <td><a th:href="@{/inaccessibility/delete/{id}(id=${activeInaccessibility.id})}">usuń</a></td>
         </tr>
         <tr th:each="inactiveInaccessibility : ${inactiveInaccessibilities}">
             <td th:text="${inactiveInaccessibilityStat.index + activeInaccessibilities.size() + 1}"></td>
@@ -51,6 +54,7 @@
             <td th:text="${inactiveInaccessibility.dayOfEnd}"></td>
             <td th:text="${inactiveInaccessibility.hourOfEnd}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${inactiveInaccessibility.id})}">zobacz</a></td>
+            <td><a th:href="@{/inaccessibility/delete/{id}(id=${inactiveInaccessibility.id})}">usuń</a></td>
         </tr>
         </tbody>
     </table>
