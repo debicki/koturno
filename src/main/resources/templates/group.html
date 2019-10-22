@@ -12,7 +12,7 @@
     <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Hosty</a>
     <a th:href="@{/groups}">Grupy</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history/1}">Historia</a>
 </div>
 <div>
     <p><span class="additional-comments">Nazwa grupy: <span th:text="${group.name}"></span></span>
@@ -22,7 +22,7 @@
         <span th:unless="${group.description.length() > 0}"> brak opisu</span>
     </span>
     </p>
-    <p><a th:href="@{/group/add}">Dodaj hosta</a></p>
+    <p><a th:href="@{/group/add/{id}(id=${group.id})}">Dodaj hosta</a></p>
     <div th:if="${group.hosts.size() == 0}" class="additional-comments">Grupa jest pusta!</div>
     <div th:unless="${group.hosts.size() == 0}" class="table-with-elements" align="center">
         <table border="2">

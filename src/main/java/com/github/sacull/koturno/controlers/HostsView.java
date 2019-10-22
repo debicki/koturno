@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +110,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityRepository.deleteById(Long.parseLong(id));
         logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
-        return showHistory(model);
+        return showHistory(model, "1");
     }
 
     @GetMapping("/host/new")
@@ -184,16 +185,30 @@ public class HostsView {
         return "group";
     }
 
-    @GetMapping("/group/add")
-    public String addHostToGroup(Model model) {
-
+    @GetMapping("/group/add/{id}")
+    public String addHostToGroup(Model model, @PathVariable String id) {
+        HGroup group = hGroupRepository.getById(Long.parseLong(id));
+        model.addAttribute("group", group);
         return "gadd";
     }
 
     @GetMapping("/group/new")
     public String addGroup(Model model) {
-
+        HGroup group = new HGroup("", "", new ArrayList<>());
+        model.addAttribute("group", group);
         return "gnew";
+    }
+
+    @PostMapping("/groups/update")
+    public String updateGroupsList(Model model, @Valid HGroup group) {
+        if (!this.groupExists(group)) {
+            hGroupRepository.save(group);
+            logger.info("Group {} was added", group.getName());
+            return "gnasummary";
+        } else {
+            logger.info("Group {} wasn't added", group.getName());
+            return "gnaesummary";
+        }
     }
 
     @GetMapping("/hosts")
@@ -211,17 +226,21 @@ public class HostsView {
         return "groups";
     }
 
-    @GetMapping("/history")
-    public String showHistory(Model model) {
+    @GetMapping("/history/{time}")
+    public String showHistory(Model model, @PathVariable String time) {
         List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
         Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
         for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
-            if (inaccessibilities.get(i).isActive()) {
-                activeInaccessibilities.add(inaccessibilities.get(i));
-            } else {
-                inactiveInaccessibilities.add(inaccessibilities.get(i));
+            if ((Duration.between(inaccessibilities.get(i).getStart(), inaccessibilities.get(i).getEnd()).getSeconds()
+                    > Long.parseLong(time) * 60) ||
+                    (inaccessibilities.get(i).getStart().equals(inaccessibilities.get(i).getEnd()))) {
+                if (inaccessibilities.get(i).isActive()) {
+                    activeInaccessibilities.add(inaccessibilities.get(i));
+                } else {
+                    inactiveInaccessibilities.add(inaccessibilities.get(i));
+                }
             }
         }
         model.addAttribute("numberOfInaccessibilities", numberOfInaccessibilities);
@@ -234,6 +253,16 @@ public class HostsView {
         List<Host> hostsInDatabase = hostRepository.getAllHosts();
         for (Host hostFromDatabase : hostsInDatabase) {
             if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean groupExists(HGroup group) {
+        List<HGroup> groupsInDatabase = hGroupRepository.getAllGroups();
+        for (HGroup groupInDatabase : groupsInDatabase) {
+            if (group.getName().equals(groupInDatabase.getName())) {
                 return true;
             }
         }

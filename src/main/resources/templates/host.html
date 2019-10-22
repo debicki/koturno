@@ -12,7 +12,7 @@
     <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Hosty</a>
     <a th:href="@{/groups}">Grupy</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history/1}">Historia</a>
 </div>
 <p>
     <span th:text="${host.hostname}" class="host-info-comments"></span>
@@ -43,10 +43,8 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Data początku</th>
-            <th>Godzina początku</th>
-            <th>Data końca</th>
-            <th>Godzina końca</th>
+            <th colspan="2">Początek</th>
+            <th colspan="2">Koniec</th>
             <th>Opis</th>
             <th>Szczegóły</th>
         </tr>

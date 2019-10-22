@@ -12,11 +12,9 @@
     <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}" class="selected-page">Hosty</a>
     <a th:href="@{/groups}">Grupy</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history/1}">Historia</a>
 </div>
-<span><a th:href="@{/host/new}">Nowy host</a></span>
-<br>
-<br>
+<p><a th:href="@{/host/new}">Nowy host</a></p>
 <div th:if="${hosts.size() == 0}" class="additional-comments">Brak hostów w bazie danych!</div>
 <div th:unless="${hosts.size() == 0}" class="table-with-elements" align="center">
     <table border="2">
