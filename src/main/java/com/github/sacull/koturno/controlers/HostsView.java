@@ -127,6 +127,8 @@ public class HostsView {
     @PostMapping("host/add")
     public String addHost(Model model, @Valid Host host) {
         if (!this.hostExists(host)) {
+            host.setHostGroup(hGroupRepository.getDefaultHostGroup());
+            host.clearInaccessibilities();
             hostRepository.save(host);
             logger.info("Host {} was added", host.getIPv4());
             return "asummary";
@@ -189,7 +191,15 @@ public class HostsView {
     public String addHostToGroup(Model model, @PathVariable String id) {
         HGroup group = hGroupRepository.getById(Long.parseLong(id));
         model.addAttribute("group", group);
+        List<Host> hosts = hostRepository.getAllHosts();
+        model.addAttribute("hosts", hosts);
         return "gadd";
+    }
+
+    @PostMapping("/group/update/{id}")
+    public String updateHostsInGroup(Model model, @PathVariable String id) {
+// TODO: 23.10.2019 Od tego miejsca należy rozpocząć pisanie. ;)
+        return "gupdate";
     }
 
     @GetMapping("/group/new")

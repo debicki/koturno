@@ -20,7 +20,7 @@
     <span th:text="${host.IPv4}" class="host-info-additional-comments"></span>
     <br>
     <span>Grupa: </span>
-    <a th:href="@{/group/{id}(id=${host.getHostGroup().getId()})}"><span th:text="${host.hostGroup.name}"></span></a>
+    <a th:href="@{/group/{id}(id=${host.hostGroup.id})}"><span th:text="${host.hostGroup.name}"></span></a>
     <br>
     <span>Dodany dnia: </span>
     <span th:text="${host.dayWhenCreated}"></span>

@@ -98,6 +98,10 @@ public class Host implements Comparable<Host>{
         this.inaccessibilities.add(inaccessibility);
     }
 
+    public void clearInaccessibilities() {
+        this.inaccessibilities = new ArrayList<>();
+    }
+
     public String getDayWhenCreated() {
         return whenCreated.toLocalDate().toString();
     }

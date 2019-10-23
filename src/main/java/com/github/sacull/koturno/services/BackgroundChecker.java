@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -42,11 +41,11 @@ public class BackgroundChecker {
 
     @Async
     public CompletableFuture<String> start() {
-        TypedQuery<Host> query = em.createQuery("SELECT h FROM Host h", Host.class);
-        List<Host> hosts = query.getResultList();
+        List<Host> hosts;
         List<Long> offlineHosts = new ArrayList<>();
         List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
+            hosts = hostRepository.getAllHosts();
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
