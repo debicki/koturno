@@ -2,8 +2,12 @@ package com.github.sacull.koturno;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
+import com.github.sacull.koturno.entities.IGroup;
+import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.repositories.IGroupRepository;
+import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.services.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
 import org.slf4j.Logger;
@@ -33,6 +37,12 @@ public class KoturnoApplication implements CommandLineRunner {
 
 	@Autowired
 	private HGroupRepository hGroupRepository;
+
+	@Autowired
+	private InaccessibilityRepository inaccessibilityRepository;
+
+	@Autowired
+	private IGroupRepository iGroupRepository;
 
 	@Autowired
 	private EntityManager em;
@@ -109,6 +119,15 @@ public class KoturnoApplication implements CommandLineRunner {
 			} else {
 				logger.error("Not recognized parameter");
 			}
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("-X")) {
+			IGroup iGroup = iGroupRepository.getDefaultInaccessibilityGroup();
+			List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
+			for (Inaccessibility inaccessibility : inaccessibilities) {
+				inaccessibility.setInaccessibilityGroup(iGroup);
+//				iGroup.addInaccessibility(inaccessibility);
+				inaccessibilityRepository.save(inaccessibility);
+			}
+//			iGroupRepository.save(iGroup);
 		} else if (args.length == 1) {
 			logger.error("Incomplete parameter");
 		}

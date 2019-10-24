@@ -32,6 +32,7 @@
                 <th>Aktywny</th>
                 <th>Hostname</th>
                 <th>Adres</th>
+                <th>Opis</th>
                 <th>Szczegóły</th>
             </tr>
             </thead>
@@ -42,6 +43,7 @@
                 <td th:unless="${host.active == true}">nie</td>
                 <td th:text="${host.hostname}"></td>
                 <td th:text="${host.IPv4}"></td>
+                <td th:text="${host.description}"></td>
                 <td><a th:href="@{/host/{id}(id=${host.id})}">zobacz</a></td>
             </tr>
             </tbody>
