@@ -22,6 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -120,14 +121,7 @@ public class KoturnoApplication implements CommandLineRunner {
 				logger.error("Not recognized parameter");
 			}
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("-X")) {
-			IGroup iGroup = iGroupRepository.getDefaultInaccessibilityGroup();
-			List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
-			for (Inaccessibility inaccessibility : inaccessibilities) {
-				inaccessibility.setInaccessibilityGroup(iGroup);
-//				iGroup.addInaccessibility(inaccessibility);
-				inaccessibilityRepository.save(inaccessibility);
-			}
-//			iGroupRepository.save(iGroup);
+			logger.info("Nothing to do");
 		} else if (args.length == 1) {
 			logger.error("Incomplete parameter");
 		}
@@ -141,6 +135,15 @@ public class KoturnoApplication implements CommandLineRunner {
 			for (Host host : hostsToAdd) {
 				hostRepository.save(host);
 			}
+		}
+
+		List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
+		for (Inaccessibility inaccessibility : inaccessibilities) {
+			if (inaccessibility.getStart().equals(inaccessibility.getEnd())) {
+				inaccessibility.setEnd(LocalDateTime.now());
+				inaccessibility.setActive(false);
+			}
+			inaccessibilityRepository.save(inaccessibility);
 		}
 
 		CompletableFuture<String> firstChecker = backgroundChecker.start();
