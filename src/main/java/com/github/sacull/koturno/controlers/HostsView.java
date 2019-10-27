@@ -150,7 +150,7 @@ public class HostsView {
                              @PathVariable String id,
                              @Valid Host host) {
         Host hostToUpdate = hostRepository.getById(Long.parseLong(id));
-        hostToUpdate.setHostname(host.getHostname());
+        hostToUpdate.setName(host.getName());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
         logger.info("Host {} was updated", hostToUpdate.getIPv4());

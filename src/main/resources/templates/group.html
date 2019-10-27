@@ -30,7 +30,7 @@
             <tr>
                 <th>Lp.</th>
                 <th>Aktywny</th>
-                <th>Hostname</th>
+                <th>Nazwa</th>
                 <th>Adres</th>
                 <th>Opis</th>
                 <th>Szczegóły</th>
@@ -41,7 +41,7 @@
                 <td th:text="${hostStat.index + 1}"></td>
                 <td th:if="${host.active == true}">tak</td>
                 <td th:unless="${host.active == true}">nie</td>
-                <td th:text="${host.hostname}"></td>
+                <td th:text="${host.name}"></td>
                 <td th:text="${host.IPv4}"></td>
                 <td th:text="${host.description}"></td>
                 <td><a th:href="@{/host/{id}(id=${host.id})}">zobacz</a></td>

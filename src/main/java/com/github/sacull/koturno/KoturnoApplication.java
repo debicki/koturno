@@ -72,15 +72,15 @@ public class KoturnoApplication implements CommandLineRunner {
 						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareIPv4(host)).collect(Collectors.toList());
 					}
 					for (Host host : hostsToAdd) {
-						if (host.getHostname().equals("") || host.getHostname() == null) {
+						if (host.getName().equals("") || host.getName() == null) {
 							host.setHostGroup(defaultGroup);
 							if (!groupsToUpdate.contains(defaultGroup)) {
 								groupsToUpdate.add(defaultGroup);
 							}
 						} else {
-							HGroup group = hGroupRepository.getByName(host.getHostname());
+							HGroup group = hGroupRepository.getByName(host.getName());
 							if (group == null) {
-								group = new HGroup(host.getHostname(), "", new ArrayList<>());
+								group = new HGroup(host.getName(), "", new ArrayList<>());
 							}
 							host.setHostGroup(group);
 							if (!groupsToUpdate.contains(group)) {

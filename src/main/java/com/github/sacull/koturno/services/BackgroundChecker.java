@@ -53,27 +53,27 @@ public class BackgroundChecker {
                     offlineHosts.remove(host.getId());
                     instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);
-                    if (host.getHostname().equals("")) {
+                    if (host.getName().equals("")) {
                         logger.info("Host {} is removed from offline/instability hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getHostname());
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
                     instabilityHosts.add(host.getId());
                     this.setStartTime(host);
-                    if (host.getHostname().equals("")) {
+                    if (host.getName().equals("")) {
                         logger.info("Host {} is added to instability hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is added to instability hosts list", host.getHostname());
+                        logger.info("Host {} is added to instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable &&
                         instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
                     offlineHosts.add(host.getId());
                     this.setOfflineStatus(host);
-                    if (host.getHostname().equals("")) {
+                    if (host.getName().equals("")) {
                         logger.info("Host {} is added to offline hosts list", host.getIPv4());
                     } else {
-                        logger.info("Host {} is added to offline hosts list", host.getHostname());
+                        logger.info("Host {} is added to offline hosts list", host.getName());
                     }
                 }
             }

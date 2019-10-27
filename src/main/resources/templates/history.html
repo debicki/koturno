@@ -27,7 +27,7 @@
         <tr>
             <th>Lp.</th>
             <th>Status</th>
-            <th>Hostname</th>
+            <th>Nazwa</th>
             <th>Adres</th>
             <th colspan="2">Początek</th>
             <th colspan="2">Koniec</th>
@@ -39,7 +39,7 @@
         <tr th:each="activeInaccessibility : ${activeInaccessibilities}">
             <td th:text="${activeInaccessibilityStat.index + 1}"></td>
             <td>aktywny</td>
-            <td th:text="${activeInaccessibility.host.hostname}"></td>
+            <td th:text="${activeInaccessibility.host.name}"></td>
             <td th:text="${activeInaccessibility.host.IPv4}"></td>
             <td th:text="${activeInaccessibility.dayOfBegin}"></td>
             <td th:text="${activeInaccessibility.hourOfBegin}"></td>
@@ -51,7 +51,7 @@
         <tr th:each="inactiveInaccessibility : ${inactiveInaccessibilities}">
             <td th:text="${inactiveInaccessibilityStat.index + activeInaccessibilities.size() + 1}"></td>
             <td>archiwalny</td>
-            <td th:text="${inactiveInaccessibility.host.hostname}"></td>
+            <td th:text="${inactiveInaccessibility.host.name}"></td>
             <td th:text="${inactiveInaccessibility.host.IPv4}"></td>
             <td th:text="${inactiveInaccessibility.dayOfBegin}"></td>
             <td th:text="${inactiveInaccessibility.hourOfBegin}"></td>

@@ -34,7 +34,7 @@ public class FileManager {
         int charCounter = 0;
         line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();
-        StringBuilder hostname = new StringBuilder();
+        StringBuilder name = new StringBuilder();
         StringBuilder description = new StringBuilder();
         while (line.charAt(charCounter) == ' ') {
             charCounter++;
@@ -48,7 +48,7 @@ public class FileManager {
         }
         String[] descriptionElements = line.substring(charCounter).split("\\*");
         if (descriptionElements.length > 1) {
-            hostname.append(descriptionElements[0]);
+            name.append(descriptionElements[0]);
             for (int i = 1; i < descriptionElements.length; i++) {
                 description.append(descriptionElements[i]);
                 description.append(' ');
@@ -56,6 +56,6 @@ public class FileManager {
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
-        return new Host(hostname.toString(), address.toString(), description.toString(), null, new ArrayList<>());
+        return new Host(name.toString(), address.toString(), description.toString(), null, new ArrayList<>());
     }
 }

@@ -15,7 +15,7 @@
     <a th:href="@{/history/1}">Historia</a>
 </div>
 <p>
-    <a th:href="@{/host/{id}(id=${host.id})}" class="host-info-additional-comments"><span th:text="${host.hostname}"></span></a>
+    <a th:href="@{/host/{id}(id=${host.id})}" class="host-info-additional-comments"><span th:text="${host.name}"></span></a>
     <br>
     <a th:href="@{/host/{id}(id=${host.id})}" class="additional-comments"><span th:text="${host.IPv4}"></span></a>
     <br>

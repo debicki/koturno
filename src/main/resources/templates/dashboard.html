@@ -22,7 +22,7 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Hostname</th>
+            <th>Nazwa</th>
             <th>Adres</th>
             <th>Ostatnio online</th>
             <th>Opis hosta</th>
@@ -33,7 +33,7 @@
         <tbody>
         <tr th:each="offlineHost : ${offlineHosts}">
             <td th:text="${offlineHostStat.index + 1}"></td>
-            <td th:text="${offlineHost.hostname}"></td>
+            <td th:text="${offlineHost.name}"></td>
             <td th:text="${offlineHost.IPv4}"></td>
             <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${offlineHost.description}"></td>
@@ -51,7 +51,7 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Hostname</th>
+            <th>Nazwa</th>
             <th>Adres</th>
             <th>Ostatnio stabilny</th>
             <th>Opis hosta</th>
@@ -62,7 +62,7 @@
         <tbody>
         <tr th:each="instabilityHost : ${instabilityHosts}">
             <td th:text="${instabilityHostStat.index + 1}"></td>
-            <td th:text="${instabilityHost.hostname}"></td>
+            <td th:text="${instabilityHost.name}"></td>
             <td th:text="${instabilityHost.IPv4}"></td>
             <td th:text="${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${instabilityHost.description}"></td>

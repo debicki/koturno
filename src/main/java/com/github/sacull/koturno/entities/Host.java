@@ -13,7 +13,7 @@ public class Host implements Comparable<Host>{
     @GeneratedValue
     private Long id;
 
-    private String hostname;
+    private String name;
     private String IPv4;
     private LocalDateTime whenCreated;
     private boolean active;
@@ -28,12 +28,12 @@ public class Host implements Comparable<Host>{
     protected Host() {
     }
 
-    public Host(String hostname,
+    public Host(String name,
                 String IPv4,
                 String description,
                 HGroup hostGroup,
                 List<Inaccessibility> inaccessibilities) {
-        this.hostname = hostname;
+        this.name = name;
         this.IPv4 = IPv4;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
@@ -46,12 +46,12 @@ public class Host implements Comparable<Host>{
         return this.id;
     }
 
-    public String getHostname() {
-        return hostname;
+    public String getName() {
+        return name;
     }
 
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIPv4() {
@@ -110,7 +110,7 @@ public class Host implements Comparable<Host>{
     public String toString() {
         return "Host{" +
                 "id=" + id +
-                ", hostname='" + hostname + '\'' +
+                ", name='" + name + '\'' +
                 ", IPv4='" + IPv4 + '\'' +
                 ", whenCreated=" + whenCreated +
                 ", description='" + description + '\'' +
@@ -120,7 +120,7 @@ public class Host implements Comparable<Host>{
 
     @Override
     public int compareTo(Host o) {
-        return this.getHostname().compareTo(o.getHostname());
+        return this.getName().compareTo(o.getName());
     }
 
     public boolean compareIPv4(Host h) {
