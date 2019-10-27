@@ -69,7 +69,7 @@ public class KoturnoApplication implements CommandLineRunner {
 				try {
 					hostsToAdd = FileManager.loadHosts(args[1]);
 					for (Host host : hostsInDatabase) {
-						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareIPv4(host)).collect(Collectors.toList());
+						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
 					}
 					for (Host host : hostsToAdd) {
 						if (host.getName().equals("") || host.getName() == null) {
@@ -103,7 +103,7 @@ public class KoturnoApplication implements CommandLineRunner {
 							defaultGroup,
 							new ArrayList<>());
 					for (Host host : hostsInDatabase) {
-						if (host.compareIPv4(hostToAdd)) {
+						if (host.compareAddress(hostToAdd)) {
 							isFound = true;
 						}
 					}
@@ -114,7 +114,7 @@ public class KoturnoApplication implements CommandLineRunner {
 						}
 						logger.info("Host {} added", args[i]);
 					} else {
-						logger.info("Host {} isn't added, because database contains that IPv4 address", args[i]);
+						logger.info("Host {} isn't added, because database contains that address", args[i]);
 					}
 				}
 			} else {

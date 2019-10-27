@@ -14,7 +14,7 @@ public class Host implements Comparable<Host>{
     private Long id;
 
     private String name;
-    private String IPv4;
+    private String address;
     private LocalDateTime whenCreated;
     private boolean active;
     private String description;
@@ -29,12 +29,12 @@ public class Host implements Comparable<Host>{
     }
 
     public Host(String name,
-                String IPv4,
+                String address,
                 String description,
                 HGroup hostGroup,
                 List<Inaccessibility> inaccessibilities) {
         this.name = name;
-        this.IPv4 = IPv4;
+        this.address = address;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
@@ -54,12 +54,12 @@ public class Host implements Comparable<Host>{
         this.name = name;
     }
 
-    public String getIPv4() {
-        return IPv4;
+    public String getAddress() {
+        return address;
     }
 
-    public void setIPv4(String IPv4) {
-        this.IPv4 = IPv4;
+    public void setAddress (String address) {
+        this.address = address;
     }
 
     public LocalDateTime getWhenCreated() {
@@ -111,7 +111,7 @@ public class Host implements Comparable<Host>{
         return "Host{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", IPv4='" + IPv4 + '\'' +
+                ", address ='" + address + '\'' +
                 ", whenCreated=" + whenCreated +
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
@@ -123,7 +123,7 @@ public class Host implements Comparable<Host>{
         return this.getName().compareTo(o.getName());
     }
 
-    public boolean compareIPv4(Host h) {
-        return this.getIPv4().equalsIgnoreCase(h.getIPv4());
+    public boolean compareAddress(Host h) {
+        return this.getAddress().equalsIgnoreCase(h.getAddress());
     }
 }

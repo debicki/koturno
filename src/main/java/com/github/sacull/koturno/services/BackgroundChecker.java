@@ -54,7 +54,7 @@ public class BackgroundChecker {
                     instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getIPv4());
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getAddress());
                     } else {
                         logger.info("Host {} is removed from offline/instability hosts list", host.getName());
                     }
@@ -62,7 +62,7 @@ public class BackgroundChecker {
                     instabilityHosts.add(host.getId());
                     this.setStartTime(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is added to instability hosts list", host.getIPv4());
+                        logger.info("Host {} is added to instability hosts list", host.getAddress());
                     } else {
                         logger.info("Host {} is added to instability hosts list", host.getName());
                     }
@@ -71,7 +71,7 @@ public class BackgroundChecker {
                     offlineHosts.add(host.getId());
                     this.setOfflineStatus(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is added to offline hosts list", host.getIPv4());
+                        logger.info("Host {} is added to offline hosts list", host.getAddress());
                     } else {
                         logger.info("Host {} is added to offline hosts list", host.getName());
                     }

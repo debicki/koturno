@@ -17,7 +17,7 @@
 <p>
     <a th:href="@{/host/{id}(id=${host.id})}" class="host-info-additional-comments"><span th:text="${host.name}"></span></a>
     <br>
-    <a th:href="@{/host/{id}(id=${host.id})}" class="additional-comments"><span th:text="${host.IPv4}"></span></a>
+    <a th:href="@{/host/{id}(id=${host.id})}" class="additional-comments"><span th:text="${host.address}"></span></a>
     <br>
     <span>Data początku: </span>
     <span th:text="${inaccessibility.dayOfBegin}"></span>

@@ -50,7 +50,7 @@ public class LifeChecker {
 
     private boolean isReachable(Host host, int timeout){
         try {
-            if (InetAddress.getByName(host.getIPv4()).isReachable(timeout)) {
+            if (InetAddress.getByName(host.getAddress()).isReachable(timeout)) {
                 return true;
             }
         } catch (IOException e) {
@@ -62,7 +62,7 @@ public class LifeChecker {
     private boolean isReachableByTcp(Host host, int port, int timeout) {
         try {
             Socket socket = new Socket();
-            SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(host.getIPv4()), port);
+            SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(host.getAddress()), port);
             socket.connect(socketAddress, timeout);
             socket.close();
             return true;
@@ -76,9 +76,9 @@ public class LifeChecker {
             String cmd;
 
             if(System.getProperty("os.name").startsWith("Windows")) {
-                cmd = "cmd /C ping -n 1 " + host.getIPv4() + " | find \"TTL\"";
+                cmd = "cmd /C ping -n 1 " + host.getAddress() + " | find \"TTL\"";
             } else {
-                cmd = "ping -c 1 " + host.getIPv4();
+                cmd = "ping -c 1 " + host.getAddress();
             }
 
             Process myProcess = Runtime.getRuntime().exec(cmd);

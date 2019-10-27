@@ -130,10 +130,10 @@ public class HostsView {
             host.setHostGroup(hGroupRepository.getDefaultHostGroup());
             host.clearInaccessibilities();
             hostRepository.save(host);
-            logger.info("Host {} was added", host.getIPv4());
+            logger.info("Host {} was added", host.getAddress());
             return "asummary";
         } else {
-            logger.info("Host {} wasn't added", host.getIPv4());
+            logger.info("Host {} wasn't added", host.getAddress());
             return "aesummary";
         }
     }
@@ -153,7 +153,7 @@ public class HostsView {
         hostToUpdate.setName(host.getName());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
-        logger.info("Host {} was updated", hostToUpdate.getIPv4());
+        logger.info("Host {} was updated", hostToUpdate.getAddress());
         return showDashboard(model);
     }
 
@@ -162,7 +162,7 @@ public class HostsView {
         Host hostToActivate = hostRepository.getById(Long.parseLong(id));
         hostToActivate.setActive(true);
         hostRepository.save(hostToActivate);
-        logger.info("Host {} was activated", hostToActivate.getIPv4());
+        logger.info("Host {} was activated", hostToActivate.getAddress());
         return showHosts(model);
     }
 
@@ -176,7 +176,7 @@ public class HostsView {
             inaccessibilityRepository.save(inaccessibilityToDeactivate);
             hostRepository.save(hostToDeactivate);
         }
-        logger.info("Host {} was deactivated", hostToDeactivate.getIPv4());
+        logger.info("Host {} was deactivated", hostToDeactivate.getAddress());
         return showHosts(model);
     }
 
@@ -262,7 +262,7 @@ public class HostsView {
     private boolean hostExists(Host host) {
         List<Host> hostsInDatabase = hostRepository.getAllHosts();
         for (Host hostFromDatabase : hostsInDatabase) {
-            if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
+            if (hostFromDatabase.getAddress().equals(host.getAddress())) {
                 return true;
             }
         }

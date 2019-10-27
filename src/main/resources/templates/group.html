@@ -42,7 +42,7 @@
                 <td th:if="${host.active == true}">tak</td>
                 <td th:unless="${host.active == true}">nie</td>
                 <td th:text="${host.name}"></td>
-                <td th:text="${host.IPv4}"></td>
+                <td th:text="${host.address}"></td>
                 <td th:text="${host.description}"></td>
                 <td><a th:href="@{/host/{id}(id=${host.id})}">zobacz</a></td>
             </tr>

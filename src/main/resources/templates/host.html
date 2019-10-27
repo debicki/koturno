@@ -17,7 +17,7 @@
 <p>
     <span th:text="${host.name}" class="host-info-comments"></span>
     <br>
-    <span th:text="${host.IPv4}" class="host-info-additional-comments"></span>
+    <span th:text="${host.address}" class="host-info-additional-comments"></span>
     <br>
     <span>Grupa: </span>
     <a th:href="@{/group/{id}(id=${host.hostGroup.id})}"><span th:text="${host.hostGroup.name}"></span></a>
