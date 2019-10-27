@@ -2,7 +2,7 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Koturno - Edycja niedostępności</title>
+    <title>Koturno - Dodawanie grupy</title>
     <link rel="stylesheet" href="/koturno.css"/>
     <script src="/sender.js"></script>
 </head>
@@ -16,11 +16,17 @@
     <a th:href="@{/history/1}">Historia</a>
 </div>
 <div>
-    <span>Opis</span>
-    <form action="#" th:action="@{/inaccessibility/update/{id}(id=${inaccessibility.id})}"
-          th:object="${inaccessibility}" method="post" id="comment">
+    <form th:action="@{/groups/update}"
+          th:object="${group}" method="post" id="comment">
+        <span>Nazwa</span>
+        <br>
+        <input type="text" name="name" th:field="*{name}" th:value="${group.name}">
+        <br>
+        <br>
+        <span>Opis</span>
+        <br>
         <textarea type="text" name="opis" th:field="*{description}"
-                  th:value="${inaccessibility.description}" rows="12" cols="60"></textarea>
+                  th:value="${group.description}" rows="12" cols="60"></textarea>
     </form>
 </div>
 <br>

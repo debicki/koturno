@@ -13,19 +13,19 @@
     <a th:href="@{/}">Podgląd</a>
     <a th:href="@{/hosts}">Hosty</a>
     <a th:href="@{/groups}">Grupy</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history/1}">Historia</a>
 </div>
 <div>
     <form action="#" th:action="@{/host/add}"
           th:object="${host}" method="post" id="comment">
-        <span>Hostname</span>
+        <span>Nazwa</span>
         <br>
-        <input type="text" name="hostname" th:field="*{hostname}" th:value="${host.hostname}">
+        <input type="text" name="name" th:field="*{name}" th:value="${host.name}">
         <br>
         <br>
         <span>Adres</span>
         <br>
-        <input type="text" name="hostname" th:field="*{IPv4}" th:value="${host.IPv4}">
+        <input type="text" name="address" th:field="*{address}" th:value="${host.address}">
         <br>
         <br>
         <span>Opis</span>

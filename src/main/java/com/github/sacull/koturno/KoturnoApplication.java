@@ -2,8 +2,12 @@ package com.github.sacull.koturno;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
+import com.github.sacull.koturno.entities.IGroup;
+import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.repositories.IGroupRepository;
+import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.services.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
 import org.slf4j.Logger;
@@ -18,6 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +38,12 @@ public class KoturnoApplication implements CommandLineRunner {
 
 	@Autowired
 	private HGroupRepository hGroupRepository;
+
+	@Autowired
+	private InaccessibilityRepository inaccessibilityRepository;
+
+	@Autowired
+	private IGroupRepository iGroupRepository;
 
 	@Autowired
 	private EntityManager em;
@@ -58,18 +69,18 @@ public class KoturnoApplication implements CommandLineRunner {
 				try {
 					hostsToAdd = FileManager.loadHosts(args[1]);
 					for (Host host : hostsInDatabase) {
-						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareIPv4(host)).collect(Collectors.toList());
+						hostsToAdd = hostsToAdd.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
 					}
 					for (Host host : hostsToAdd) {
-						if (host.getHostname().equals("") || host.getHostname() == null) {
+						if (host.getName().equals("") || host.getName() == null) {
 							host.setHostGroup(defaultGroup);
 							if (!groupsToUpdate.contains(defaultGroup)) {
 								groupsToUpdate.add(defaultGroup);
 							}
 						} else {
-							HGroup group = hGroupRepository.getByName(host.getHostname());
+							HGroup group = hGroupRepository.getByName(host.getName());
 							if (group == null) {
-								group = new HGroup(host.getHostname(), "", new ArrayList<>());
+								group = new HGroup(host.getName(), "", new ArrayList<>());
 							}
 							host.setHostGroup(group);
 							if (!groupsToUpdate.contains(group)) {
@@ -92,7 +103,7 @@ public class KoturnoApplication implements CommandLineRunner {
 							defaultGroup,
 							new ArrayList<>());
 					for (Host host : hostsInDatabase) {
-						if (host.compareIPv4(hostToAdd)) {
+						if (host.compareAddress(hostToAdd)) {
 							isFound = true;
 						}
 					}
@@ -103,12 +114,14 @@ public class KoturnoApplication implements CommandLineRunner {
 						}
 						logger.info("Host {} added", args[i]);
 					} else {
-						logger.info("Host {} isn't added, because database contains that IPv4 address", args[i]);
+						logger.info("Host {} isn't added, because database contains that address", args[i]);
 					}
 				}
 			} else {
 				logger.error("Not recognized parameter");
 			}
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("-X")) {
+			logger.info("Nothing to do");
 		} else if (args.length == 1) {
 			logger.error("Incomplete parameter");
 		}
@@ -122,6 +135,15 @@ public class KoturnoApplication implements CommandLineRunner {
 			for (Host host : hostsToAdd) {
 				hostRepository.save(host);
 			}
+		}
+
+		List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
+		for (Inaccessibility inaccessibility : inaccessibilities) {
+			if (inaccessibility.getStart().equals(inaccessibility.getEnd())) {
+				inaccessibility.setEnd(LocalDateTime.now());
+				inaccessibility.setActive(false);
+			}
+			inaccessibilityRepository.save(inaccessibility);
 		}
 
 		CompletableFuture<String> firstChecker = backgroundChecker.start();

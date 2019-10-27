@@ -1,4 +1,4 @@
-setInterval(reload, 5000)
+setInterval(reload, 15000)
 
 function reload() {
     location.reload();

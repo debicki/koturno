@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -42,11 +41,11 @@ public class BackgroundChecker {
 
     @Async
     public CompletableFuture<String> start() {
-        TypedQuery<Host> query = em.createQuery("SELECT h FROM Host h", Host.class);
-        List<Host> hosts = query.getResultList();
+        List<Host> hosts;
         List<Long> offlineHosts = new ArrayList<>();
         List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
+            hosts = hostRepository.getAllHosts();
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
@@ -54,27 +53,27 @@ public class BackgroundChecker {
                     offlineHosts.remove(host.getId());
                     instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);
-                    if (host.getHostname().equals("")) {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getIPv4());
+                    if (host.getName().equals("")) {
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getHostname());
+                        logger.info("Host {} is removed from offline/instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
                     instabilityHosts.add(host.getId());
                     this.setStartTime(host);
-                    if (host.getHostname().equals("")) {
-                        logger.info("Host {} is added to instability hosts list", host.getIPv4());
+                    if (host.getName().equals("")) {
+                        logger.info("Host {} is added to instability hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is added to instability hosts list", host.getHostname());
+                        logger.info("Host {} is added to instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable &&
                         instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
                     offlineHosts.add(host.getId());
                     this.setOfflineStatus(host);
-                    if (host.getHostname().equals("")) {
-                        logger.info("Host {} is added to offline hosts list", host.getIPv4());
+                    if (host.getName().equals("")) {
+                        logger.info("Host {} is added to offline hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is added to offline hosts list", host.getHostname());
+                        logger.info("Host {} is added to offline hosts list", host.getName());
                     }
                 }
             }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +110,7 @@ public class HostsView {
         Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
         inaccessibilityRepository.deleteById(Long.parseLong(id));
         logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
-        return showHistory(model);
+        return showHistory(model, "1");
     }
 
     @GetMapping("/host/new")
@@ -126,11 +127,13 @@ public class HostsView {
     @PostMapping("host/add")
     public String addHost(Model model, @Valid Host host) {
         if (!this.hostExists(host)) {
+            host.setHostGroup(hGroupRepository.getDefaultHostGroup());
+            host.clearInaccessibilities();
             hostRepository.save(host);
-            logger.info("Host {} was added", host.getIPv4());
+            logger.info("Host {} was added", host.getAddress());
             return "asummary";
         } else {
-            logger.info("Host {} wasn't added", host.getIPv4());
+            logger.info("Host {} wasn't added", host.getAddress());
             return "aesummary";
         }
     }
@@ -147,10 +150,10 @@ public class HostsView {
                              @PathVariable String id,
                              @Valid Host host) {
         Host hostToUpdate = hostRepository.getById(Long.parseLong(id));
-        hostToUpdate.setHostname(host.getHostname());
+        hostToUpdate.setName(host.getName());
         hostToUpdate.setDescription(host.getDescription());
         hostRepository.save(hostToUpdate);
-        logger.info("Host {} was updated", hostToUpdate.getIPv4());
+        logger.info("Host {} was updated", hostToUpdate.getAddress());
         return showDashboard(model);
     }
 
@@ -159,7 +162,7 @@ public class HostsView {
         Host hostToActivate = hostRepository.getById(Long.parseLong(id));
         hostToActivate.setActive(true);
         hostRepository.save(hostToActivate);
-        logger.info("Host {} was activated", hostToActivate.getIPv4());
+        logger.info("Host {} was activated", hostToActivate.getAddress());
         return showHosts(model);
     }
 
@@ -173,7 +176,7 @@ public class HostsView {
             inaccessibilityRepository.save(inaccessibilityToDeactivate);
             hostRepository.save(hostToDeactivate);
         }
-        logger.info("Host {} was deactivated", hostToDeactivate.getIPv4());
+        logger.info("Host {} was deactivated", hostToDeactivate.getAddress());
         return showHosts(model);
     }
 
@@ -182,6 +185,40 @@ public class HostsView {
         HGroup group = hGroupRepository.getById(Long.parseLong(id));
         model.addAttribute("group", group);
         return "group";
+    }
+
+    @GetMapping("/group/add/{id}")
+    public String addHostToGroup(Model model, @PathVariable String id) {
+        HGroup group = hGroupRepository.getById(Long.parseLong(id));
+        model.addAttribute("group", group);
+        List<Host> hosts = hostRepository.getAllHosts();
+        model.addAttribute("hosts", hosts);
+        return "gadd";
+    }
+
+    @PostMapping("/group/update/{id}")
+    public String updateHostsInGroup(Model model, @PathVariable String id) {
+// TODO: 23.10.2019 Od tego miejsca należy rozpocząć pisanie. ;)
+        return "gupdate";
+    }
+
+    @GetMapping("/group/new")
+    public String addGroup(Model model) {
+        HGroup group = new HGroup("", "", new ArrayList<>());
+        model.addAttribute("group", group);
+        return "gnew";
+    }
+
+    @PostMapping("/groups/update")
+    public String updateGroupsList(Model model, @Valid HGroup group) {
+        if (!this.groupExists(group)) {
+            hGroupRepository.save(group);
+            logger.info("Group {} was added", group.getName());
+            return "gnasummary";
+        } else {
+            logger.info("Group {} wasn't added", group.getName());
+            return "gnaesummary";
+        }
     }
 
     @GetMapping("/hosts")
@@ -199,17 +236,21 @@ public class HostsView {
         return "groups";
     }
 
-    @GetMapping("/history")
-    public String showHistory(Model model) {
+    @GetMapping("/history/{time}")
+    public String showHistory(Model model, @PathVariable String time) {
         List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
         Integer numberOfInaccessibilities = inaccessibilities.size();
         List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
         for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
-            if (inaccessibilities.get(i).isActive()) {
-                activeInaccessibilities.add(inaccessibilities.get(i));
-            } else {
-                inactiveInaccessibilities.add(inaccessibilities.get(i));
+            if ((Duration.between(inaccessibilities.get(i).getStart(), inaccessibilities.get(i).getEnd()).getSeconds()
+                    > Long.parseLong(time) * 60) ||
+                    (inaccessibilities.get(i).getStart().equals(inaccessibilities.get(i).getEnd()))) {
+                if (inaccessibilities.get(i).isActive()) {
+                    activeInaccessibilities.add(inaccessibilities.get(i));
+                } else {
+                    inactiveInaccessibilities.add(inaccessibilities.get(i));
+                }
             }
         }
         model.addAttribute("numberOfInaccessibilities", numberOfInaccessibilities);
@@ -221,7 +262,17 @@ public class HostsView {
     private boolean hostExists(Host host) {
         List<Host> hostsInDatabase = hostRepository.getAllHosts();
         for (Host hostFromDatabase : hostsInDatabase) {
-            if (hostFromDatabase.getIPv4().equals(host.getIPv4())) {
+            if (hostFromDatabase.getAddress().equals(host.getAddress())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean groupExists(HGroup group) {
+        List<HGroup> groupsInDatabase = hGroupRepository.getAllGroups();
+        for (HGroup groupInDatabase : groupsInDatabase) {
+            if (group.getName().equals(groupInDatabase.getName())) {
                 return true;
             }
         }

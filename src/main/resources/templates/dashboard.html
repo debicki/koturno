@@ -13,7 +13,7 @@
     <a th:href="@{/}" class="selected-page">Podgląd</a>
     <a th:href="@{/hosts}">Hosty</a>
     <a th:href="@{/groups}">Grupy</a>
-    <a th:href="@{/history}">Historia</a>
+    <a th:href="@{/history/1}">Historia</a>
 </div>
 <div th:if="${offlineHosts.size() == 0}" class="additional-comments">Wszystkie hosty są ONLINE</div>
 <div th:unless="${offlineHosts.size() == 0}"  class="table-with-elements" align="center">
@@ -22,19 +22,19 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Hostname</th>
+            <th>Nazwa</th>
             <th>Adres</th>
             <th>Ostatnio online</th>
-            <th>Opis hosta</th>
-            <th>Szczegóły niedostępności</th>
+            <th>Opis</th>
+            <th>Niedostępność</th>
             <th>Pozostałe akcje</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="offlineHost : ${offlineHosts}">
             <td th:text="${offlineHostStat.index + 1}"></td>
-            <td th:text="${offlineHost.hostname}"></td>
-            <td th:text="${offlineHost.IPv4}"></td>
+            <td th:text="${offlineHost.name}"></td>
+            <td th:text="${offlineHost.address}"></td>
             <td th:text="${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${offlineHost.description}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${offlineHost.inaccessibilities.get(offlineHost.inaccessibilities.size() - 1).getId()})}">zobacz</a></td>
@@ -51,19 +51,19 @@
         <thead>
         <tr>
             <th>Lp.</th>
-            <th>Hostname</th>
+            <th>Nazwa</th>
             <th>Adres</th>
             <th>Ostatnio stabilny</th>
-            <th>Opis hosta</th>
-            <th>Szczegóły niedostępności</th>
+            <th>Opis</th>
+            <th>Niedostępność</th>
             <th>Pozostałe akcje</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="instabilityHost : ${instabilityHosts}">
             <td th:text="${instabilityHostStat.index + 1}"></td>
-            <td th:text="${instabilityHost.hostname}"></td>
-            <td th:text="${instabilityHost.IPv4}"></td>
+            <td th:text="${instabilityHost.name}"></td>
+            <td th:text="${instabilityHost.address}"></td>
             <td th:text="${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).hourOfBegin}"></td>
             <td th:text="${instabilityHost.description}"></td>
             <td><a th:href="@{/inaccessibility/{id}(id=${instabilityHost.inaccessibilities.get(instabilityHost.inaccessibilities.size() - 1).getId()})}">zobacz</a></td>

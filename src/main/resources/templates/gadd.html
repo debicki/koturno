@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Koturno - Dodawanie hosta do grupy</title>
+    <link rel="stylesheet" href="/koturno.css"/>
+    <script src="/sender.js"></script>
+</head>
+<body class="koturno-style">
+<div class="dashboard-title">Koturno</div>
+<div class="additional-comments">Prototyp</div>
+<div class="main-menu">
+    <a th:href="@{/}">Podgląd</a>
+    <a th:href="@{/hosts}">Hosty</a>
+    <a th:href="@{/groups}">Grupy</a>
+    <a th:href="@{/history/1}">Historia</a>
+</div>
+<p class="additional-comments">JESZCZE NIEDOSTĘPNE</p>
+<!--<div>-->
+<!--    <p th:text="${group.name}"></p>-->
+<!--    <form th:action="@{/group/update/{id}(id=${group.id})}"-->
+<!--          th:object="${group}" method="post" id="comment">-->
+<!--        <span>Wybierz hosta</span>-->
+<!--        <br>-->
+<!--        <select name="hosts">-->
+<!--            <option th:each="host : ${hosts}" th:value="${host.address}" th:text="${host.address}"></option>-->
+<!--        </select>-->
+<!--    </form>-->
+<!--</div>-->
+<!--<br>-->
+<!--<div class="small-button">-->
+<!--    <div onclick="send()" class="small-button-label">Zapisz</div>-->
+<!--</div>-->
+</body>
+</html>

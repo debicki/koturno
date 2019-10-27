@@ -13,8 +13,8 @@ public class Host implements Comparable<Host>{
     @GeneratedValue
     private Long id;
 
-    private String hostname;
-    private String IPv4;
+    private String name;
+    private String address;
     private LocalDateTime whenCreated;
     private boolean active;
     private String description;
@@ -28,13 +28,13 @@ public class Host implements Comparable<Host>{
     protected Host() {
     }
 
-    public Host(String hostname,
-                String IPv4,
+    public Host(String name,
+                String address,
                 String description,
                 HGroup hostGroup,
                 List<Inaccessibility> inaccessibilities) {
-        this.hostname = hostname;
-        this.IPv4 = IPv4;
+        this.name = name;
+        this.address = address;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
@@ -46,20 +46,20 @@ public class Host implements Comparable<Host>{
         return this.id;
     }
 
-    public String getHostname() {
-        return hostname;
+    public String getName() {
+        return name;
     }
 
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getIPv4() {
-        return IPv4;
+    public String getAddress() {
+        return address;
     }
 
-    public void setIPv4(String IPv4) {
-        this.IPv4 = IPv4;
+    public void setAddress (String address) {
+        this.address = address;
     }
 
     public LocalDateTime getWhenCreated() {
@@ -98,6 +98,10 @@ public class Host implements Comparable<Host>{
         this.inaccessibilities.add(inaccessibility);
     }
 
+    public void clearInaccessibilities() {
+        this.inaccessibilities = new ArrayList<>();
+    }
+
     public String getDayWhenCreated() {
         return whenCreated.toLocalDate().toString();
     }
@@ -106,8 +110,8 @@ public class Host implements Comparable<Host>{
     public String toString() {
         return "Host{" +
                 "id=" + id +
-                ", hostname='" + hostname + '\'' +
-                ", IPv4='" + IPv4 + '\'' +
+                ", name='" + name + '\'' +
+                ", address ='" + address + '\'' +
                 ", whenCreated=" + whenCreated +
                 ", description='" + description + '\'' +
                 ", inaccessibilities=" + inaccessibilities +
@@ -116,10 +120,10 @@ public class Host implements Comparable<Host>{
 
     @Override
     public int compareTo(Host o) {
-        return this.getHostname().compareTo(o.getHostname());
+        return this.getName().compareTo(o.getName());
     }
 
-    public boolean compareIPv4(Host h) {
-        return this.getIPv4().equalsIgnoreCase(h.getIPv4());
+    public boolean compareAddress(Host h) {
+        return this.getAddress().equalsIgnoreCase(h.getAddress());
     }
 }
