@@ -47,6 +47,6 @@ public class IGroupRepository {
         Optional<IGroup> defaultGroup = getAllGroupsQuery.getResultStream()
                 .filter(g -> g.getName().equals("default"))
                 .findFirst();
-        return defaultGroup.orElseGet(() -> this.save(new IGroup("default", "", new ArrayList<>())));
+        return defaultGroup.orElseGet(() -> this.save(new IGroup("default", "")));
     }
 }

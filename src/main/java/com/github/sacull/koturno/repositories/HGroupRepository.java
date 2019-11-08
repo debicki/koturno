@@ -47,7 +47,7 @@ public class HGroupRepository {
         Optional<HGroup> defaultGroup = getAllGroupsQuery.getResultStream()
                 .filter(g -> g.getName().equals("default"))
                 .findFirst();
-        return defaultGroup.orElseGet(() -> this.save(new HGroup("default", "", new ArrayList<>())));
+        return defaultGroup.orElseGet(() -> this.save(new HGroup("default", "")));
     }
 
     public HGroup getByName(String name) {

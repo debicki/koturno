@@ -204,7 +204,7 @@ public class HostsView {
 
     @GetMapping("/group/new")
     public String addGroup(Model model) {
-        HGroup group = new HGroup("", "", new ArrayList<>());
+        HGroup group = new HGroup("", "");
         model.addAttribute("group", group);
         return "gnew";
     }

@@ -80,7 +80,7 @@ public class KoturnoApplication implements CommandLineRunner {
 						} else {
 							HGroup group = hGroupRepository.getByName(host.getName());
 							if (group == null) {
-								group = new HGroup(host.getName(), "", new ArrayList<>());
+								group = new HGroup(host.getName(), "");
 							}
 							host.setHostGroup(group);
 							if (!groupsToUpdate.contains(group)) {
