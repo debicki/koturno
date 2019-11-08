@@ -1,31 +1,48 @@
 package com.github.sacull.koturno.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "inaccessibilities")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
+@ToString
 public class Inaccessibility {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @ManyToOne
     private Host host;
 
+    @Column(nullable = false)
     private LocalDateTime start;
+
+    @Column(nullable = false)
     private LocalDateTime end;
+
+    @Column(nullable = false)
+    @Getter(AccessLevel.NONE)
     private Boolean active;
+
+    @Column(nullable = false)
+    @Getter(AccessLevel.NONE)
     private Boolean offlineStatus;
+
     private String description;
 
     @ManyToOne
+    @Column(nullable = false)
     private IGroup inaccessibilityGroup;
 
-    protected Inaccessibility() {
-    }
-
+    @Builder
     public Inaccessibility(Host host,
                            String description,
                            IGroup inaccessibilityGroup) {
@@ -38,64 +55,12 @@ public class Inaccessibility {
         this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public Host getHost() {
-        return this.host;
-    }
-
-    public void setHost(Host host) {
-        this.host = host;
-    }
-
-    public LocalDateTime getStart() {
-        return this.start;
-    }
-
-    public void setStart(LocalDateTime start) {
-        this.start = start;
-    }
-
-    public LocalDateTime getEnd() {
-        return this.end;
-    }
-
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
-    }
-
     public Boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public Boolean isOfflineStatus() {
         return offlineStatus;
-    }
-
-    public void setOfflineStatus(Boolean offlineStatus) {
-        this.offlineStatus = offlineStatus;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public IGroup getInaccessibilityGroup() {
-        return inaccessibilityGroup;
-    }
-
-    public void setInaccessibilityGroup(IGroup inaccessibilityGroup) {
-        this.inaccessibilityGroup = inaccessibilityGroup;
     }
 
     public String getDayOfBegin() {
@@ -120,16 +85,5 @@ public class Inaccessibility {
         } else {
             return end.toLocalTime().toString();
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Inaccessibility{" +
-                "id=" + this.id +
-                ", hostId=" + this.host +
-                ", start=" + this.start +
-                ", end=" + this.end +
-                ", description='" + this.description + '\'' +
-                '}';
     }
 }

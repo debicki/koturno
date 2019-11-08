@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "h_groups")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id"})

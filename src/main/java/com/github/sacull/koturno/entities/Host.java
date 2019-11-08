@@ -1,121 +1,62 @@
 package com.github.sacull.koturno.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table (name = "hosts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
+@ToString
 public class Host implements Comparable<Host>{
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String address;
+
+    @Setter(AccessLevel.NONE)
     private LocalDateTime whenCreated;
-    private boolean active;
+
+    @Column(nullable = false)
+    @Getter(AccessLevel.NONE)
+    private Boolean active;
+
     private String description;
 
     @ManyToOne
+    @Column(nullable = false)
     private HGroup hostGroup;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "host")
-    private List<Inaccessibility> inaccessibilities = new ArrayList<>();
-
-    protected Host() {
-    }
-
+    @Builder
     public Host(String name,
                 String address,
                 String description,
-                HGroup hostGroup,
-                List<Inaccessibility> inaccessibilities) {
+                HGroup hostGroup) {
         this.name = name;
         this.address = address;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
         this.hostGroup = hostGroup;
-        this.inaccessibilities = inaccessibilities;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress (String address) {
-        this.address = address;
-    }
-
-    public LocalDateTime getWhenCreated() {
-        return whenCreated;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public HGroup getHostGroup() {
-        return hostGroup;
-    }
-
-    public void setHostGroup(HGroup hostGroup) {
-        this.hostGroup = hostGroup;
-    }
-
-    public List<Inaccessibility> getInaccessibilities() {
-        return this.inaccessibilities;
-    }
-
-    public void addInaccessibility(Inaccessibility inaccessibility) {
-        this.inaccessibilities.add(inaccessibility);
-    }
-
-    public void clearInaccessibilities() {
-        this.inaccessibilities = new ArrayList<>();
     }
 
     public String getDayWhenCreated() {
         return whenCreated.toLocalDate().toString();
     }
 
-    @Override
-    public String toString() {
-        return "Host{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address ='" + address + '\'' +
-                ", whenCreated=" + whenCreated +
-                ", description='" + description + '\'' +
-                ", inaccessibilities=" + inaccessibilities +
-                '}';
+    public Boolean isActive() {
+        return active;
     }
 
     @Override
