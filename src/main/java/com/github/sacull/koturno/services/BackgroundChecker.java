@@ -45,7 +45,7 @@ public class BackgroundChecker {
         List<Long> offlineHosts = new ArrayList<>();
         List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
-            hosts = hostRepository.getAllHosts();
+            hosts = hostRepository.findAll();
             logger.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
@@ -87,20 +87,18 @@ public class BackgroundChecker {
 
     private void setStartTime(Host host) {
         Inaccessibility inaccessibilityToOpen =
-                new Inaccessibility(host, "", iGroupRepository.getDefaultInaccessibilityGroup());
-        host.addInaccessibility(inaccessibilityToOpen);
+                new Inaccessibility(host, "", iGroupRepository.findByName("default"));
         inaccessibilityRepository.save(inaccessibilityToOpen);
-        hostRepository.save(host);
     }
 
     private void setOfflineStatus(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getLastInaccessibility(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.findByHostOrderByEndDesc(host);
         inaccessibilityToUpdate.setOfflineStatus(true);
         inaccessibilityRepository.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.getLastInaccessibility(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.findByHostOrderByEndDesc(host);
         inaccessibilityToUpdate.setEnd(LocalDateTime.now());
         inaccessibilityToUpdate.setActive(false);
         inaccessibilityRepository.save(inaccessibilityToUpdate);
