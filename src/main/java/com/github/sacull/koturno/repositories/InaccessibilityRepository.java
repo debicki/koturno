@@ -4,7 +4,11 @@ import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface InaccessibilityRepository extends JpaRepository<Inaccessibility, Long> {
 
-    Inaccessibility findByHostOrderByEndDesc(Host host);
+    Inaccessibility findByHostAndActiveIsTrueOrderByEndDesc(Host host);
+
+    List<Inaccessibility> findAllByActiveIsTrueOrderByStartDesc();
 }

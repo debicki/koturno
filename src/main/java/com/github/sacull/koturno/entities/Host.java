@@ -19,23 +19,19 @@ public class Host implements Comparable<Host>{
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String address;
 
     @Setter(AccessLevel.NONE)
     private LocalDateTime whenCreated;
 
-    @Column(nullable = false)
     @Getter(AccessLevel.NONE)
     private Boolean active;
 
     private String description;
 
     @ManyToOne
-    @Column(nullable = false)
     private HGroup hostGroup;
 
     @Builder

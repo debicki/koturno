@@ -22,24 +22,19 @@ public class Inaccessibility {
     @ManyToOne
     private Host host;
 
-    @Column(nullable = false)
     private LocalDateTime start;
 
-    @Column(nullable = false)
     private LocalDateTime end;
 
-    @Column(nullable = false)
     @Getter(AccessLevel.NONE)
     private Boolean active;
 
-    @Column(nullable = false)
     @Getter(AccessLevel.NONE)
     private Boolean offlineStatus;
 
     private String description;
 
     @ManyToOne
-    @Column(nullable = false)
     private IGroup inaccessibilityGroup;
 
     @Builder

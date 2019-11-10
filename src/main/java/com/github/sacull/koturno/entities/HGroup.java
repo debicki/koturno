@@ -18,7 +18,6 @@ public class HGroup {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
     private String description;
