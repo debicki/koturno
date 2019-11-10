@@ -201,21 +201,6 @@ public class HostsView {
 //        }
 //    }
 //
-//    @GetMapping("/hosts")
-//    public String showHosts(Model model) {
-//        List<Host> hosts = hostRepository.getAllHosts();
-//        Collections.sort(hosts);
-//        model.addAttribute("hosts", hosts);
-//        return "hosts";
-//    }
-//
-//    @GetMapping("/groups")
-//    public String showGroups(Model model) {
-//        List<HGroup> groups = hGroupRepository.getAllGroups();
-//        model.addAttribute("groups", groups);
-//        return "groups";
-//    }
-//
 //    @GetMapping("/history/{time}")
 //    public String showHistory(Model model, @PathVariable String time) {
 //        List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
