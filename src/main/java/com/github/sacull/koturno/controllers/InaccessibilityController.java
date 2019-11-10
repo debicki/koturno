@@ -24,7 +24,16 @@ public class InaccessibilityController {
                                                  Long id,
                                                  String action) {
         Inaccessibility inaccessibility = inaccessibilityRepository.getOne(id);
-        model.addAttribute("inaccessibility", inaccessibility);
-        return "/WEB-INF/views/inaccessibility.jsp";
+        if (action.equals("ignore")) {
+            inaccessibility.setActive(false);
+            inaccessibilityRepository.save(inaccessibility);
+        } else if (action.equals("remove")) {
+            inaccessibilityRepository.delete(inaccessibility);
+            return "redirect:/history";
+        } else if (action.equals("info")) {
+            model.addAttribute("inaccessibility", inaccessibility);
+            return "/WEB-INF/views/inaccessibility.jsp";
+        }
+        return "redirect:/";
     }
 }
