@@ -11,10 +11,10 @@
 <nav>
 
     <div style="color: black; font-variant: small-caps; text-align: center;">
-        <div class="display-2">
+        <div class="display-3">
             <strong>Koturno</strong>
         </div>
-        <div class="h1">
+        <div class="h2">
             Alpha
         </div>
         <div style="font-size: 30px; line-height: 100px;">
