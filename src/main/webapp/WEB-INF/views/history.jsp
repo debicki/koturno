@@ -61,15 +61,20 @@
                             </c:if>
                             <td>${activeInstability.dayOfBegin}</td>
                             <td>${activeInstability.hourOfBegin}</td>
-                            <td>${activeInstability.dayOfEnd}</td>
-                            <td>${activeInstability.hourOfEnd}</td>
+                            <c:if test="${activeInstability.start == activeInstability.end}">
+                                <td colspan="2">TRWA</td>
+                            </c:if>
+                            <c:if test="${activeInstability.start != activeInstability.end}">
+                                <td>${activeInstability.dayOfEnd}</td>
+                                <td>${activeInstability.hourOfEnd}</td>
+                            </c:if>
                             <td>
-                                <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
+                                <a href=/inaccessibility?id=${activeInstability.id}&action=info>
                                     zobacz
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${instabilityHost.id}&action=remove>
+                                <a href=/inaccessibility?id=${activeInstability.id}&action=remove>
                                     usuń
                                 </a>
                             </td>

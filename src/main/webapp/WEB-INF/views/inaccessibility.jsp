@@ -27,8 +27,14 @@
             <div class="h2">${inaccessibility.host.address}</div>
             <div class="lead"><strong>Data początku: ${inaccessibility.dayOfBegin}</strong></div>
             <div class="lead"><strong>Godzina początku: ${inaccessibility.hourOfBegin}</strong></div>
-            <div class="lead"><strong>Data końca: ${inaccessibility.dayOfEnd}</strong></div>
-            <div class="lead"><strong>Godzina końca: ${inaccessibility.hourOfEnd}</strong></div>
+            <c:if test="${inaccessibility.start == inaccessibility.end}">
+                <div class="lead"><strong>Data końca: TRWA</strong></div>
+                <div class="lead"><strong>Godzina końca: TRWA</strong></div>
+            </c:if>
+            <c:if test="${inaccessibility.start != inaccessibility.end}">
+                <div class="lead"><strong>Data końca: ${inaccessibility.dayOfEnd}</strong></div>
+                <div class="lead"><strong>Godzina końca: ${inaccessibility.hourOfEnd}</strong></div>
+            </c:if>
             <div class="lead"><strong>Opis: ${inaccessibility.description}</strong></div>
         </div>
     </div>

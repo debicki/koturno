@@ -57,23 +57,6 @@ public class HostsView {
 //        return showDashboard(model);
 //    }
 //
-//    @GetMapping("/inaccessibility/ignore/{id}")
-//    public String ignoreInaccessibility(Model model, @PathVariable String id) {
-//        Inaccessibility inaccessibilityToIgnore = inaccessibilityRepository.getById(Long.parseLong(id));
-//        inaccessibilityToIgnore.setActive(false);
-//        inaccessibilityRepository.save(inaccessibilityToIgnore);
-//        logger.info("Inaccessability {} was ignored", inaccessibilityToIgnore.getId());
-//        return showDashboard(model);
-//    }
-//
-//    @GetMapping("/inaccessibility/delete/{id}")
-//    public String deleteInaccessibility(Model model, @PathVariable String id) {
-//        Inaccessibility inaccessibilityToDelete = inaccessibilityRepository.getById(Long.parseLong(id));
-//        inaccessibilityRepository.deleteById(Long.parseLong(id));
-//        logger.info("Inaccessability {} was deleted", inaccessibilityToDelete.getId());
-//        return showHistory(model, "1");
-//    }
-//
 //    @GetMapping("/host/new")
 //    public String newHost(Model model) {
 //        Host host = new Host("",
