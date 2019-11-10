@@ -18,6 +18,7 @@ public class IGroup {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     private String description;

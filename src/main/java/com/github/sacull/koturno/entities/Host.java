@@ -21,6 +21,7 @@ public class Host implements Comparable<Host>{
 
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String address;
 
     @Setter(AccessLevel.NONE)

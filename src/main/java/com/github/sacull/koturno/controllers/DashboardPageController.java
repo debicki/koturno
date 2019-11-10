@@ -22,7 +22,7 @@ public class DashboardPageController {
     }
 
     @GetMapping
-    public String serveDashboard(Model model) {
+    public String serveDashboardPage(Model model) {
         List<Inaccessibility> instabilityHosts =
                 inaccessibilityRepository.findAllByActiveIsTrueOrderByStartDesc();
         model.addAttribute("instabilityHosts", instabilityHosts);
