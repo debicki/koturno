@@ -201,29 +201,6 @@ public class HostsView {
 //        }
 //    }
 //
-//    @GetMapping("/history/{time}")
-//    public String showHistory(Model model, @PathVariable String time) {
-//        List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
-//        Integer numberOfInaccessibilities = inaccessibilities.size();
-//        List<Inaccessibility> activeInaccessibilities = new ArrayList<>();
-//        List<Inaccessibility> inactiveInaccessibilities = new ArrayList<>();
-//        for (int i = inaccessibilities.size() - 1; i >= 0; i--) {
-//            if ((Duration.between(inaccessibilities.get(i).getStart(), inaccessibilities.get(i).getEnd()).getSeconds()
-//                    > Long.parseLong(time) * 60) ||
-//                    (inaccessibilities.get(i).getStart().equals(inaccessibilities.get(i).getEnd()))) {
-//                if (inaccessibilities.get(i).isActive()) {
-//                    activeInaccessibilities.add(inaccessibilities.get(i));
-//                } else {
-//                    inactiveInaccessibilities.add(inaccessibilities.get(i));
-//                }
-//            }
-//        }
-//        model.addAttribute("numberOfInaccessibilities", numberOfInaccessibilities);
-//        model.addAttribute("activeInaccessibilities", activeInaccessibilities);
-//        model.addAttribute("inactiveInaccessibilities", inactiveInaccessibilities);
-//        return "history";
-//    }
-//
 //    private boolean hostExists(Host host) {
 //        List<Host> hostsInDatabase = hostRepository.getAllHosts();
 //        for (Host hostFromDatabase : hostsInDatabase) {

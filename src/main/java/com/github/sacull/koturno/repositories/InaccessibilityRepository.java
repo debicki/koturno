@@ -12,5 +12,7 @@ public interface InaccessibilityRepository extends JpaRepository<Inaccessibility
 
     List<Inaccessibility> findAllByActiveIsTrue();
 
+    List<Inaccessibility> findAllByOrderByStartDesc();
+
     List<Inaccessibility> findAllByActiveIsTrueOrderByStartDesc();
 }
