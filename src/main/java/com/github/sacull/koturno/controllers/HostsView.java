@@ -38,16 +38,6 @@ public class HostsView {
     private HGroupRepository hGroupRepository;
 
     private Logger logger = LoggerFactory.getLogger("HostsView");
-
-//    @GetMapping("/host/{id}")
-//    public String showHost(Model model, @PathVariable String id) {
-//        Host host = hostRepository.getById(Long.valueOf(id));
-//        model.addAttribute("host", host);
-//        List<Inaccessibility> hostInaccessibilities = host.getInaccessibilities();
-//        Collections.reverse(hostInaccessibilities);
-//        model.addAttribute("hostInaccessibilities", hostInaccessibilities);
-//        return "host";
-//    }
 //
 //    @GetMapping("/inaccessibility/{id}")
 //    public String showInaccessibility(Model model, @PathVariable String id) {
