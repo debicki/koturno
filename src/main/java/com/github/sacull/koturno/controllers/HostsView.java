@@ -39,15 +39,6 @@ public class HostsView {
 
     private Logger logger = LoggerFactory.getLogger("HostsView");
 //
-//    @GetMapping("/inaccessibility/{id}")
-//    public String showInaccessibility(Model model, @PathVariable String id) {
-//        Inaccessibility inaccessibility = inaccessibilityRepository.getById(Long.valueOf(id));
-//        model.addAttribute("inaccessibility", inaccessibility);
-//        Host host = hostRepository.getById(inaccessibility.getHost().getId());
-//        model.addAttribute("host", host);
-//        return "inaccessibility";
-//    }
-//
 //    @GetMapping("/inaccessibility/edit/{id}")
 //    public String editInaccessibility(Model model, @PathVariable String id) {
 //        Inaccessibility inaccessibility = inaccessibilityRepository.getById(Long.valueOf(id));
@@ -148,13 +139,6 @@ public class HostsView {
 //        }
 //        logger.info("Host {} was deactivated", hostToDeactivate.getAddress());
 //        return showHosts(model);
-//    }
-//
-//    @GetMapping("/group/{id}")
-//    public String showGroup(Model model, @PathVariable String id) {
-//        HGroup group = hGroupRepository.getById(Long.parseLong(id));
-//        model.addAttribute("group", group);
-//        return "group";
 //    }
 //
 //    @GetMapping("/group/add/{id}")
