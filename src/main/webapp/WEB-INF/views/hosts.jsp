@@ -91,7 +91,6 @@
                         <button class="btn btn-success" type="submit">Dodaj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                        <sec:csrfInput/>
                     </form>
                 </div>
             </div>

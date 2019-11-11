@@ -22,6 +22,67 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <c:if test="${error.equals('0')}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Grupa została utworzona pomyślnie
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+            <c:if test="${error.equals('2')}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Grupa z tą nazwą już istnieje
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" style="color: black; font-variant: small-caps; text-align: center;">
+            <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal">
+                Nowa grupa
+            </a>
+        </div>
+    </div>
+
+    <div class="modal" id="newGroupModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="color: black; font-variant: small-caps;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nowa grupa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/groups">
+                        <div class="form-group">
+                            <label for="name">Nazwa</label>
+                            <input type="text" required name="name" id="name" class="form-control" placeholder="Podaj nazwę grupy"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Opis</label>
+                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis grupy"/>
+                        </div>
+                        <button class="btn btn-success" type="submit">Dodaj</button>
+                        <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
            <table class="table table-hover table-bordered" style="color: black; font-variant: small-caps; text-align: center;">
                 <thead>
