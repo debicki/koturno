@@ -57,31 +57,6 @@ public class HostsView {
 //        return showDashboard(model);
 //    }
 //
-//    @GetMapping("/host/new")
-//    public String newHost(Model model) {
-//        Host host = new Host("",
-//                "To pole nie może być puste!",
-//                "",
-//                null,
-//                null);
-//        model.addAttribute(host);
-//        return "hnew";
-//    }
-//
-//    @PostMapping("host/add")
-//    public String addHost(Model model, @Valid Host host) {
-//        if (!this.hostExists(host)) {
-//            host.setHostGroup(hGroupRepository.getDefaultHostGroup());
-//            host.clearInaccessibilities();
-//            hostRepository.save(host);
-//            logger.info("Host {} was added", host.getAddress());
-//            return "asummary";
-//        } else {
-//            logger.info("Host {} wasn't added", host.getAddress());
-//            return "aesummary";
-//        }
-//    }
-//
 //    @GetMapping("/host/edit/{id}")
 //    public String editHost(Model model, @PathVariable String id) {
 //        Host host = hostRepository.getById(Long.valueOf(id));

@@ -11,4 +11,6 @@ public interface HostRepository extends JpaRepository<Host, Long> {
     List<Host> findAllByOrderByName();
 
     List<Host> findAllByHostGroup(HGroup group);
+
+    Host findByAddress(String address);
 }

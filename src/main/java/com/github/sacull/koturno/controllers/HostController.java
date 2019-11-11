@@ -20,7 +20,8 @@ public class HostController {
     private final HostRepository hostRepository;
 
     @Autowired
-    public HostController(InaccessibilityRepository inaccessibilityRepository, HostRepository hostRepository) {
+    public HostController(InaccessibilityRepository inaccessibilityRepository,
+                          HostRepository hostRepository) {
         this.inaccessibilityRepository = inaccessibilityRepository;
         this.hostRepository = hostRepository;
     }
@@ -29,7 +30,7 @@ public class HostController {
     public String doSomethingWithHost(Model model,
                                       Long id,
                                       String action) {
-        Host host = hostRepository.findById(id).get();
+        Host host = hostRepository.getOne(id);
         List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHostOrderByStartDesc(host);
         model.addAttribute("host", host);
         model.addAttribute("inaccessibilityList", hostInaccessibilityList);

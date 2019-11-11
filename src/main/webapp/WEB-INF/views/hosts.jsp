@@ -22,6 +22,83 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <c:if test="${error.equals('0')}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Host został dodany pomyślnie
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+            <c:if test="${error.equals('1')}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Host z tym adresem już istnieje
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" style="color: black; font-variant: small-caps; text-align: center;">
+            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal">
+                Nowy host
+            </a>
+        </div>
+    </div>
+
+    <div class="modal" id="newHostModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="color: black; font-variant: small-caps;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nowy host</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/hosts">
+                        <div class="form-group">
+                            <label for="address">Adres</label>
+                            <input type="text" required name="address" id="address" class="form-control" placeholder="Podaj adres hosta"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Nazwa</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Podaj nazwę hosta"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Opis</label>
+                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis hosta"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="hostGroupName">Grupa</label>
+                            <select name="hostGroupName" id="hostGroupName" class="form-control">
+                                <option selected>${hostGroupList.get(0).name}</option>
+                                <c:forEach items="${hostGroupList}" var="hostGroup" varStatus="hostGroupStatus">
+                                    <c:if test="${!hostGroup.name.equals('default')}">
+                                        <option>${hostGroup.name}</option>
+                                    </c:if>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <button class="btn btn-success" type="submit">Dodaj</button>
+                        <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <sec:csrfInput/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <table class="table table-hover table-bordered" style="color: black; font-variant: small-caps; text-align: center;">
                 <thead>

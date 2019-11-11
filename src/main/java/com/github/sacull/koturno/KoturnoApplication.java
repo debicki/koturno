@@ -63,6 +63,10 @@ public class KoturnoApplication implements CommandLineRunner {
 		List<Host> hostsInDatabase = hostRepository.findAll();
 		List<HGroup> groupsToUpdate = new ArrayList<>();
 		HGroup defaultGroup = hGroupRepository.findByName("default");
+		if (defaultGroup == null) {
+			defaultGroup = new HGroup("default", "Default group");
+			defaultGroup = hGroupRepository.save(defaultGroup);
+		}
 		if (args.length >= 2) {
 			if (args[0].equalsIgnoreCase("-f")) {
 				try {
@@ -73,18 +77,13 @@ public class KoturnoApplication implements CommandLineRunner {
 					for (Host host : hostsToAdd) {
 						if (host.getName().equals("") || host.getName() == null) {
 							host.setHostGroup(defaultGroup);
-							if (!groupsToUpdate.contains(defaultGroup)) {
-								groupsToUpdate.add(defaultGroup);
-							}
 						} else {
 							HGroup group = hGroupRepository.findByName(host.getName());
 							if (group == null) {
 								group = new HGroup(host.getName(), "");
+								group = hGroupRepository.save(group);
 							}
 							host.setHostGroup(group);
-							if (!groupsToUpdate.contains(group)) {
-								groupsToUpdate.add(group);
-							}
 						}
 					}
 					logger.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
@@ -126,11 +125,6 @@ public class KoturnoApplication implements CommandLineRunner {
 			logger.error("Incomplete parameter");
 		}
 
-		if (groupsToUpdate.size() > 0) {
-			for (HGroup group : groupsToUpdate) {
-				hGroupRepository.save(group);
-			}
-		}
 		if (hostsToAdd.size() > 0) {
 			for (Host host : hostsToAdd) {
 				hostRepository.save(host);
