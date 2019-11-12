@@ -47,7 +47,7 @@ public class HostController {
     }
 
     @PostMapping
-    public String addNewHost(RedirectAttributes redirectAttributes,
+    public String editHost(RedirectAttributes redirectAttributes,
                              String originAddress,
                              String address,
                              String activity,
