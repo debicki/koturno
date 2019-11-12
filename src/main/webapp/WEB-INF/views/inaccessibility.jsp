@@ -39,6 +39,44 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-12" style="color: black; font-variant: small-caps; text-align: center;">
+            <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal" class="btn btn-primary">
+                Edycja opisu
+            </a>
+        </div>
+    </div>
+
+    <div class="modal" id="editInaccessibilityModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="color: black; font-variant: small-caps;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edycja opisu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/inaccessibility">
+                        <input type="hidden" name="id" value="${inaccessibility.id}"/>
+                        <div class="form-group">
+                            <label for="description">Opis</label>
+                            <c:if test="${!inaccessibility.description.equals('')}">
+                                <input type="text" name="description" id="description" class="form-control" value="${inaccessibility.description}"/>
+                            </c:if>
+                            <c:if test="${inaccessibility.description.equals('')}">
+                                <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis"/>
+                            </c:if>
+                        </div>
+                        <button class="btn btn-success" type="submit">Zapisz</button>
+                        <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

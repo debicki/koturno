@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -35,5 +36,13 @@ public class InaccessibilityController {
             return "/WEB-INF/views/inaccessibility.jsp";
         }
         return "redirect:/";
+    }
+
+    @PostMapping
+    public String editHost(Long id, String description) {
+        Inaccessibility inaccessibilityToSave = inaccessibilityRepository.getOne(id);
+        inaccessibilityToSave.setDescription(description);
+        inaccessibilityRepository.save(inaccessibilityToSave);
+        return "redirect:/inaccessibility?id=" + inaccessibilityToSave.getId() +"&action=info";
     }
 }
