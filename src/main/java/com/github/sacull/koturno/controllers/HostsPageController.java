@@ -59,6 +59,7 @@ public class HostsPageController {
     @PostMapping
     public String addNewHost(RedirectAttributes redirectAttributes,
                              String address,
+                             String activity,
                              String name,
                              String description,
                              String hostGroupName) {
@@ -71,6 +72,9 @@ public class HostsPageController {
         if (hostRepository.findByAddress(address) == null) {
             HGroup hostGroup = hGroupRepository.findByName(hostGroupName);
             Host hostToAdd = new Host(name, address, description, hostGroup);
+            if (activity.equalsIgnoreCase("Nieaktywny")) {
+                hostToAdd.setActive(false);
+            }
             hostRepository.save(hostToAdd);
             redirectAttributes.addFlashAttribute("error", "0");
         } else {

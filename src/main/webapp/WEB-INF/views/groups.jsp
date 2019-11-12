@@ -48,11 +48,13 @@
 
     <div class="row">
         <div class="col-12" style="color: black; font-variant: small-caps; text-align: center;">
-            <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal">
+            <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal" class="btn btn-primary">
                 Nowa grupa
             </a>
         </div>
     </div>
+
+    <br>
 
     <div class="modal" id="newGroupModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

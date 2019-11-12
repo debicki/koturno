@@ -48,11 +48,13 @@
 
     <div class="row">
         <div class="col-12" style="color: black; font-variant: small-caps; text-align: center;">
-            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal">
+            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
                 Nowy host
             </a>
         </div>
     </div>
+
+    <br>
 
     <div class="modal" id="newHostModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -65,9 +67,18 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" action="/hosts">
-                        <div class="form-group">
-                            <label for="address">Adres</label>
-                            <input type="text" required name="address" id="address" class="form-control" placeholder="Podaj adres hosta"/>
+                        <div class="form-row">
+                            <div class="form-group col-8">
+                                <label for="address">Adres</label>
+                                <input type="text" required name="address" id="address" class="form-control" placeholder="Podaj adres hosta"/>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="activity">Aktywność</label>
+                                <select name="activity" id="activity" class="form-control">
+                                    <option selected>Aktywny</option>
+                                    <option>Nieaktywny</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="name">Nazwa</label>
