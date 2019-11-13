@@ -1,67 +1,30 @@
 package com.github.sacull.koturno.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "i_groups")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
+@ToString
 public class IGroup {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "inaccessibilityGroup")
-    private List<Inaccessibility> inaccessibilities = new ArrayList<>();
-
-    protected IGroup() {
-    }
-
-    public IGroup(String name, String description, List<Inaccessibility> inaccessibilities) {
+    public IGroup(String name, String description) {
         this.name = name;
         this.description = description;
-        this.inaccessibilities = inaccessibilities;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Inaccessibility> getInaccessibilities() {
-        return inaccessibilities;
-    }
-
-    public void addInaccessibility(Inaccessibility host) {
-        this.inaccessibilities.add(host);
-    }
-
-    @Override
-    public String toString() {
-        return "IGroup{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", inaccessibilities=" + inaccessibilities +
-                '}';
     }
 }

@@ -56,6 +56,6 @@ public class FileManager {
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
-        return new Host(name.toString(), address.toString(), description.toString(), null, new ArrayList<>());
+        return new Host(name.toString(), address.toString(), description.toString(), null);
     }
 }

@@ -2,7 +2,6 @@ package com.github.sacull.koturno;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
-import com.github.sacull.koturno.entities.IGroup;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
@@ -61,9 +60,13 @@ public class KoturnoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		logger.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
-		List<Host> hostsInDatabase = hostRepository.getAllHosts();
+		List<Host> hostsInDatabase = hostRepository.findAll();
 		List<HGroup> groupsToUpdate = new ArrayList<>();
-		HGroup defaultGroup = hGroupRepository.getDefaultHostGroup();
+		HGroup defaultGroup = hGroupRepository.findByName("default");
+		if (defaultGroup == null) {
+			defaultGroup = new HGroup("default", "Default group");
+			defaultGroup = hGroupRepository.save(defaultGroup);
+		}
 		if (args.length >= 2) {
 			if (args[0].equalsIgnoreCase("-f")) {
 				try {
@@ -74,18 +77,13 @@ public class KoturnoApplication implements CommandLineRunner {
 					for (Host host : hostsToAdd) {
 						if (host.getName().equals("") || host.getName() == null) {
 							host.setHostGroup(defaultGroup);
-							if (!groupsToUpdate.contains(defaultGroup)) {
-								groupsToUpdate.add(defaultGroup);
-							}
 						} else {
-							HGroup group = hGroupRepository.getByName(host.getName());
+							HGroup group = hGroupRepository.findByName(host.getName());
 							if (group == null) {
-								group = new HGroup(host.getName(), "", new ArrayList<>());
+								group = new HGroup(host.getName(), "");
+								group = hGroupRepository.save(group);
 							}
 							host.setHostGroup(group);
-							if (!groupsToUpdate.contains(group)) {
-								groupsToUpdate.add(group);
-							}
 						}
 					}
 					logger.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
@@ -97,11 +95,12 @@ public class KoturnoApplication implements CommandLineRunner {
 				boolean isFound;
 				for (int i = 1; i < args.length; i++) {
 					isFound = false;
-					hostToAdd = new Host("",
-							args[i],
-							"",
-							defaultGroup,
-							new ArrayList<>());
+					hostToAdd = Host.builder()
+							.name("")
+							.address(args[i])
+							.description("")
+							.hostGroup(defaultGroup)
+							.build();
 					for (Host host : hostsInDatabase) {
 						if (host.compareAddress(hostToAdd)) {
 							isFound = true;
@@ -126,18 +125,13 @@ public class KoturnoApplication implements CommandLineRunner {
 			logger.error("Incomplete parameter");
 		}
 
-		if (groupsToUpdate.size() > 0) {
-			for (HGroup group : groupsToUpdate) {
-				hGroupRepository.save(group);
-			}
-		}
 		if (hostsToAdd.size() > 0) {
 			for (Host host : hostsToAdd) {
 				hostRepository.save(host);
 			}
 		}
 
-		List<Inaccessibility> inaccessibilities = inaccessibilityRepository.getAllInaccessibilities();
+		List<Inaccessibility> inaccessibilities = inaccessibilityRepository.findAll();
 		for (Inaccessibility inaccessibility : inaccessibilities) {
 			if (inaccessibility.getStart().equals(inaccessibility.getEnd())) {
 				inaccessibility.setEnd(LocalDateTime.now());
