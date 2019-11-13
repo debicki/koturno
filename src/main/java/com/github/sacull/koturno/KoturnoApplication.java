@@ -5,7 +5,6 @@ import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
-import com.github.sacull.koturno.repositories.IGroupRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
 import com.github.sacull.koturno.services.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
@@ -19,12 +18,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
@@ -42,12 +39,6 @@ public class KoturnoApplication implements CommandLineRunner {
 	private InaccessibilityRepository inaccessibilityRepository;
 
 	@Autowired
-	private IGroupRepository iGroupRepository;
-
-	@Autowired
-	private EntityManager em;
-
-	@Autowired
 	private BackgroundChecker backgroundChecker;
 
 	private Logger logger = LoggerFactory.getLogger("KoturnoApplication");
@@ -57,7 +48,7 @@ public class KoturnoApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		logger.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
 		List<Host> hostsInDatabase = hostRepository.findAll();
@@ -140,7 +131,7 @@ public class KoturnoApplication implements CommandLineRunner {
 			inaccessibilityRepository.save(inaccessibility);
 		}
 
-		CompletableFuture<String> firstChecker = backgroundChecker.start();
+		backgroundChecker.start();
 	}
 
 	@Bean

@@ -13,8 +13,8 @@
     <title>Podgląd</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="/reloader.js"></script>
-    <link rel="stylesheet" href="/koturno.css"/>
+
+    <link rel="stylesheet" href="/koturno.main.css"/>
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
@@ -80,6 +80,7 @@
 
 </div>
 
+<script src="/koturno.reloader.js"></script>
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>
