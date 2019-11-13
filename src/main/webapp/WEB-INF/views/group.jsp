@@ -63,7 +63,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 koturno-style">
+        <div class="col-12 text-center koturno-style">
             <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-primary">
                 Edycja grupy
             </a>
@@ -108,7 +108,7 @@
 
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
-            <table class="table table-hover table-bordered koturno-style">
+            <table class="table table-hover table-bordered text-center koturno-style">
                 <thead>
                 <tr class="thead-dark">
                     <th>Lp.</th>
@@ -123,19 +123,17 @@
                     <tr>
                         <td>${hostStatus.count}</td>
                         <td>${host.name}</td>
-                        <c:if test="${host.isActive()}">
-                            <td class="table-success">
-                                <a href=/host?id=${host.id}&action=info>
-                                        ${host.address}
-                                </a>
-                            </td>
+                        <c:if test="${offlineHosts.contains(host)}">
+                            <td class="table-danger">${host.address}</td>
+                        </c:if>
+                        <c:if test="${unstableHosts.contains(host)}">
+                            <td class="table-warning">${host.address}</td>
+                        </c:if>
+                        <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
+                            <td class="table-success">${host.address}</td>
                         </c:if>
                         <c:if test="${!host.isActive()}">
-                            <td class="table-secondary">
-                                <a href=/host?id=${host.id}&action=info>
-                                        ${host.address}
-                                </a>
-                            </td>
+                            <td class="table-secondary">${host.address}</td>
                         </c:if>
                         <td>${host.description}</td>
                         <td>

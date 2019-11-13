@@ -51,7 +51,9 @@
         <div class="col-12 text-center koturno-style">
             <div class="h1">${host.name}</div>
             <div class="h2">${host.address}</div>
-            <div class="lead"><strong>Grupa: ${host.hostGroup.name}</strong></div>
+            <div class="lead">
+                <strong>Grupa: <a href=/group?id=${host.hostGroup.id}&action=info>${host.hostGroup.name}</a></strong>
+            </div>
             <div class="lead"><strong>Dodany dnia: ${host.dayWhenCreated}</strong></div>
             <c:if test="${host.isActive()}">
                 <div class="lead"><strong>Status: aktywny</strong></div>
@@ -64,7 +66,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 koturno-style">
+        <div class="col-12 text-center koturno-style">
             <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-primary">
                 Edycja hosta
             </a>
@@ -143,7 +145,7 @@
 
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
-            <table class="table table-hover table-bordered koturno-style">
+            <table class="table table-hover table-bordered text-center koturno-style">
                 <thead>
                 <tr class="thead-dark">
                     <th>Lp.</th>
