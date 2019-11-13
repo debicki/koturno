@@ -10,7 +10,7 @@
 
 <nav>
 
-    <div style="color: black; font-variant: small-caps; text-align: center;">
+    <div class="koturno-style">
         <div class="display-3">
             <strong>Koturno</strong>
         </div>
