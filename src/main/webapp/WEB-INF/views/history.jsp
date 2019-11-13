@@ -61,13 +61,7 @@
                             </c:if>
                             <td>${activeInstability.dayOfBegin}</td>
                             <td>${activeInstability.hourOfBegin}</td>
-                            <c:if test="${activeInstability.start == activeInstability.end}">
-                                <td colspan="2">TRWA</td>
-                            </c:if>
-                            <c:if test="${activeInstability.start != activeInstability.end}">
-                                <td>${activeInstability.dayOfEnd}</td>
-                                <td>${activeInstability.hourOfEnd}</td>
-                            </c:if>
+                            <td colspan="2">TRWA</td>
                             <td>
                                 <a href=/inaccessibility?id=${activeInstability.id}&action=info>
                                     zobacz
@@ -92,8 +86,13 @@
                             </td>
                             <td>${inactiveInstability.dayOfBegin}</td>
                             <td>${inactiveInstability.hourOfBegin}</td>
-                            <td>${inactiveInstability.dayOfEnd}</td>
-                            <td>${inactiveInstability.hourOfEnd}</td>
+                            <c:if test="${inactiveInstability.start == inactiveInstability.end}">
+                                <td colspan="2">ZIGNOROWANY</td>
+                            </c:if>
+                            <c:if test="${inactiveInstability.start != inactiveInstability.end}">
+                                <td>${inactiveInstability.dayOfEnd}</td>
+                                <td>${inactiveInstability.hourOfEnd}</td>
+                            </c:if>
                             <td>
                                 <a href=/inaccessibility?id=${inactiveInstability.id}&action=info>
                                     zobacz
