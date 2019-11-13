@@ -25,10 +25,10 @@
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <c:if test="${activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0}">
-                <p class="h1 koturno-style">Brak wpisów w historii</p>
+                <p class="h1 text-center koturno-style">Brak wpisów w historii</p>
             </c:if>
             <c:if test="${!(activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0)}">
-                <table class="table table-hover table-bordered koturno-style">
+                <table class="table table-hover table-bordered text-center koturno-style">
                     <thead>
                     <tr class="thead-dark">
                         <th>Lp.</th>

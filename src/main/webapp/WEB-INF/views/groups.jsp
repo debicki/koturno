@@ -48,7 +48,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 koturno-style">
+        <div class="col-12 text-center koturno-style">
             <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal" class="btn btn-primary">
                 Nowa grupa
             </a>
@@ -87,7 +87,7 @@
 
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
-           <table class="table table-hover table-bordered koturno-style">
+           <table class="table table-hover table-bordered text-center koturno-style">
                 <thead>
                 <tr class="thead-dark">
                     <th>Lp.</th>

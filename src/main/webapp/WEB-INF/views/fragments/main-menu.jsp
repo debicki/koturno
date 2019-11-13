@@ -10,7 +10,7 @@
 
 <nav>
 
-    <div class="koturno-style">
+    <div class="text-center koturno-style">
         <div class="display-3">
             <strong>Koturno</strong>
         </div>
