@@ -51,7 +51,9 @@
         <div class="col-12 text-center koturno-style">
             <div class="h1">${host.name}</div>
             <div class="h2">${host.address}</div>
-            <div class="lead"><strong>Grupa: ${host.hostGroup.name}</strong></div>
+            <div class="lead">
+                <strong>Grupa: <a href=/group?id=${host.hostGroup.id}&action=info>${host.hostGroup.name}</a></strong>
+            </div>
             <div class="lead"><strong>Dodany dnia: ${host.dayWhenCreated}</strong></div>
             <c:if test="${host.isActive()}">
                 <div class="lead"><strong>Status: aktywny</strong></div>
