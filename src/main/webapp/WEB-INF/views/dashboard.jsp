@@ -60,16 +60,25 @@
                                 </c:if>
                                 <td>${instabilityHost.hourOfBegin}</td>
                                 <td>${instabilityHost.host.description}</td>
-                                <td>
-                                    <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
-                                        zobacz
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore>
-                                        ignoruj
-                                    </a>
-                                </td>
+                                <c:if test="${!instabilityHost.isOfflineStatus()}">
+                                    <td colspan="2">
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
+                                            zobacz
+                                        </a>
+                                    </td>
+                                </c:if>
+                                <c:if test="${instabilityHost.isOfflineStatus()}">
+                                    <td>
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
+                                            zobacz
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore>
+                                            ignoruj
+                                        </a>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                     </tbody>
