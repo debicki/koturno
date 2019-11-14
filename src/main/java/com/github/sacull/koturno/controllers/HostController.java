@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -36,14 +37,23 @@ public class HostController {
     @GetMapping
     public String doSomethingWithHost(Model model,
                                       Long id,
-                                      String action) {
+                                      @RequestParam(required = false, defaultValue = "info") String action) {
         Host host = hostRepository.getOne(id);
-        List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHostOrderByStartDesc(host);
-        List<HGroup> hostGroupList = hGroupRepository.findAll();
-        model.addAttribute("host", host);
-        model.addAttribute("inaccessibilityList", hostInaccessibilityList);
-        model.addAttribute("hostGroupList", hostGroupList);
-        return "/WEB-INF/views/host.jsp";
+        if (action.equalsIgnoreCase("remove")) {
+            List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHost(host);
+            for (Inaccessibility inaccessibility : hostInaccessibilityList) {
+                inaccessibilityRepository.delete(inaccessibility);
+            }
+            hostRepository.delete(host);
+            return "redirect:/hosts";
+        } else {
+            List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHostOrderByStartDesc(host);
+            List<HGroup> hostGroupList = hGroupRepository.findAll();
+            model.addAttribute("host", host);
+            model.addAttribute("inaccessibilityList", hostInaccessibilityList);
+            model.addAttribute("hostGroupList", hostGroupList);
+            return "/WEB-INF/views/host.jsp";
+        }
     }
 
     @PostMapping

@@ -65,10 +65,15 @@
         </div>
     </div>
 
+    <br>
+
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-primary">
-                Edycja hosta
+                Edytuj hosta
+            </a>
+            <a href="#removeHostModal" data-toggle="modal" data-target="#removeHostModal" class="btn btn-danger">
+                Usuń hosta
             </a>
         </div>
     </div>
@@ -136,6 +141,29 @@
                         </div>
                         <button class="btn btn-success" type="submit">Zapisz</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="removeHostModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content koturno-style">
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuwanie hosta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" action="/host">
+                        <input type="hidden" name="id" value="${host.id}"/>
+                        <input type="hidden" name="action" value="remove"/>
+                        <div class="koturno-style">Usunąć hosta z adresem ${host.address}?</div>
+                        <br>
+                        <button class="btn btn-danger" type="submit">Usuń</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
                     </form>
                 </div>
