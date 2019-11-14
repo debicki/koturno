@@ -23,6 +23,16 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-12 text-center koturno-style">
+            <a href=/history?filter=all class="btn btn-primary">Wszystkie</a>
+            <a href=/history?filter=onlyOffline class="btn btn-primary">Bez niestabilnych</a>
+            <a href=/history?filter=noIgnored class="btn btn-primary">Bez ignorowanych</a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <c:if test="${activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0}">
                 <p class="h1 text-center koturno-style">Brak wpisów w historii</p>
