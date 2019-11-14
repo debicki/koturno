@@ -77,7 +77,7 @@
                     </c:forEach>
                     <c:forEach items="${inactiveInaccessibilityList}" var="inactiveInstability" varStatus="inactiveInstabilityStatus">
                         <tr>
-                            <td>${inactiveInstabilityStatus.count}</td>
+                            <td>${inactiveInstabilityStatus.count + activeInaccessibilityList.size()}</td>
                             <td>Archiwalny</td>
                             <td>${inactiveInstability.host.name}</td>
                             <td class="table-secondary">
