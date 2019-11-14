@@ -3,14 +3,18 @@
 # Example hosts file
 
 # That examples give DNS addresses as address in dashboard, empty field name and all comment to comment field
+# and add to default hosts group
 8.8.8.8             This is primary Google DNS
 8.8.4.4             This is secondary Google DNS
 
 # That example give sentence 'www.github.com' as address, 'GitHub' as name and comment without 'Github*'
+# and add to group named 'GitHub' (and create group, if it is first host in group)
 www.github.com      GitHub*Best version control system website ;)
 
 # That example give sentence 'google.com' as address and empty name and description
+# and add to default hosts group
 google.com
 
 # That example give sentence 'gmail.com' as address, empty name field and all comment to comment field
+# and add to default hosts group
 gmail.com           Postal
