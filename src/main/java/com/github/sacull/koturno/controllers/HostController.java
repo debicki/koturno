@@ -35,7 +35,8 @@ public class HostController {
     }
 
     @GetMapping
-    public String doSomethingWithHost(Model model,
+    public String doSomethingWithHost(RedirectAttributes redirectAttributes,
+                                      Model model,
                                       Long id,
                                       @RequestParam(required = false, defaultValue = "info") String action) {
         Host host = hostRepository.getOne(id);
@@ -45,6 +46,7 @@ public class HostController {
                 inaccessibilityRepository.delete(inaccessibility);
             }
             hostRepository.delete(host);
+            redirectAttributes.addFlashAttribute("error", "10");
             return "redirect:/hosts";
         } else {
             List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHostOrderByStartDesc(host);

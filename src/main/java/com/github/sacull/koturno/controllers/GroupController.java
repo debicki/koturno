@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -35,26 +36,41 @@ public class GroupController {
     }
 
     @GetMapping
-    public String doSomethingWithGroup(Model model,
+    public String doSomethingWithGroup(RedirectAttributes redirectAttributes,
+                                       Model model,
                                        Long id,
-                                       String action) {
+                                       @RequestParam(required = false, defaultValue = "info") String action) {
         HGroup hGroup = hGroupRepository.getOne(id);
         List<Host> groupHosts = hostRepository.findAllByHostGroup(hGroup);
-        List<Inaccessibility> allInaccessibilityList = inaccessibilityRepository.findAllByActiveIsTrue();
-        List<Host> allUnstableHosts = new ArrayList<>();
-        List<Host> allOfflineHosts = new ArrayList<>();
-        for (Inaccessibility inaccessibility : allInaccessibilityList) {
-            if (inaccessibility.isOfflineStatus()) {
-                allOfflineHosts.add(inaccessibility.getHost());
+        if (action.equalsIgnoreCase("remove")) {
+            if (hGroup.getName().equalsIgnoreCase("default")) {
+                redirectAttributes.addFlashAttribute("error", "12");
+                return "redirect:/groups";
+            } else if (groupHosts.size() > 0) {
+                redirectAttributes.addFlashAttribute("error", "11");
+                return "redirect:/groups";
             } else {
-                allUnstableHosts.add(inaccessibility.getHost());
+                hGroupRepository.delete(hGroup);
+                redirectAttributes.addFlashAttribute("error", "10");
+                return "redirect:/groups";
             }
+        } else {
+            List<Inaccessibility> allInaccessibilityList = inaccessibilityRepository.findAllByActiveIsTrue();
+            List<Host> allUnstableHosts = new ArrayList<>();
+            List<Host> allOfflineHosts = new ArrayList<>();
+            for (Inaccessibility inaccessibility : allInaccessibilityList) {
+                if (inaccessibility.isOfflineStatus()) {
+                    allOfflineHosts.add(inaccessibility.getHost());
+                } else {
+                    allUnstableHosts.add(inaccessibility.getHost());
+                }
+            }
+            model.addAttribute("group", hGroup);
+            model.addAttribute("hosts", groupHosts);
+            model.addAttribute("unstableHosts", allUnstableHosts);
+            model.addAttribute("offlineHosts", allOfflineHosts);
+            return "/WEB-INF/views/group.jsp";
         }
-        model.addAttribute("group", hGroup);
-        model.addAttribute("hosts", groupHosts);
-        model.addAttribute("unstableHosts", allUnstableHosts);
-        model.addAttribute("offlineHosts", allOfflineHosts);
-        return "/WEB-INF/views/group.jsp";
     }
 
     @PostMapping
