@@ -62,10 +62,15 @@
         </div>
     </div>
 
+    <br>
+
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-primary">
-                Edycja grupy
+                Edytuj grupę
+            </a>
+            <a href="#removeGroupModal" data-toggle="modal" data-target="#removeGroupModal" class="btn btn-danger">
+                Usuń grupę
             </a>
         </div>
     </div>
@@ -99,6 +104,29 @@
                         </div>
                         <button class="btn btn-success" type="submit">Zapisz</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="removeGroupModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content koturno-style">
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuwanie grupy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" action="/group">
+                        <input type="hidden" name="id" value="${group.id}"/>
+                        <input type="hidden" name="action" value="remove"/>
+                        <div class="koturno-style">Usunąć grupę ${group.name}?</div>
+                        <br>
+                        <button class="btn btn-danger" type="submit">Usuń</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
                     </form>
                 </div>

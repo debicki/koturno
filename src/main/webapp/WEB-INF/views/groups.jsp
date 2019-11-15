@@ -42,6 +42,30 @@
                     </button>
                 </div>
             </c:if>
+            <c:if test="${error.equals('10')}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Grupa została usunięta pomyślnie
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+            <c:if test="${error.equals('11')}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Nie można usunąć grupę zawierającą hosty
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+            <c:if test="${error.equals('12')}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Nie można usunąć grupy domyślnej
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
         </div>
         <div class="col-3">
         </div>

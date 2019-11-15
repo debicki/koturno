@@ -42,6 +42,14 @@
                     </button>
                 </div>
             </c:if>
+            <c:if test="${error.equals('10')}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Host został usunięty pomyślnie
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
         </div>
         <div class="col-3">
         </div>

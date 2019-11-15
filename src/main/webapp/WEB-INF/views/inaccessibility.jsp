@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <div class="h1">${inaccessibility.host.name}</div>
-            <div class="h2">${inaccessibility.host.address}</div>
+            <div class="h2"><a href=/host?id=${inaccessibility.host.id}&action=info>${inaccessibility.host.address}</a></div>
             <div class="lead"><strong>Data początku: ${inaccessibility.dayOfBegin}</strong></div>
             <div class="lead"><strong>Godzina początku: ${inaccessibility.hourOfBegin}</strong></div>
             <c:if test="${(inaccessibility.start == inaccessibility.end) && inaccessibility.isActive()}">
