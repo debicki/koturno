@@ -2,7 +2,6 @@ package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/history")
-@Slf4j
 public class HistoryPageController {
 
     private final InaccessibilityRepository inaccessibilityRepository;
@@ -27,7 +25,7 @@ public class HistoryPageController {
 
     @GetMapping
     public String serveHistoryPage(Model model,
-                                   @RequestParam(required = false, defaultValue = "all") String filter) {
+                                   @RequestParam(required = false, defaultValue = "only-offline") String filter) {
         List<Inaccessibility> allInaccessibilityList = inaccessibilityRepository.findAllByOrderByStartDesc();
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
@@ -35,19 +33,19 @@ public class HistoryPageController {
             if (inaccessibility.isActive()) {
                 activeInaccessibilityList.add(inaccessibility);
             } else {
-                if (filter.equalsIgnoreCase("onlyOffline")) {
+                if (filter.equalsIgnoreCase("only-offline")) {
                     if (inaccessibility.isOfflineStatus()) {
-                        log.warn("AAAAAAAAAAAA");
                         inactiveInaccessibilityList.add(inaccessibility);
                     }
-                } else if (filter.equalsIgnoreCase("noIgnored")) {
+                    model.addAttribute("filter", "only-offline");
+                } else if (filter.equalsIgnoreCase("no-ignored")) {
                     if (!inaccessibility.getStart().equals(inaccessibility.getEnd())) {
-                        log.warn(inaccessibility.getStart() + "BBBBBBBBBBBBB" + inaccessibility.getEnd());
                         inactiveInaccessibilityList.add(inaccessibility);
                     }
+                    model.addAttribute("filter", "no-ignored");
                 } else {
-                    log.warn("CCCCCCCCCCCC");
                     inactiveInaccessibilityList.add(inaccessibility);
+                    model.addAttribute("filter", "all");
                 }
             }
         }

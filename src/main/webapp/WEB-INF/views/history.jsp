@@ -24,9 +24,24 @@
 
     <div class="row">
         <div class="col-12 text-center koturno-style">
-            <a href=/history?filter=all class="btn btn-primary">Wszystkie</a>
-            <a href=/history?filter=onlyOffline class="btn btn-primary">Bez niestabilnych</a>
-            <a href=/history?filter=noIgnored class="btn btn-primary">Bez ignorowanych</a>
+            <c:if test="${filter.equals('all')}">
+                <a href=/history?filter=all class="btn btn-secondary">Wszystkie</a>
+            </c:if>
+            <c:if test="${!filter.equals('all')}">
+                <a href=/history?filter=all class="btn btn-primary">Wszystkie</a>
+            </c:if>
+            <c:if test="${filter.equals('only-offline')}">
+                <a href=/history?filter=only-offline class="btn btn-secondary">Bez niestabilnych</a>
+            </c:if>
+            <c:if test="${!filter.equals('only-offline')}">
+                <a href=/history?filter=only-offline class="btn btn-primary">Bez niestabilnych</a>
+            </c:if>
+            <c:if test="${filter.equals('no-ignored')}">
+                <a href=/history?filter=no-ignored class="btn btn-secondary">Bez ignorowanych</a>
+            </c:if>
+            <c:if test="${!filter.equals('no-ignored')}">
+                <a href=/history?filter=no-ignored class="btn btn-primary">Bez ignorowanych</a>
+            </c:if>
         </div>
     </div>
 
