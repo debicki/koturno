@@ -66,66 +66,56 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${activeInaccessibilityList}" var="activeInstability" varStatus="activeInstabilityStatus">
+                    <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
                         <tr>
-                            <td>${activeInstabilityStatus.count}</td>
-                            <td>Aktywny</td>
-                            <td>${activeInstability.host.name}</td>
-                            <c:if test="${activeInstability.isOfflineStatus()}">
+                            <td>${inaccessibilityStatus.count}</td>
+                            <c:if test="${inaccessibility.isActive()}">
+                                <td>Aktywny</td>
+                            </c:if>
+                            <c:if test="${!inaccessibility.isActive()}">
+                                <td>Archiwalny</td>
+                            </c:if>
+                            <td>${inaccessibility.host.name}</td>
+                            <c:if test="${inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
                                 <td class="table-danger">
-                                    <a href=/host?id=${activeInstability.host.id}&action=info>
-                                            ${activeInstability.host.address}
+                                    <a href=/host?id=${inaccessibility.host.id}&action=info>
+                                            ${inaccessibility.host.address}
                                     </a>
                                 </td>
                             </c:if>
-                            <c:if test="${!activeInstability.isOfflineStatus()}">
+                            <c:if test="${!inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
                                 <td class="table-warning">
-                                    <a href=/host?id=${activeInstability.host.id}&action=info>
-                                            ${activeInstability.host.address}
+                                    <a href=/host?id=${inaccessibility.host.id}&action=info>
+                                            ${inaccessibility.host.address}
                                     </a>
                                 </td>
                             </c:if>
-                            <td>${activeInstability.dayOfBegin}</td>
-                            <td>${activeInstability.hourOfBegin}</td>
-                            <td colspan="2">TRWA</td>
-                            <td>
-                                <a href=/inaccessibility?id=${activeInstability.id}&action=info>
-                                    zobacz
-                                </a>
-                            </td>
-                            <td>
-                                <a href=/inaccessibility?id=${activeInstability.id}&action=remove>
-                                    usuń
-                                </a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    <c:forEach items="${inactiveInaccessibilityList}" var="inactiveInstability" varStatus="inactiveInstabilityStatus">
-                        <tr>
-                            <td>${inactiveInstabilityStatus.count + activeInaccessibilityList.size()}</td>
-                            <td>Archiwalny</td>
-                            <td>${inactiveInstability.host.name}</td>
-                            <td class="table-secondary">
-                                <a href=/host?id=${inactiveInstability.host.id}&action=info>
-                                        ${inactiveInstability.host.address}
-                                </a>
-                            </td>
-                            <td>${inactiveInstability.dayOfBegin}</td>
-                            <td>${inactiveInstability.hourOfBegin}</td>
-                            <c:if test="${inactiveInstability.start == inactiveInstability.end}">
+                            <c:if test="${!inaccessibility.isActive()}">
+                                <td class="table-secondary">
+                                    <a href=/host?id=${inaccessibility.host.id}&action=info>
+                                            ${inaccessibility.host.address}
+                                    </a>
+                                </td>
+                            </c:if>
+                            <td>${inaccessibility.dayOfBegin}</td>
+                            <td>${inaccessibility.hourOfBegin}</td>
+                            <c:if test="${inaccessibility.isActive()}">
+                                <td colspan="2">TRWA</td>
+                            </c:if>
+                            <c:if test="${!inaccessibility.isActive() && inaccessibility.start == inaccessibility.end}">
                                 <td colspan="2">ZIGNOROWANY</td>
                             </c:if>
-                            <c:if test="${inactiveInstability.start != inactiveInstability.end}">
-                                <td>${inactiveInstability.dayOfEnd}</td>
-                                <td>${inactiveInstability.hourOfEnd}</td>
+                            <c:if test="${inaccessibility.start != inaccessibility.end}">
+                                <td>${inaccessibility.dayOfEnd}</td>
+                                <td>${inaccessibility.hourOfEnd}</td>
                             </c:if>
                             <td>
-                                <a href=/inaccessibility?id=${inactiveInstability.id}&action=info>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info>
                                     zobacz
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${inactiveInstability.id}&action=remove&filter=${filter}>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove>
                                     usuń
                                 </a>
                             </td>
@@ -136,6 +126,37 @@
             </c:if>
         </div>
     </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link" href="#">Wyświetl pierwsze</a></li>
+            <c:if test="${limit == 100}">
+                <li class="page-item active"><a class="page-link" href=/history?filter=${filter}&limit=100>100</a></li>
+            </c:if>
+            <c:if test="${limit != 100}">
+                <li class="page-item"><a class="page-link" href=/history?filter=${filter}&limit=100>100</a></li>
+            </c:if>
+            <c:if test="${limit == 500}">
+                <li class="page-item active"><a class="page-link" href=/history?filter=${filter}&limit=500>500</a></li>
+            </c:if>
+            <c:if test="${limit != 500}">
+                <li class="page-item"><a class="page-link" href=/history?filter=${filter}&limit=500>500</a></li>
+            </c:if>
+            <c:if test="${limit == 1000}">
+                <li class="page-item active"><a class="page-link" href=/history?filter=${filter}&limit=1000>1000</a></li>
+            </c:if>
+            <c:if test="${limit != 1000}">
+                <li class="page-item"><a class="page-link" href=/history?filter=${filter}&limit=1000>1000</a></li>
+            </c:if>
+            <c:if test="${limit == 5000}">
+                <li class="page-item active"><a class="page-link" href=/history?filter=${filter}&limit=5000>5000</a></li>
+            </c:if>
+            <c:if test="${limit != 5000}">
+                <li class="page-item"><a class="page-link" href=/history?filter=${filter}&limit=5000>5000</a></li>
+            </c:if>
+            <li class="page-item disabled"><a class="page-link" href="#">hostów</a></li>
+        </ul>
+    </nav>
 
 </div>
 
