@@ -31,16 +31,16 @@
                 <a href=/history?filter=all class="btn btn-primary">Wszystkie</a>
             </c:if>
             <c:if test="${filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline class="btn btn-secondary">Bez niestabilnych</a>
+                <a href=/history?filter=only-offline class="btn btn-secondary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${!filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline class="btn btn-primary">Bez niestabilnych</a>
+                <a href=/history?filter=only-offline class="btn btn-primary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored class="btn btn-secondary">Bez ignorowanych</a>
+                <a href=/history?filter=no-ignored class="btn btn-secondary">Historia bez ignorowanych</a>
             </c:if>
             <c:if test="${!filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored class="btn btn-primary">Bez ignorowanych</a>
+                <a href=/history?filter=no-ignored class="btn btn-primary">Historia bez ignorowanych</a>
             </c:if>
         </div>
     </div>
