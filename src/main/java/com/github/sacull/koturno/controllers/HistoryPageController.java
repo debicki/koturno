@@ -37,18 +37,19 @@ public class HistoryPageController {
                     if (inaccessibility.isOfflineStatus()) {
                         inactiveInaccessibilityList.add(inaccessibility);
                     }
-                    model.addAttribute("filter", "only-offline");
+                    filter = "only-offline";
                 } else if (filter.equalsIgnoreCase("no-ignored")) {
                     if (!inaccessibility.getStart().equals(inaccessibility.getEnd())) {
                         inactiveInaccessibilityList.add(inaccessibility);
                     }
-                    model.addAttribute("filter", "no-ignored");
+                    filter = "no-ignored";
                 } else {
                     inactiveInaccessibilityList.add(inaccessibility);
-                    model.addAttribute("filter", "all");
+                    filter = "all";
                 }
             }
         }
+        model.addAttribute("filter", filter);
         model.addAttribute("activeInaccessibilityList", activeInaccessibilityList);
         model.addAttribute("inactiveInaccessibilityList", inactiveInaccessibilityList);
         model.addAttribute("disabledMenuItem", "history");

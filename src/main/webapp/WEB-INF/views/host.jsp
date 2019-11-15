@@ -171,6 +171,14 @@
         </div>
     </div>
 
+    <c:if test="${inaccessibilityList.size() == 0}">
+        <div class="row">
+            <div class="col-12" style="padding-bottom: 20px">
+                <p class="h1 text-center koturno-style">Brak zarejestrowanych niedostępności</p>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${inaccessibilityList.size() > 0}">
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <table class="table table-hover table-bordered text-center koturno-style">
@@ -186,7 +194,12 @@
                 <tbody>
                 <c:forEach items="${inaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
                     <tr>
-                        <td>${inaccessibilityStatus.count}</td>
+                        <c:if test="${inaccessibility.isOfflineStatus()}">
+                            <td class="table-danger">${inaccessibilityStatus.count}</td>
+                        </c:if>
+                        <c:if test="${!inaccessibility.isOfflineStatus()}">
+                            <td class="table-warning">${inaccessibilityStatus.count}</td>
+                        </c:if>
                         <td>${inaccessibility.dayOfBegin}</td>
                         <td>${inaccessibility.hourOfBegin}</td>
                         <c:if test="${inaccessibility.start == inaccessibility.end}">
@@ -207,6 +220,7 @@
             </table>
         </div>
     </div>
+    </c:if>
 
 </div>
 

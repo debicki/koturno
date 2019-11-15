@@ -134,6 +134,14 @@
         </div>
     </div>
 
+    <c:if test="${hosts.size() == 0}">
+        <div class="row">
+            <div class="col-12" style="padding-bottom: 20px">
+                <p class="h1 text-center koturno-style">Grupa jest pusta</p>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${hosts.size() > 0}">
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <table class="table table-hover table-bordered text-center koturno-style">
@@ -175,6 +183,7 @@
             </table>
         </div>
     </div>
+    </c:if>
 
 </div>
 

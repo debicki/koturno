@@ -44,6 +44,8 @@
         </div>
     </div>
 
+    <br>
+
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal" class="btn btn-primary">

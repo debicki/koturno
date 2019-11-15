@@ -125,7 +125,7 @@
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${inactiveInstability.id}&action=remove>
+                                <a href=/inaccessibility?id=${inactiveInstability.id}&action=remove&filter=${filter}>
                                     usuń
                                 </a>
                             </td>
