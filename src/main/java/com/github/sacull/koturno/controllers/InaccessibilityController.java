@@ -23,14 +23,15 @@ public class InaccessibilityController {
     @GetMapping
     public String doSomethingWithInaccessibility(Model model,
                                                  Long id,
-                                                 String action) {
+                                                 String action,
+                                                 String filter) {
         Inaccessibility inaccessibility = inaccessibilityRepository.getOne(id);
         if (action.equals("ignore")) {
             inaccessibility.setActive(false);
             inaccessibilityRepository.save(inaccessibility);
         } else if (action.equals("remove")) {
             inaccessibilityRepository.delete(inaccessibility);
-            return "redirect:/history";
+            return "redirect:/history?filter=" + filter;
         } else if (action.equals("info")) {
             model.addAttribute("inaccessibility", inaccessibility);
             return "/WEB-INF/views/inaccessibility.jsp";
