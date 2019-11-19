@@ -36,7 +36,7 @@
                             <th>Adres</th>
                             <th>Ostatnio online</th>
                             <th>Opis</th>
-                            <th colspan="2">Akcje</th>
+                            <th colspan="3">Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,11 +66,21 @@
                                             zobacz
                                         </a>
                                     </td>
+                                    <td>
+                                        <a href=/ping?address=${instabilityHost.host.address}>
+                                            ping
+                                        </a>
+                                    </td>
                                 </c:if>
                                 <c:if test="${instabilityHost.isOfflineStatus()}">
                                     <td>
                                         <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
                                             zobacz
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href=/ping?address=${instabilityHost.host.address} target="_blank">
+                                            ping
                                         </a>
                                     </td>
                                     <td>
