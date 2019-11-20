@@ -67,7 +67,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href=/ping?address=${instabilityHost.host.address}>
+                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                             ping
                                         </a>
                                     </td>
@@ -79,7 +79,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href=/ping?address=${instabilityHost.host.address} target="_blank">
+                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                             ping
                                         </a>
                                     </td>
