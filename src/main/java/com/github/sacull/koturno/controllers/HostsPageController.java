@@ -6,6 +6,7 @@ import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/hosts")
+@Slf4j
 public class HostsPageController {
 
     private final HostRepository hostRepository;
@@ -76,10 +81,24 @@ public class HostsPageController {
                 hostToAdd.setActive(false);
             }
             hostRepository.save(hostToAdd);
-            redirectAttributes.addFlashAttribute("error", "0");
+            if (isValidAddress(address)) {
+                redirectAttributes.addFlashAttribute("error", "0");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "3");
+            }
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
         return "redirect:/hosts";
+    }
+
+    private boolean isValidAddress(String address) {
+        InetAddress host;
+        try {
+            host = InetAddress.getByName(address);
+        } catch (UnknownHostException e) {
+            return false;
+        }
+        return true;
     }
 }

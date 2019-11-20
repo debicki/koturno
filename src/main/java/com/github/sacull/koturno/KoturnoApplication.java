@@ -81,32 +81,6 @@ public class KoturnoApplication implements CommandLineRunner {
 				} catch (IOException ex) {
 					logger.error("Error while loading hosts from file");
 				}
-			} else if (args[0].equalsIgnoreCase("-a")) {
-				Host hostToAdd;
-				boolean isFound;
-				for (int i = 1; i < args.length; i++) {
-					isFound = false;
-					hostToAdd = Host.builder()
-							.name("")
-							.address(args[i])
-							.description("")
-							.hostGroup(defaultGroup)
-							.build();
-					for (Host host : hostsInDatabase) {
-						if (host.compareAddress(hostToAdd)) {
-							isFound = true;
-						}
-					}
-					if (!isFound) {
-						hostsToAdd.add(hostToAdd);
-						if (!groupsToUpdate.contains(defaultGroup)) {
-							groupsToUpdate.add(defaultGroup);
-						}
-						logger.info("Host {} added", args[i]);
-					} else {
-						logger.info("Host {} isn't added, because database contains that address", args[i]);
-					}
-				}
 			} else {
 				logger.error("Not recognized parameter");
 			}
