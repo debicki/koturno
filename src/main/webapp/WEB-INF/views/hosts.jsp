@@ -42,6 +42,15 @@
                     </button>
                 </div>
             </c:if>
+            <c:if test="${error.equals('3')}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Host został dodany, lecz adres może zawierać błędy<br>
+                    Sprawdź wpisany adres IP lub połączenie z serwerem DNS
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
             <c:if test="${error.equals('10')}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     Host został usunięty pomyślnie
