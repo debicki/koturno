@@ -6,7 +6,7 @@ import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HGroupRepository;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.services.BackgroundChecker;
+import com.github.sacull.koturno.utils.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,11 +1,10 @@
-package com.github.sacull.koturno.services;
+package com.github.sacull.koturno.utils;
 
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.repositories.HostRepository;
 import com.github.sacull.koturno.repositories.IGroupRepository;
 import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.utils.LifeChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
