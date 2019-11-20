@@ -2,8 +2,8 @@ package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
-import com.github.sacull.koturno.repositories.HGroupRepository;
-import com.github.sacull.koturno.repositories.HostRepository;
+import com.github.sacull.koturno.services.HGroupService;
+import com.github.sacull.koturno.services.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,19 +20,19 @@ import java.util.Map;
 @RequestMapping("/groups")
 public class GroupsPageController {
 
-    private final HGroupRepository hGroupRepository;
-    private final HostRepository hostRepository;
+    private final HGroupService hGroupService;
+    private final HostService hostService;
 
     @Autowired
-    public GroupsPageController(HGroupRepository hGroupRepository, HostRepository hostRepository) {
-        this.hGroupRepository = hGroupRepository;
-        this.hostRepository = hostRepository;
+    public GroupsPageController(HGroupService hGroupService, HostService hostService) {
+        this.hGroupService = hGroupService;
+        this.hostService = hostService;
     }
 
     @GetMapping
     public String serveGroupsPage(Model model) {
-        List<HGroup> hGroups = hGroupRepository.findAll();
-        List<Host> allHosts = hostRepository.findAll();
+        List<HGroup> hGroups = hGroupService.getAllGroups();
+        List<Host> allHosts = hostService.getAllHosts();
         Map<String, Integer> hGroupMembersCounter = new HashMap<>();
         for (HGroup hGroup : hGroups) {
             hGroupMembersCounter.put(hGroup.getName(), 0);
@@ -54,9 +54,9 @@ public class GroupsPageController {
         if (description == null) {
             description = "";
         }
-        if (hGroupRepository.findByName(name) == null) {
+        if (hGroupService.getGroupByName(name) == null) {
             HGroup hGroupToAdd = new HGroup(name, description);
-            hGroupRepository.save(hGroupToAdd);
+            hGroupService.save(hGroupToAdd);
             redirectAttributes.addFlashAttribute("error", "0");
         } else {
             redirectAttributes.addFlashAttribute("error", "2");

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface InaccessibilityRepository extends JpaRepository<Inaccessibility, Long> {
+public interface InaccessibilityRepo extends JpaRepository<Inaccessibility, Long> {
 
     Inaccessibility findByHostAndActiveIsTrueOrderByEndDesc(Host host);
 

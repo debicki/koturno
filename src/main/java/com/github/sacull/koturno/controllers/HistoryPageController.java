@@ -1,7 +1,7 @@
 package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
+import com.github.sacull.koturno.services.InaccessibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,18 +16,18 @@ import java.util.List;
 @RequestMapping("/history")
 public class HistoryPageController {
 
-    private final InaccessibilityRepository inaccessibilityRepository;
+    private InaccessibilityService inaccessibilityService;
 
     @Autowired
-    public HistoryPageController(InaccessibilityRepository inaccessibilityRepository) {
-        this.inaccessibilityRepository = inaccessibilityRepository;
+    public HistoryPageController(InaccessibilityService inaccessibilityService) {
+        this.inaccessibilityService = inaccessibilityService;
     }
 
     @GetMapping
     public String serveHistoryPage(Model model,
                                    @RequestParam(required = false, defaultValue = "only-offline") String filter,
                                    @RequestParam(required = false, defaultValue = "100") Integer limit) {
-        List<Inaccessibility> allInaccessibilityList = inaccessibilityRepository.findAllByOrderByStartDesc();
+        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc();
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
