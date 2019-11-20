@@ -16,3 +16,15 @@ dashboard, but the interface offers three other main pages. First from them is a
 where we can manage hosts. Second, give us the possibility to view and manage host groups. Third shows the history of 
 all inaccessibility.
 
+### Launching the application
+After compile to package we got \*.war file, but in them, we have Apache Tomcat Embedded. That's mean we can run 
+an application from command line using command: `java -jar koturno-*.war`, where \* is version compiled application.
+
+### Adding new hosts
+We can add hosts in two ways. First, we can add a path to file with hosts in the command line, when we starting 
+application, but if an application is running we have the second way. On the host's page, we have the possibility 
+to add a new host.
+
+In the first case, we can add more than one host, but hosts will be assigned to groups named as that hosts. Of course, 
+in application, we can move the host to another group if we want that. In the second case, we can add only one host by 
+form, but we can immediately assign to the target group.
