@@ -3,9 +3,9 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.HGroupRepository;
-import com.github.sacull.koturno.repositories.HostRepository;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
+import com.github.sacull.koturno.services.HGroupService;
+import com.github.sacull.koturno.services.HostService;
+import com.github.sacull.koturno.services.InaccessibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,17 +21,15 @@ import java.util.List;
 @RequestMapping("/host")
 public class HostController {
 
-    private final InaccessibilityRepository inaccessibilityRepository;
-    private final HostRepository hostRepository;
-    private final HGroupRepository hGroupRepository;
+    private InaccessibilityService inaccessibilityService;
+    private HostService hostService;
+    private HGroupService hGroupService;
 
     @Autowired
-    public HostController(InaccessibilityRepository inaccessibilityRepository,
-                          HostRepository hostRepository,
-                          HGroupRepository hGroupRepository) {
-        this.inaccessibilityRepository = inaccessibilityRepository;
-        this.hostRepository = hostRepository;
-        this.hGroupRepository = hGroupRepository;
+    public HostController(InaccessibilityService inaccessibilityService, HostService hostService, HGroupService hGroupService) {
+        this.inaccessibilityService = inaccessibilityService;
+        this.hostService = hostService;
+        this.hGroupService = hGroupService;
     }
 
     @GetMapping
@@ -39,18 +37,18 @@ public class HostController {
                                       Model model,
                                       Long id,
                                       @RequestParam(required = false, defaultValue = "info") String action) {
-        Host host = hostRepository.getOne(id);
+        Host host = hostService.getHostById(id);
         if (action.equalsIgnoreCase("remove")) {
-            List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHost(host);
+            List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHost(host);
             for (Inaccessibility inaccessibility : hostInaccessibilityList) {
-                inaccessibilityRepository.delete(inaccessibility);
+                inaccessibilityService.delete(inaccessibility);
             }
-            hostRepository.delete(host);
+            hostService.delete(host);
             redirectAttributes.addFlashAttribute("error", "10");
             return "redirect:/hosts";
         } else {
-            List<Inaccessibility> hostInaccessibilityList = inaccessibilityRepository.findAllByHostOrderByStartDesc(host);
-            List<HGroup> hostGroupList = hGroupRepository.findAll();
+            List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHostOrderByStartDesc(host);
+            List<HGroup> hostGroupList = hGroupService.getAllGroups();
             model.addAttribute("host", host);
             model.addAttribute("inaccessibilityList", hostInaccessibilityList);
             model.addAttribute("hostGroupList", hostGroupList);
@@ -66,9 +64,9 @@ public class HostController {
                              String name,
                              String description,
                              String hostGroupName) {
-        Host hostToSave = hostRepository.findByAddress(originAddress);
-        if (hostRepository.findByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
-            HGroup hostGroup = hGroupRepository.findByName(hostGroupName);
+        Host hostToSave = hostService.getHostByAddress(originAddress);
+        if (hostService.getHostByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
+            HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
             if (activity.equalsIgnoreCase("Aktywny")) {
                 hostToSave.setActive(true);
@@ -78,7 +76,7 @@ public class HostController {
             hostToSave.setName(name);
             hostToSave.setDescription(description);
             hostToSave.setHostGroup(hostGroup);
-            hostRepository.save(hostToSave);
+            hostService.save(hostToSave);
             redirectAttributes.addFlashAttribute("error", "0");
         } else {
             redirectAttributes.addFlashAttribute("error", "1");

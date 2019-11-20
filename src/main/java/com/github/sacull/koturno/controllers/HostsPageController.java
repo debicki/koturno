@@ -3,9 +3,9 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.HGroupRepository;
-import com.github.sacull.koturno.repositories.HostRepository;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
+import com.github.sacull.koturno.services.HGroupService;
+import com.github.sacull.koturno.services.HostService;
+import com.github.sacull.koturno.services.InaccessibilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -26,24 +25,22 @@ import java.util.List;
 @Slf4j
 public class HostsPageController {
 
-    private final HostRepository hostRepository;
-    private final InaccessibilityRepository inaccessibilityRepository;
-    private final HGroupRepository hGroupRepository;
+    private HostService hostService;
+    private InaccessibilityService inaccessibilityService;
+    private HGroupService hGroupService;
 
     @Autowired
-    public HostsPageController(HostRepository hostRepository,
-                               InaccessibilityRepository inaccessibilityRepository,
-                               HGroupRepository hGroupRepository) {
-        this.hostRepository = hostRepository;
-        this.inaccessibilityRepository = inaccessibilityRepository;
-        this.hGroupRepository = hGroupRepository;
+    public HostsPageController(HostService hostService, InaccessibilityService inaccessibilityService, HGroupService hGroupService) {
+        this.hostService = hostService;
+        this.inaccessibilityService = inaccessibilityService;
+        this.hGroupService = hGroupService;
     }
 
     @GetMapping
     public String serveHostsPage(Model model) {
-        List<Host> allHosts = hostRepository.findAllByOrderByName();
-        List<HGroup> hostGroupList = hGroupRepository.findAll();
-        List<Inaccessibility> allInaccessibilityList = inaccessibilityRepository.findAllByActiveIsTrue();
+        List<Host> allHosts = hostService.findAllByOrderByName();
+        List<HGroup> hostGroupList = hGroupService.getAllGroups();
+        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByActiveIsTrue();
         List<Host> allUnstableHosts = new ArrayList<>();
         List<Host> allOfflineHosts = new ArrayList<>();
         for (Inaccessibility inaccessibility : allInaccessibilityList) {
@@ -74,13 +71,13 @@ public class HostsPageController {
         if (description == null) {
             description = "";
         }
-        if (hostRepository.findByAddress(address) == null) {
-            HGroup hostGroup = hGroupRepository.findByName(hostGroupName);
+        if (hostService.getHostByAddress(address) == null) {
+            HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             Host hostToAdd = new Host(name, address, description, hostGroup);
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);
             }
-            hostRepository.save(hostToAdd);
+            hostService.save(hostToAdd);
             if (isValidAddress(address)) {
                 redirectAttributes.addFlashAttribute("error", "0");
             } else {

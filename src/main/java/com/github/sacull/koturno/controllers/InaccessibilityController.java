@@ -1,7 +1,7 @@
 package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
+import com.github.sacull.koturno.services.InaccessibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/inaccessibility")
 public class InaccessibilityController {
 
-    InaccessibilityRepository inaccessibilityRepository;
+    private InaccessibilityService inaccessibilityService;
 
     @Autowired
-    public InaccessibilityController(InaccessibilityRepository inaccessibilityRepository) {
-        this.inaccessibilityRepository = inaccessibilityRepository;
+    public InaccessibilityController(InaccessibilityService inaccessibilityService) {
+        this.inaccessibilityService = inaccessibilityService;
     }
 
     @GetMapping
@@ -25,25 +25,27 @@ public class InaccessibilityController {
                                                  Long id,
                                                  String action,
                                                  String filter) {
-        Inaccessibility inaccessibility = inaccessibilityRepository.getOne(id);
-        if (action.equals("ignore")) {
-            inaccessibility.setActive(false);
-            inaccessibilityRepository.save(inaccessibility);
-        } else if (action.equals("remove")) {
-            inaccessibilityRepository.delete(inaccessibility);
-            return "redirect:/history?filter=" + filter;
-        } else if (action.equals("info")) {
-            model.addAttribute("inaccessibility", inaccessibility);
-            return "/WEB-INF/views/inaccessibility.jsp";
+        Inaccessibility inaccessibility = inaccessibilityService.getInaccessibilityById(id);
+        switch (action) {
+            case "ignore":
+                inaccessibility.setActive(false);
+                inaccessibilityService.save(inaccessibility);
+                break;
+            case "remove":
+                inaccessibilityService.delete(inaccessibility);
+                return "redirect:/history?filter=" + filter;
+            case "info":
+                model.addAttribute("inaccessibility", inaccessibility);
+                return "/WEB-INF/views/inaccessibility.jsp";
         }
         return "redirect:/";
     }
 
     @PostMapping
     public String editHost(Long id, String description) {
-        Inaccessibility inaccessibilityToSave = inaccessibilityRepository.getOne(id);
+        Inaccessibility inaccessibilityToSave = inaccessibilityService.getInaccessibilityById(id);
         inaccessibilityToSave.setDescription(description);
-        inaccessibilityRepository.save(inaccessibilityToSave);
+        inaccessibilityService.save(inaccessibilityToSave);
         return "redirect:/inaccessibility?id=" + inaccessibilityToSave.getId() +"&action=info";
     }
 }

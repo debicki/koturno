@@ -3,13 +3,12 @@ package com.github.sacull.koturno;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.HGroupRepository;
-import com.github.sacull.koturno.repositories.HostRepository;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.services.BackgroundChecker;
+import com.github.sacull.koturno.services.HGroupService;
+import com.github.sacull.koturno.services.HostService;
+import com.github.sacull.koturno.services.InaccessibilityService;
+import com.github.sacull.koturno.utils.BackgroundChecker;
 import com.github.sacull.koturno.utils.FileManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,21 +26,24 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableAsync
+@Slf4j(topic = "KoturnoApplication")
 public class KoturnoApplication implements CommandLineRunner {
 
-	@Autowired
-	private HostRepository hostRepository;
-
-	@Autowired
-	private HGroupRepository hGroupRepository;
-
-	@Autowired
-	private InaccessibilityRepository inaccessibilityRepository;
-
-	@Autowired
+	private HostService hostService;
+	private HGroupService hGroupService;
+	private InaccessibilityService inaccessibilityService;
 	private BackgroundChecker backgroundChecker;
 
-	private Logger logger = LoggerFactory.getLogger("KoturnoApplication");
+	@Autowired
+	public KoturnoApplication(HostService hostService,
+							  HGroupService hGroupService,
+							  InaccessibilityService inaccessibilityService,
+							  BackgroundChecker backgroundChecker) {
+		this.hostService = hostService;
+		this.hGroupService = hGroupService;
+		this.inaccessibilityService = inaccessibilityService;
+		this.backgroundChecker = backgroundChecker;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(KoturnoApplication.class, args);
@@ -49,14 +51,14 @@ public class KoturnoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		logger.info("Koturno started");
+		log.info("Koturno started");
 		List<Host> hostsToAdd = new ArrayList<>();
-		List<Host> hostsInDatabase = hostRepository.findAll();
+		List<Host> hostsInDatabase = hostService.getAllHosts();
 		List<HGroup> groupsToUpdate = new ArrayList<>();
-		HGroup defaultGroup = hGroupRepository.findByName("default");
+		HGroup defaultGroup = hGroupService.getGroupByName("default");
 		if (defaultGroup == null) {
 			defaultGroup = new HGroup("default", "Default group");
-			defaultGroup = hGroupRepository.save(defaultGroup);
+			defaultGroup = hGroupService.save(defaultGroup);
 		}
 		if (args.length >= 2) {
 			if (args[0].equalsIgnoreCase("-f")) {
@@ -69,40 +71,40 @@ public class KoturnoApplication implements CommandLineRunner {
 						if (host.getName().equals("") || host.getName() == null) {
 							host.setHostGroup(defaultGroup);
 						} else {
-							HGroup group = hGroupRepository.findByName(host.getName());
+							HGroup group = hGroupService.getGroupByName(host.getName());
 							if (group == null) {
 								group = new HGroup(host.getName(), "");
-								group = hGroupRepository.save(group);
+								group = hGroupService.save(group);
 							}
 							host.setHostGroup(group);
 						}
 					}
-					logger.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
+					log.info("{} hosts from file {} was added", hostsToAdd.size(), args[1]);
 				} catch (IOException ex) {
-					logger.error("Error while loading hosts from file");
+					log.error("Error while loading hosts from file");
 				}
 			} else {
-				logger.error("Not recognized parameter");
+				log.error("Not recognized parameter");
 			}
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("-X")) {
-			logger.info("Nothing to do");
+			log.info("Nothing to do");
 		} else if (args.length == 1) {
-			logger.error("Incomplete parameter");
+			log.error("Incomplete parameter");
 		}
 
 		if (hostsToAdd.size() > 0) {
 			for (Host host : hostsToAdd) {
-				hostRepository.save(host);
+				hostService.save(host);
 			}
 		}
 
-		List<Inaccessibility> inaccessibilities = inaccessibilityRepository.findAll();
+		List<Inaccessibility> inaccessibilities = inaccessibilityService.getAllInaccessibility();
 		for (Inaccessibility inaccessibility : inaccessibilities) {
 			if (inaccessibility.getStart().equals(inaccessibility.getEnd())) {
 				inaccessibility.setEnd(LocalDateTime.now());
 				inaccessibility.setActive(false);
 			}
-			inaccessibilityRepository.save(inaccessibility);
+			inaccessibilityService.save(inaccessibility);
 		}
 
 		backgroundChecker.start();

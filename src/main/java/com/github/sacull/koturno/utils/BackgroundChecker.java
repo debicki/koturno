@@ -1,43 +1,40 @@
-package com.github.sacull.koturno.services;
+package com.github.sacull.koturno.utils;
 
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.repositories.HostRepository;
-import com.github.sacull.koturno.repositories.IGroupRepository;
-import com.github.sacull.koturno.repositories.InaccessibilityRepository;
-import com.github.sacull.koturno.utils.LifeChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.sacull.koturno.services.HostService;
+import com.github.sacull.koturno.services.IGroupService;
+import com.github.sacull.koturno.services.InaccessibilityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@Service
+@Component
+@Slf4j
 public class BackgroundChecker {
 
-    @Autowired
-    private EntityManager em;
-
-    @Autowired
-    private HostRepository hostRepository;
-
-    @Autowired
-    private InaccessibilityRepository inaccessibilityRepository;
-
-    @Autowired
-    private IGroupRepository iGroupRepository;
-
-    @Autowired
+    private HostService hostService;
+    private InaccessibilityService inaccessibilityService;
+    private IGroupService iGroupService;
     private LifeChecker lifeChecker;
 
-    private Logger logger = LoggerFactory.getLogger("BackgroundChecker");
+    @Autowired
+    public BackgroundChecker(HostService hostService,
+                             InaccessibilityService inaccessibilityService,
+                             IGroupService iGroupService,
+                             LifeChecker lifeChecker) {
+        this.hostService = hostService;
+        this.inaccessibilityService = inaccessibilityService;
+        this.iGroupService = iGroupService;
+        this.lifeChecker = lifeChecker;
+    }
 
     @Async
     public CompletableFuture<String> start() {
@@ -45,8 +42,8 @@ public class BackgroundChecker {
         List<Long> offlineHosts = new ArrayList<>();
         List<Long> instabilityHosts = new ArrayList<>();
         while (true) {
-            hosts = hostRepository.findAll();
-            logger.info("New scan started {}", LocalTime.now());
+            hosts = hostService.getAllHosts();
+            log.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
                 boolean isReachable = lifeChecker.isReachable(host);
                 if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
@@ -54,53 +51,53 @@ public class BackgroundChecker {
                     instabilityHosts.remove(host.getId());
                     this.updateEndTime(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getAddress());
+                        log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is removed from offline/instability hosts list", host.getName());
+                        log.info("Host {} is removed from offline/instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
                     instabilityHosts.add(host.getId());
                     this.setStartTime(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is added to instability hosts list", host.getAddress());
+                        log.info("Host {} is added to instability hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is added to instability hosts list", host.getName());
+                        log.info("Host {} is added to instability hosts list", host.getName());
                     }
                 } else if (host.isActive() && !isReachable &&
                         instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
                     offlineHosts.add(host.getId());
                     this.setOfflineStatus(host);
                     if (host.getName().equals("")) {
-                        logger.info("Host {} is added to offline hosts list", host.getAddress());
+                        log.info("Host {} is added to offline hosts list", host.getAddress());
                     } else {
-                        logger.info("Host {} is added to offline hosts list", host.getName());
+                        log.info("Host {} is added to offline hosts list", host.getName());
                     }
                 }
             }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                logger.error("BackgroundChecker sleep time interrupted");
+                log.error("BackgroundChecker sleep time interrupted");
             }
         }
     }
 
     private void setStartTime(Host host) {
         Inaccessibility inaccessibilityToOpen =
-                new Inaccessibility(host, "", iGroupRepository.findByName("default"));
-        inaccessibilityRepository.save(inaccessibilityToOpen);
+                new Inaccessibility(host, "", iGroupService.getGroup("default"));
+        inaccessibilityService.save(inaccessibilityToOpen);
     }
 
     private void setOfflineStatus(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.findByHostAndActiveIsTrueOrderByEndDesc(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.findByHostAndActiveIsTrueOrderByEndDesc(host);
         inaccessibilityToUpdate.setOfflineStatus(true);
-        inaccessibilityRepository.save(inaccessibilityToUpdate);
+        inaccessibilityService.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityRepository.findByHostAndActiveIsTrueOrderByEndDesc(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.findByHostAndActiveIsTrueOrderByEndDesc(host);
         inaccessibilityToUpdate.setEnd(LocalDateTime.now());
         inaccessibilityToUpdate.setActive(false);
-        inaccessibilityRepository.save(inaccessibilityToUpdate);
+        inaccessibilityService.save(inaccessibilityToUpdate);
     }
 }
