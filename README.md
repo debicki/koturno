@@ -36,7 +36,8 @@ The application delivers four main and four additional pages.
 #### Main pages
 1. dashboard - where we have simple summary od inaccessibility;
 2. hosts - where we have a list of all host with basic information about them and where we can add new host;
-3. groups - where we have a list of all groups with information about the number of hosts in each group and where we can add new group;
+3. groups - where we have a list of all groups with information about the number of hosts in each group and where we 
+can add new group;
 4. history - where we have a history of all inaccessibility.
 
 #### Additional pages
@@ -44,3 +45,14 @@ The application delivers four main and four additional pages.
 2. group detail - where we can see more detail and we can edit group;
 3. inaccessibility detail - where we can see more detail and we can edit description of inaccessibility;
 4. ping page - where we can see the output ping program, which is run on machine, where koturno is running.
+
+***Notes to the adding functions***
+
+>The host has two required fields, address and group (when group isn't choosen, then host will go to default group). 
+Address can be in IP format or address that can be resolved by the DNS server (if the DNS server is configured on system, 
+where application is running). In group required is only name.
+
+***Notes to the removing functions***
+
+>Hosts can be removed anytime. Group can be removed only if is empty. If you want to remove the group with hosts you need 
+to move hosts from this group to another group to make group meant to remove empty.
