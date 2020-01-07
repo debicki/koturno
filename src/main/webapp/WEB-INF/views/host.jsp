@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="pl_PL">
 <head>
@@ -142,6 +143,7 @@
                         <button class="btn btn-success" type="submit">Zapisz</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <sec:csrfInput/>
                     </form>
                 </div>
             </div>
@@ -165,6 +167,7 @@
                         <br>
                         <button class="btn btn-danger" type="submit">Usuń</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <sec:csrfInput/>
                     </form>
                 </div>
             </div>

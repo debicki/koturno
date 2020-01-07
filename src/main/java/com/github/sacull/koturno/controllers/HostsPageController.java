@@ -3,9 +3,11 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.HGroupService;
 import com.github.sacull.koturno.services.HostService;
 import com.github.sacull.koturno.services.InaccessibilityService;
+import com.github.sacull.koturno.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +31,14 @@ public class HostsPageController {
     private HostService hostService;
     private InaccessibilityService inaccessibilityService;
     private HGroupService hGroupService;
+    private UserService userService;
 
     @Autowired
-    public HostsPageController(HostService hostService, InaccessibilityService inaccessibilityService, HGroupService hGroupService) {
+    public HostsPageController(HostService hostService, InaccessibilityService inaccessibilityService, HGroupService hGroupService, UserService userService) {
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.hGroupService = hGroupService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -64,7 +69,9 @@ public class HostsPageController {
                              String activity,
                              String name,
                              String description,
-                             String hostGroupName) {
+                             String hostGroupName,
+                             Principal principal) {
+        User user = userService.findByName(principal.getName());
         if (name == null) {
             name = "";
         }
@@ -73,7 +80,7 @@ public class HostsPageController {
         }
         if (hostService.getHostByAddress(address) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
-            Host hostToAdd = new Host(name, address, description, hostGroup);
+            Host hostToAdd = new Host(name, address, description, hostGroup, user);
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);
             }
