@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.InetAddress;
@@ -93,6 +94,19 @@ public class HostsPageController {
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
+        return "redirect:/hosts";
+    }
+
+    @PostMapping("/import")
+    public String importHosts(RedirectAttributes redirectAttributes,
+                              MultipartFile file) {
+        int importSuccess = 0;
+        int importWarnings = 0;
+        int importErrors = 0;
+
+        redirectAttributes.addFlashAttribute("importSuccess", importSuccess);
+        redirectAttributes.addFlashAttribute("importWarnings", importWarnings);
+        redirectAttributes.addFlashAttribute("importErrors", importErrors);
         return "redirect:/hosts";
     }
 
