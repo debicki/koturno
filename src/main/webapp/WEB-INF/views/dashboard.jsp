@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="pl_PL">
 <head>
@@ -21,7 +22,7 @@
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">
-
+<sec:authorize access="isAuthenticated()">
     <div class="row">
         <div class="col-12" style="padding-bottom: 20px">
             <c:if test="${instabilityHosts.size() == 0}">
@@ -79,13 +80,13 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
-                                            ping
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore>
+                                            ignoruj
                                         </a>
                                     </td>
                                     <td>
-                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore>
-                                            ignoruj
+                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
+                                            ping
                                         </a>
                                     </td>
                                 </c:if>
@@ -96,7 +97,7 @@
             </c:if>
         </div>
     </div>
-
+</sec:authorize>
 </div>
 
 <script src="/koturno.reloader.js"></script>
