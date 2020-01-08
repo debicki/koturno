@@ -23,7 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: 08.01.2020 Disable form control in h2-console
         http.authorizeRequests()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/register").anonymous()
@@ -35,6 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/inaccessibility").authenticated()
                 .antMatchers("/*").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .csrf().ignoringAntMatchers("/h2-console/**")
+                .and()
+                .headers().frameOptions().sameOrigin()
                 .and()
                 .formLogin()
                 .loginPage("/login")
