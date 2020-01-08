@@ -17,10 +17,8 @@ public class HGroup {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private Long id;
-
     @Column(nullable = false)
     private String name;
-
     private String description;
 
     public HGroup(String name, String description) {

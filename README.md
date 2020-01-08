@@ -21,18 +21,6 @@ After compile to package we got \*.war file, but in them, we have Apache Tomcat 
 an application from command line using command: `java -jar koturno-*.war`, where \* is version compiled application. 
 By default, the application will start on port 8080.
 
-#### Adding new hosts
-We can add hosts in two ways. First, we can add a path to file with hosts in the command line, when we starting 
-application, but if an application is running we have the second way. On the host's page, we have the possibility 
-to add a new host. To use that way you need add in command line switch `-f` with file as argument. Example: `-f hosts.txt`.
-
-In the first case, we can add more than one host, but hosts will be assigned to groups named as that hosts. Of course, 
-in application, we can move the host to another group if we want that. In the second case, we can add only one host by 
-form, but we can immediately assign to the target group. Host when is adding is checking to correct address. 
-When an address isn't recognized as valid, the application adds a host to the database, but it informs you about it. 
-Reasons why address isn't recognized are errors while typing address or no connection with DNS server if address is 
-domain type.
-
 ### User interface
 The application delivers four main and four additional pages. 
 
@@ -51,7 +39,7 @@ can add new group;
 
 ***Notes to the adding functions***
 
->The host has two required fields, address and group (when group isn't choosen, then host will go to default group). 
+>The host has two required fields, address and group (when group isn't chosen, then host will go to default group). 
 Address can be in IP format or address that can be resolved by the DNS server (if the DNS server is configured on system, 
 where application is running). In group required is only name.
 
