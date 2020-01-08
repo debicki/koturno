@@ -60,6 +60,17 @@
                     </button>
                 </div>
             </c:if>
+            <c:if test="${importSuccess != null}">
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    Raport z importu hostów:<br>
+                    - dodanych i rozpoznanych przez DNS hostów: ${importSuccess}<br>
+                    - dodanych, lecz nierozpoznanych przed DNS hostów: ${importWarnings}<br>
+                    - pominiętych z powodu istnienia w bazie danych hostów: ${importErrors}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
         </div>
         <div class="col-3">
         </div>
@@ -69,6 +80,9 @@
         <div class="col-12 text-center koturno-style">
             <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
                 Nowy host
+            </a>
+            <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-primary">
+                Importuj hosty
             </a>
         </div>
     </div>
@@ -119,6 +133,31 @@
                             </select>
                         </div>
                         <button class="btn btn-success" type="submit">Dodaj</button>
+                        <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <sec:csrfInput/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="importHostsModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content koturno-style">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importuj hosty</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data" action="/hosts/import">
+                        <div class="form-group">
+                            <label for="file">Plik importu</label>
+                            <input type="file" required name="file" id="file" class="form-control"/>
+                        </div>
+                        <button class="btn btn-success" type="submit">Importuj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
                         <sec:csrfInput/>

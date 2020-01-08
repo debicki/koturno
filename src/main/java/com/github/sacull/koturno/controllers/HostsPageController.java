@@ -15,13 +15,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/hosts")
@@ -96,6 +101,66 @@ public class HostsPageController {
         return "redirect:/hosts";
     }
 
+    @PostMapping("/import")
+    public String importHosts(RedirectAttributes redirectAttributes,
+                              MultipartFile file,
+                              Principal principal) throws IOException {
+        int importSuccess = 0;
+        int importWarnings = 0;
+        int importErrors = 0;
+
+        List<Host> importList = new ArrayList<>();
+        BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        String line;
+        while ((line = fileContent.readLine()) != null) {
+            if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
+                Host hostToAdd = parse(line);
+                User user = userService.findByName(principal.getName());
+                hostToAdd.setOwner(user);
+                importList.add(hostToAdd);
+            }
+        }
+
+        importErrors = importList.size();
+        List<Host> hostsInDatabase = hostService.getAllHosts();
+        for (Host host : hostsInDatabase) {
+            importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
+        }
+        importErrors -= importList.size();
+
+        HGroup defaultGroup = hGroupService.getGroupByName("default");
+        User loggedUser = userService.findByName(principal.getName());
+        for (Host host : importList) {
+            if (host.getName().equals("") || host.getName() == null) {
+                host.setHostGroup(defaultGroup);
+            } else {
+                HGroup group = hGroupService.getGroupByName(host.getName());
+                if (group == null) {
+                    group = new HGroup(host.getName(), "");
+                    group = hGroupService.save(group);
+                }
+                host.setHostGroup(group);
+            }
+            host.setOwner(loggedUser);
+            if (isValidAddress(host.getAddress())) {
+                importSuccess++;
+            } else {
+                importWarnings++;
+            }
+        }
+
+        if (importList.size() > 0) {
+            for (Host host : importList) {
+                hostService.save(host);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("importSuccess", importSuccess);
+        redirectAttributes.addFlashAttribute("importWarnings", importWarnings);
+        redirectAttributes.addFlashAttribute("importErrors", importErrors);
+        return "redirect:/hosts";
+    }
+
     private boolean isValidAddress(String address) {
         InetAddress host;
         try {
@@ -104,5 +169,34 @@ public class HostsPageController {
             return false;
         }
         return true;
+    }
+
+    private Host parse (String line) {
+        int charCounter = 0;
+        line = line.replace('\t', ' ');
+        StringBuilder address = new StringBuilder();
+        StringBuilder name = new StringBuilder();
+        StringBuilder description = new StringBuilder();
+        while (line.charAt(charCounter) == ' ') {
+            charCounter++;
+        }
+        while ((charCounter < line.length()) && (line.charAt(charCounter) != ' ')) {
+            address.append(line.charAt(charCounter));
+            charCounter++;
+        }
+        while ((charCounter < line.length()) && (line.charAt(charCounter) == ' ')) {
+            charCounter++;
+        }
+        String[] descriptionElements = line.substring(charCounter).split("\\*");
+        if (descriptionElements.length > 1) {
+            name.append(descriptionElements[0]);
+            for (int i = 1; i < descriptionElements.length; i++) {
+                description.append(descriptionElements[i]);
+                description.append(' ');
+            }
+        } else if (descriptionElements.length == 1) {
+            description.append(descriptionElements[0]);
+        }
+        return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 }
