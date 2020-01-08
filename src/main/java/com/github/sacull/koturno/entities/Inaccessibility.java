@@ -18,22 +18,15 @@ public class Inaccessibility {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private Long id;
-
     @ManyToOne
     private Host host;
-
     private LocalDateTime start;
-
     private LocalDateTime end;
-
     @Getter(AccessLevel.NONE)
     private Boolean active;
-
     @Getter(AccessLevel.NONE)
     private Boolean offlineStatus;
-
     private String description;
-
     @ManyToOne
     private IGroup inaccessibilityGroup;
 

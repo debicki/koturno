@@ -18,18 +18,13 @@ public class Host implements Comparable<Host>{
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private Long id;
-
     private String name;
-
     @Column(unique = true, nullable = false)
     private String address;
-
     @Setter(AccessLevel.NONE)
     private LocalDateTime whenCreated;
-
     @Getter(AccessLevel.NONE)
     private Boolean active;
-
     private String description;
 
     @ManyToOne

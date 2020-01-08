@@ -79,7 +79,7 @@ public class GroupController {
         HGroup groupToSave = hGroupService.getGroupByName(originName);
         if (originName.equalsIgnoreCase("default")) {
             redirectAttributes.addFlashAttribute("error", "3");
-        } else if (hGroupService.getGroupByName(name) == null || name.equalsIgnoreCase(name)) {
+        } else if (hGroupService.getGroupByName(name) == null || name.equalsIgnoreCase(originName)) {
             groupToSave.setName(name);
             groupToSave.setDescription(description);
             hGroupService.save(groupToSave);
