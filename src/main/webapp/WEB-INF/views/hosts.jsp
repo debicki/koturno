@@ -146,9 +146,9 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" enctype="multipart/form-data" action="/hosts/import">
-                        <div class="form-group">
-                            <label for="file">Plik importu</label>
-                            <input type="file" required name="file" id="file" class="form-control"/>
+                        <div class="form-group custom-file mb-3">
+                            <label for="file" class="custom-file-label">Plik importu</label>
+                            <input type="file" required name="file" id="file" class="form-control custom-file-input"/>
                         </div>
                         <button class="btn btn-success" type="submit">Importuj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
@@ -207,5 +207,6 @@
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>
+<script src="/koturno.uploader.js"></script>
 </body>
 </html>
