@@ -47,8 +47,10 @@ public class HostsPageController {
     }
 
     @GetMapping
-    public String serveHostsPage(Model model) {
-        List<Host> allHosts = hostService.findAllByOrderByName();
+    public String serveHostsPage(Model model,
+                                 Principal principal) {
+        User loggedUser = userService.findByName(principal.getName());
+        List<Host> allHosts = hostService.findAllByByOwnerOrderByName(loggedUser);
         List<HGroup> hostGroupList = hGroupService.getAllGroups();
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByActiveIsTrue();
         List<Host> allUnstableHosts = new ArrayList<>();
@@ -83,7 +85,7 @@ public class HostsPageController {
         if (description == null) {
             description = "";
         }
-        if (hostService.getHostByAddress(address) == null) {
+        if (hostService.getHostByAddress(address, user) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             Host hostToAdd = new Host(name, address, description, hostGroup, user);
             if (activity.equalsIgnoreCase("Nieaktywny")) {
@@ -122,14 +124,14 @@ public class HostsPageController {
         }
 
         importErrors = importList.size();
-        List<Host> hostsInDatabase = hostService.getAllHosts();
+        User loggedUser = userService.findByName(principal.getName());
+        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
         for (Host host : hostsInDatabase) {
             importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
         }
         importErrors -= importList.size();
 
         HGroup defaultGroup = hGroupService.getGroupByName("default");
-        User loggedUser = userService.findByName(principal.getName());
         for (Host host : importList) {
             if (host.getName().equals("") || host.getName() == null) {
                 host.setHostGroup(defaultGroup);

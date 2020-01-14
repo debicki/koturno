@@ -1,7 +1,9 @@
 package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.InaccessibilityService;
+import com.github.sacull.koturno.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +20,21 @@ import java.util.List;
 public class HistoryPageController {
 
     private InaccessibilityService inaccessibilityService;
+    private UserService userService;
 
     @Autowired
-    public HistoryPageController(InaccessibilityService inaccessibilityService) {
+    public HistoryPageController(InaccessibilityService inaccessibilityService, UserService userService) {
         this.inaccessibilityService = inaccessibilityService;
+        this.userService = userService;
     }
 
     @GetMapping
     public String serveHistoryPage(Model model,
+                                   Principal principal,
                                    @RequestParam(required = false, defaultValue = "only-offline") String filter,
                                    @RequestParam(required = false, defaultValue = "100") Integer limit) {
-        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc();
+        User loggedUser = userService.findByName(principal.getName());
+        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc(loggedUser);
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
