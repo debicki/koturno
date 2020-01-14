@@ -15,10 +15,12 @@
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">
-    <div class="row" style="margin-top: 40px">
-        <div class="col-1"></div>
-        <div class="col-10 koturno-style text-center" style="padding-bottom: 20px"><h2>Logowanie</h2></div>
-        <div class="col-1"></div>
+    <div class="row" style="margin-top: 40px; margin-bottom: 40px">
+        <div class="col-3"></div>
+        <div class="col-6 koturno-style text-center border border-secondary rounded bg-secondary text-white">
+            <h2>Logowanie</h2>
+        </div>
+        <div class="col-3"></div>
     </div>
     <div class="row">
         <div class="col-3"></div>
