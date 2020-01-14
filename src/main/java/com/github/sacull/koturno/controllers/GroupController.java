@@ -51,7 +51,7 @@ public class GroupController {
             if (hGroup.getName().equalsIgnoreCase("default")) {
                 redirectAttributes.addFlashAttribute("error", "12");
                 return "redirect:/groups";
-            } else if (groupHosts.size() > 0) {
+            } else if (groupHosts.size() > 0 || hostService.countAllByHostGroup(hGroup) > 0) {
                 redirectAttributes.addFlashAttribute("error", "11");
                 return "redirect:/groups";
             } else {

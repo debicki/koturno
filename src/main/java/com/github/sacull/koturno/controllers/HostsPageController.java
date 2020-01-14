@@ -85,7 +85,7 @@ public class HostsPageController {
         if (description == null) {
             description = "";
         }
-        if (hostService.getHostByAddress(address) == null) {
+        if (hostService.getHostByAddress(address, user) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             Host hostToAdd = new Host(name, address, description, hostGroup, user);
             if (activity.equalsIgnoreCase("Nieaktywny")) {

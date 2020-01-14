@@ -19,7 +19,7 @@ public class Host implements Comparable<Host>{
     @Setter(AccessLevel.NONE)
     private Long id;
     private String name;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String address;
     @Setter(AccessLevel.NONE)
     private LocalDateTime whenCreated;

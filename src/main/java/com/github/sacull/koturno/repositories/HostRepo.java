@@ -13,7 +13,9 @@ public interface HostRepo extends JpaRepository<Host, Long> {
 
     List<Host> findAllByHostGroupAndOwner(HGroup group, User user);
 
-    Host findByAddress(String address);
+    Host findByAddressAndOwner(String address, User user);
+
+    Long countAllByHostGroup(HGroup group);
 
     List<Host> findAllByOwnerOrderByName(User user);
 

@@ -3,9 +3,11 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.HGroupService;
 import com.github.sacull.koturno.services.HostService;
 import com.github.sacull.koturno.services.InaccessibilityService;
+import com.github.sacull.koturno.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -24,12 +27,17 @@ public class HostController {
     private InaccessibilityService inaccessibilityService;
     private HostService hostService;
     private HGroupService hGroupService;
+    private UserService userService;
 
     @Autowired
-    public HostController(InaccessibilityService inaccessibilityService, HostService hostService, HGroupService hGroupService) {
+    public HostController(InaccessibilityService inaccessibilityService,
+                          HostService hostService,
+                          HGroupService hGroupService,
+                          UserService userService) {
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -58,14 +66,16 @@ public class HostController {
 
     @PostMapping
     public String editHost(RedirectAttributes redirectAttributes,
+                             Principal principal,
                              String originAddress,
                              String address,
                              String activity,
                              String name,
                              String description,
                              String hostGroupName) {
-        Host hostToSave = hostService.getHostByAddress(originAddress);
-        if (hostService.getHostByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
+        User loggedUser = userService.findByName(principal.getName());
+        Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
+        if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
             if (activity.equalsIgnoreCase("Aktywny")) {

@@ -43,11 +43,15 @@ public class HostService {
         hostRepo.delete(host);
     }
 
-    public Host getHostByAddress(String address) {
-        return hostRepo.findByAddress(address);
+    public Host getHostByAddress(String address, User user) {
+        return hostRepo.findByAddressAndOwner(address, user);
     }
 
     public List<Host> findAllByByOwnerOrderByName(User user) {
         return hostRepo.findAllByOwnerOrderByName(user);
+    }
+
+    public Long countAllByHostGroup(HGroup group) {
+        return hostRepo.countAllByHostGroup(group);
     }
 }
