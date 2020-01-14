@@ -2,6 +2,7 @@ package com.github.sacull.koturno.services;
 
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.repositories.InaccessibilityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,16 +32,16 @@ public class InaccessibilityService {
         return inaccessibilityRepo.findByHostAndActiveIsTrueOrderByEndDesc(host);
     }
 
-    public List<Inaccessibility> findAllByActiveIsTrueOrderByStartDesc() {
-        return inaccessibilityRepo.findAllByActiveIsTrueOrderByStartDesc();
+    public List<Inaccessibility> findAllByActiveIsTrueOrderByStartDesc(User user) {
+        return inaccessibilityRepo.findAllByActiveIsTrueAndHost_OwnerOrderByStartDesc(user);
     }
 
     public List<Inaccessibility> findAllByActiveIsTrue() {
         return inaccessibilityRepo.findAllByActiveIsTrue();
     }
 
-    public List<Inaccessibility> findAllByOrderByStartDesc() {
-        return inaccessibilityRepo.findAllByOrderByStartDesc();
+    public List<Inaccessibility> findAllByOrderByStartDesc(User user) {
+        return inaccessibilityRepo.findAllByHost_OwnerOrderByStartDesc(user);
     }
 
     public List<Inaccessibility> findAllByHost(Host host) {
