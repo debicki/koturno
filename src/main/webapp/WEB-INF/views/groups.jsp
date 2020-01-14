@@ -119,12 +119,12 @@
                 <tbody>
                 <c:forEach items="${groups}" var="group" varStatus="groupStatus">
                     <tr>
-                        <td>${groupStatus.count}</td>
-                        <td>${group.name}</td>
-                        <td>${group.description}</td>
-                        <td>${groupMembersCounter.get(group.name)}</td>
+                        <td class="align-middle">${groupStatus.count}</td>
+                        <td class="align-middle">${group.name}</td>
+                        <td class="align-middle">${group.description}</td>
+                        <td class="align-middle">${groupMembersCounter.get(group.name)}</td>
                         <td>
-                            <a href=/group?id=${group.id}&action=info>
+                            <a href=/group?id=${group.id}&action=info class="btn btn-primary btn-sm">
                                 zobacz
                             </a>
                         </td>

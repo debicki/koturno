@@ -36,49 +36,54 @@
                     <tbody>
                         <c:forEach items="${instabilityHosts}" var="instabilityHost" varStatus="instabilityHostStatus">
                             <tr>
-                                <td>${instabilityHostStatus.count}</td>
-                                <td>${instabilityHost.host.name}</td>
+                                <td class="align-middle">${instabilityHostStatus.count}</td>
+                                <td class="align-middle">${instabilityHost.host.name}</td>
                                 <c:if test="${instabilityHost.isOfflineStatus()}">
-                                    <td class="table-danger">
+                                    <td class="table-danger align-middle">
                                         <a href=/host?id=${instabilityHost.host.id}&action=info>
                                             ${instabilityHost.host.address}
                                         </a>
                                     </td>
                                 </c:if>
                                 <c:if test="${!instabilityHost.isOfflineStatus()}">
-                                    <td class="table-warning">
+                                    <td class="table-warning align-middle">
                                         <a href=/host?id=${instabilityHost.host.id}&action=info>
                                             ${instabilityHost.host.address}
                                         </a>
                                     </td>
                                 </c:if>
-                                <td>${instabilityHost.hourOfBegin}</td>
-                                <td>${instabilityHost.host.description}</td>
+                                <td class="align-middle">${instabilityHost.hourOfBegin}</td>
+                                <td class="align-middle">${instabilityHost.host.description}</td>
                                 <c:if test="${!instabilityHost.isOfflineStatus()}">
                                     <td colspan="2">
-                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info
+                                           class="btn btn-primary btn-sm">
                                             zobacz
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
+                                        <a href="#" class="btn btn-primary btn-sm"
+                                           onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                             ping
                                         </a>
                                     </td>
                                 </c:if>
                                 <c:if test="${instabilityHost.isOfflineStatus()}">
                                     <td>
-                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info>
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=info
+                                           class="btn btn-primary btn-sm">
                                             zobacz
                                         </a>
                                     </td>
                                     <td>
-                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore>
+                                        <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore
+                                           class="btn btn-primary btn-sm">
                                             ignoruj
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
+                                        <a href="#" class="btn btn-primary btn-sm"
+                                           onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                             ping
                                         </a>
                                     </td>

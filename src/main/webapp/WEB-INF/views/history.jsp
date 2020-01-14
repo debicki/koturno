@@ -61,54 +61,54 @@
                     <tbody>
                     <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
                         <tr>
-                            <td>${inaccessibilityStatus.count}</td>
+                            <td class="align-middle">${inaccessibilityStatus.count}</td>
                             <c:if test="${inaccessibility.isActive()}">
-                                <td>Aktywny</td>
+                                <td class="align-middle">Aktywny</td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive()}">
-                                <td>Archiwalny</td>
+                                <td class="align-middle">Archiwalny</td>
                             </c:if>
-                            <td>${inaccessibility.host.name}</td>
+                            <td class="align-middle">${inaccessibility.host.name}</td>
                             <c:if test="${inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
-                                <td class="table-danger">
+                                <td class="table-danger align-middle">
                                     <a href=/host?id=${inaccessibility.host.id}&action=info>
                                             ${inaccessibility.host.address}
                                     </a>
                                 </td>
                             </c:if>
                             <c:if test="${!inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
-                                <td class="table-warning">
+                                <td class="table-warning align-middle">
                                     <a href=/host?id=${inaccessibility.host.id}&action=info>
                                             ${inaccessibility.host.address}
                                     </a>
                                 </td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive()}">
-                                <td class="table-secondary">
+                                <td class="table-secondary align-middle">
                                     <a href=/host?id=${inaccessibility.host.id}&action=info>
                                             ${inaccessibility.host.address}
                                     </a>
                                 </td>
                             </c:if>
-                            <td>${inaccessibility.dayOfBegin}</td>
-                            <td>${inaccessibility.hourOfBegin}</td>
+                            <td class="align-middle">${inaccessibility.dayOfBegin}</td>
+                            <td class="align-middle">${inaccessibility.hourOfBegin}</td>
                             <c:if test="${inaccessibility.isActive()}">
-                                <td colspan="2">TRWA</td>
+                                <td colspan="2" class="align-middle">TRWA</td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive() && inaccessibility.start == inaccessibility.end}">
-                                <td colspan="2">ZIGNOROWANY</td>
+                                <td colspan="2" class="align-middle">ZIGNOROWANY</td>
                             </c:if>
                             <c:if test="${inaccessibility.start != inaccessibility.end}">
-                                <td>${inaccessibility.dayOfEnd}</td>
-                                <td>${inaccessibility.hourOfEnd}</td>
+                                <td class="align-middle">${inaccessibility.dayOfEnd}</td>
+                                <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                             </c:if>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info class="btn btn-primary btn-sm">
                                     zobacz
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove class="btn btn-danger btn-sm">
                                     usuń
                                 </a>
                             </td>

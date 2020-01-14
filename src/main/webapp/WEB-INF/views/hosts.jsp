@@ -175,23 +175,23 @@
                 <tbody>
                 <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
                     <tr>
-                        <td>${hostStatus.count}</td>
-                        <td>${host.name}</td>
+                        <td class="align-middle">${hostStatus.count}</td>
+                        <td class="align-middle">${host.name}</td>
                         <c:if test="${offlineHosts.contains(host)}">
-                            <td class="table-danger">${host.address}</td>
+                            <td class="table-danger align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${unstableHosts.contains(host)}">
-                            <td class="table-warning">${host.address}</td>
+                            <td class="table-warning align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                            <td class="table-success">${host.address}</td>
+                            <td class="table-success align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${!host.isActive()}">
-                            <td class="table-secondary">${host.address}</td>
+                            <td class="table-secondary align-middle">${host.address}</td>
                         </c:if>
                         <td>${host.description}</td>
                         <td>
-                            <a href=/host?id=${host.id}&action=info>
+                            <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
                                 zobacz
                             </a>
                         </td>
