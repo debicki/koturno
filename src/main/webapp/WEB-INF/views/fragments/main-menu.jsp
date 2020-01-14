@@ -13,35 +13,35 @@
         </div>
         <sec:authorize access="!isAuthenticated()">
             <div style="font-size: 30px; line-height: 100px;">
-                <a href="/login">Zaloguj</a>
-                <a href="/register">Zarejestruj</a>
+                <a href="/login" class="btn btn-primary btn-lg">Zaloguj</a>
+                <a href="/register" class="btn btn-primary btn-lg">Zarejestruj</a>
             </div>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
             <div style="font-size: 30px; line-height: 100px;">
                 <c:if test="${disabledMenuItem.equals('dashboard')}">
-                    <a href="/" style="color: gray">Podgląd</a>
+                    <a href="/" class="btn btn-secondary btn-lg">Podgląd</a>
                 </c:if>
                 <c:if test="${!disabledMenuItem.equals('dashboard')}">
-                    <a href="/">Podgląd</a>
+                    <a href="/" class="btn btn-primary btn-lg">Podgląd</a>
                 </c:if>
                 <c:if test="${disabledMenuItem.equals('hosts')}">
-                    <a href="/hosts" style="color: gray">Hosty</a>
+                    <a href="/hosts" class="btn btn-secondary btn-lg">Hosty</a>
                 </c:if>
                 <c:if test="${!disabledMenuItem.equals('hosts')}">
-                    <a href="/hosts">Hosty</a>
+                    <a href="/hosts" class="btn btn-primary btn-lg">Hosty</a>
                 </c:if>
                 <c:if test="${disabledMenuItem.equals('groups')}">
-                    <a href="/groups" style="color: gray">Grupy</a>
+                    <a href="/groups" class="btn btn-secondary btn-lg">Grupy</a>
                 </c:if>
                 <c:if test="${!disabledMenuItem.equals('groups')}">
-                    <a href="/groups">Grupy</a>
+                    <a href="/groups" class="btn btn-primary btn-lg">Grupy</a>
                 </c:if>
                 <c:if test="${disabledMenuItem.equals('history')}">
-                    <a href="/history" style="color: gray">Historia</a>
+                    <a href="/history" class="btn btn-secondary btn-lg">Historia</a>
                 </c:if>
                 <c:if test="${!disabledMenuItem.equals('history')}">
-                    <a href="/history">Historia</a>
+                    <a href="/history" class="btn btn-primary btn-lg">Historia</a>
                 </c:if>
             </div>
         </sec:authorize>

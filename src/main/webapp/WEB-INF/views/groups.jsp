@@ -7,7 +7,7 @@
     <title>Grupy</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="theme-color" content="blue">
     <link rel="stylesheet" href="/koturno.main.css"/>
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
@@ -88,11 +88,13 @@
                     <form method="post" action="/groups">
                         <div class="form-group">
                             <label for="name">Nazwa</label>
-                            <input type="text" required name="name" id="name" class="form-control" placeholder="Podaj nazwę grupy"/>
+                            <input type="text" required name="name" id="name" class="form-control"
+                                   placeholder="Podaj nazwę grupy" autofocus="autofocus"/>
                         </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
-                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis grupy"/>
+                            <input type="text" name="description" id="description" class="form-control"
+                                   placeholder="Podaj opis grupy"/>
                         </div>
                         <button class="btn btn-success" type="submit">Dodaj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
@@ -119,12 +121,12 @@
                 <tbody>
                 <c:forEach items="${groups}" var="group" varStatus="groupStatus">
                     <tr>
-                        <td>${groupStatus.count}</td>
-                        <td>${group.name}</td>
-                        <td>${group.description}</td>
-                        <td>${groupMembersCounter.get(group.name)}</td>
+                        <td class="align-middle">${groupStatus.count}</td>
+                        <td class="align-middle">${group.name}</td>
+                        <td class="align-middle">${group.description}</td>
+                        <td class="align-middle">${groupMembersCounter.get(group.name)}</td>
                         <td>
-                            <a href=/group?id=${group.id}&action=info>
+                            <a href=/group?id=${group.id}&action=info class="btn btn-primary btn-sm">
                                 zobacz
                             </a>
                         </td>

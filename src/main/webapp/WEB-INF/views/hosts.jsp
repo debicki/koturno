@@ -7,7 +7,7 @@
     <title>Hosty</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="theme-color" content="blue">
     <link rel="stylesheet" href="/koturno.main.css"/>
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
@@ -96,7 +96,8 @@
                         <div class="form-row">
                             <div class="form-group col-8">
                                 <label for="address">Adres</label>
-                                <input type="text" required name="address" id="address" class="form-control" placeholder="Podaj adres hosta"/>
+                                <input type="text" required name="address" id="address" class="form-control"
+                                       placeholder="Podaj adres hosta" autofocus="autofocus"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity">Aktywność</label>
@@ -108,11 +109,13 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Nazwa</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Podaj nazwę hosta"/>
+                            <input type="text" name="name" id="name" class="form-control"
+                                   placeholder="Podaj nazwę hosta"/>
                         </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
-                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis hosta"/>
+                            <input type="text" name="description" id="description" class="form-control"
+                                   placeholder="Podaj opis hosta"/>
                         </div>
                         <div class="form-group">
                             <label for="hostGroupName">Grupa</label>
@@ -146,9 +149,9 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" enctype="multipart/form-data" action="/hosts/import">
-                        <div class="form-group">
-                            <label for="file">Plik importu</label>
-                            <input type="file" required name="file" id="file" class="form-control"/>
+                        <div class="form-group custom-file mb-3">
+                            <label for="file" class="custom-file-label">Plik importu</label>
+                            <input type="file" required name="file" id="file" class="form-control custom-file-input"/>
                         </div>
                         <button class="btn btn-success" type="submit">Importuj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
@@ -175,23 +178,23 @@
                 <tbody>
                 <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
                     <tr>
-                        <td>${hostStatus.count}</td>
-                        <td>${host.name}</td>
+                        <td class="align-middle">${hostStatus.count}</td>
+                        <td class="align-middle">${host.name}</td>
                         <c:if test="${offlineHosts.contains(host)}">
-                            <td class="table-danger">${host.address}</td>
+                            <td class="table-danger align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${unstableHosts.contains(host)}">
-                            <td class="table-warning">${host.address}</td>
+                            <td class="table-warning align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                            <td class="table-success">${host.address}</td>
+                            <td class="table-success align-middle">${host.address}</td>
                         </c:if>
                         <c:if test="${!host.isActive()}">
-                            <td class="table-secondary">${host.address}</td>
+                            <td class="table-secondary align-middle">${host.address}</td>
                         </c:if>
-                        <td>${host.description}</td>
+                        <td class="align-middle">${host.description}</td>
                         <td>
-                            <a href=/host?id=${host.id}&action=info>
+                            <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
                                 zobacz
                             </a>
                         </td>
@@ -207,5 +210,6 @@
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>
+<script src="/koturno.uploader.js"></script>
 </body>
 </html>

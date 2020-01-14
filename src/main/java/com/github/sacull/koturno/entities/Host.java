@@ -26,10 +26,8 @@ public class Host implements Comparable<Host>{
     @Getter(AccessLevel.NONE)
     private Boolean active;
     private String description;
-
     @ManyToOne
     private HGroup hostGroup;
-
     @ManyToOne
     private User owner;
 
