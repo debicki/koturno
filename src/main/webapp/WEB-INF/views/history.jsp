@@ -21,19 +21,19 @@
                 <a href=/history?filter=all class="btn btn-secondary">Wszystkie</a>
             </c:if>
             <c:if test="${!filter.equals('all')}">
-                <a href=/history?filter=all class="btn btn-primary">Wszystkie</a>
+                <a href=/history?filter=all class="btn btn-outline-secondary">Wszystkie</a>
             </c:if>
             <c:if test="${filter.equals('only-offline')}">
                 <a href=/history?filter=only-offline class="btn btn-secondary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${!filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline class="btn btn-primary">Tylko hosty offline</a>
+                <a href=/history?filter=only-offline class="btn btn-outline-secondary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${filter.equals('no-ignored')}">
                 <a href=/history?filter=no-ignored class="btn btn-secondary">Historia bez ignorowanych</a>
             </c:if>
             <c:if test="${!filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored class="btn btn-primary">Historia bez ignorowanych</a>
+                <a href=/history?filter=no-ignored class="btn btn-outline-secondary">Historia bez ignorowanych</a>
             </c:if>
         </div>
     </div>

@@ -88,11 +88,13 @@
                     <form method="post" action="/groups">
                         <div class="form-group">
                             <label for="name">Nazwa</label>
-                            <input type="text" required name="name" id="name" class="form-control" placeholder="Podaj nazwę grupy"/>
+                            <input type="text" required name="name" id="name" class="form-control"
+                                   placeholder="Podaj nazwę grupy" autofocus="autofocus"/>
                         </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
-                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis grupy"/>
+                            <input type="text" name="description" id="description" class="form-control"
+                                   placeholder="Podaj opis grupy"/>
                         </div>
                         <button class="btn btn-success" type="submit">Dodaj</button>
                         <button class="btn btn-secondary" type="reset">Wyczyść pola</button>

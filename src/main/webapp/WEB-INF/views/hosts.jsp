@@ -96,7 +96,8 @@
                         <div class="form-row">
                             <div class="form-group col-8">
                                 <label for="address">Adres</label>
-                                <input type="text" required name="address" id="address" class="form-control" placeholder="Podaj adres hosta"/>
+                                <input type="text" required name="address" id="address" class="form-control"
+                                       placeholder="Podaj adres hosta" autofocus="autofocus"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity">Aktywność</label>
@@ -108,11 +109,13 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Nazwa</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Podaj nazwę hosta"/>
+                            <input type="text" name="name" id="name" class="form-control"
+                                   placeholder="Podaj nazwę hosta"/>
                         </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
-                            <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis hosta"/>
+                            <input type="text" name="description" id="description" class="form-control"
+                                   placeholder="Podaj opis hosta"/>
                         </div>
                         <div class="form-group">
                             <label for="hostGroupName">Grupa</label>
@@ -189,7 +192,7 @@
                         <c:if test="${!host.isActive()}">
                             <td class="table-secondary align-middle">${host.address}</td>
                         </c:if>
-                        <td>${host.description}</td>
+                        <td class="align-middle">${host.description}</td>
                         <td>
                             <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
                                 zobacz
