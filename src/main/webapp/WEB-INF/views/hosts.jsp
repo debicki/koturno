@@ -97,7 +97,7 @@
                             <div class="form-group col-8">
                                 <label for="address">Adres</label>
                                 <input type="text" required name="address" id="address" class="form-control"
-                                       placeholder="Podaj adres hosta" autofocus="autofocus"/>
+                                       placeholder="Podaj adres hosta" autofocus="autofocus" autocomplete="off"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity">Aktywność</label>

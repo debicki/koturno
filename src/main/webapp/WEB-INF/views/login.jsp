@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label for="username">Nazwa użytkownika</label>
                     <input type="text" required name="username" id="username" class="form-control text-center"
-                           placeholder="Podaj nazwę użytkownika" autofocus="autofocus"/>
+                           placeholder="Podaj nazwę użytkownika" autofocus="autofocus" autocomplete="off"/>
                 </div>
                 <div class="form-group">
                     <label for="password">Hasło</label>
