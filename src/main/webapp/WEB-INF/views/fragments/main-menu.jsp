@@ -9,7 +9,7 @@
             <strong>Koturno</strong>
         </div>
         <div class="h2">
-            Alpha
+            Beta
         </div>
         <sec:authorize access="!isAuthenticated()">
             <div style="font-size: 30px; line-height: 100px;">
@@ -43,6 +43,7 @@
                 <c:if test="${!disabledMenuItem.equals('history')}">
                     <a href="/history" class="btn btn-primary btn-lg">Historia</a>
                 </c:if>
+                <a href="/logout" class="btn btn-primary btn-lg ml-5">Wyloguj</a>
             </div>
         </sec:authorize>
     </div>

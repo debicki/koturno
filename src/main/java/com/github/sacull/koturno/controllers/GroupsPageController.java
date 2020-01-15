@@ -23,9 +23,9 @@ import java.util.Map;
 @RequestMapping("/groups")
 public class GroupsPageController {
 
-    private final HGroupService hGroupService;
-    private final HostService hostService;
-    private final UserService userService;
+    private HGroupService hGroupService;
+    private HostService hostService;
+    private UserService userService;
 
     @Autowired
     public GroupsPageController(HGroupService hGroupService, HostService hostService, UserService userService) {
