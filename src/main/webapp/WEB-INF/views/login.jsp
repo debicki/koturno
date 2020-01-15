@@ -15,16 +15,10 @@
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">
-    <div class="row" style="margin-top: 40px; margin-bottom: 40px">
-        <div class="col-3"></div>
-        <div class="col-6 koturno-style text-center border border-secondary rounded bg-secondary text-white">
-            <h2>Logowanie</h2>
-        </div>
-        <div class="col-3"></div>
-    </div>
+
     <div class="row">
         <div class="col-3"></div>
-        <div class="col-6 text-center">
+        <div class="col-6">
             <c:if test="${param['error'] != null}">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     Błędne dane logowania!
@@ -33,6 +27,21 @@
                     </button>
                 </div>
             </c:if>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="row" style="margin-top: 20px; margin-bottom: 40px">
+        <div class="col-3"></div>
+        <div class="col-6 koturno-style text-center border border-secondary rounded bg-secondary text-white">
+            <h2>Logowanie</h2>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6 text-center">
             <form method="post" action="/login" class="koturno-style">
                 <div class="form-group">
                     <label for="username">Nazwa użytkownika</label>
@@ -53,5 +62,8 @@
     </div>
 </div>
 
+<script src="/jquery-3.3.1.slim.min.js"></script>
+<script src="/popper.min.js"></script>
+<script src="/bootstrap.min.js"></script>
 </body>
 </html>

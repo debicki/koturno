@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/register")
@@ -24,8 +25,14 @@ public class RegisterPageController {
     }
 
     @PostMapping
-    public String createUser(String username, String password) {
-        userService.registerUser(username, password, true, "ROLE_USER");
-        return "redirect:/login";
+    public String createUser(RedirectAttributes redirectAttributes,
+                             String username, String password) {
+        if (userService.findByName(username) == null) {
+            userService.registerUser(username, password, true, "ROLE_USER");
+            return "redirect:/login";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "31");
+            return "redirect:/register";
+        }
     }
 }
