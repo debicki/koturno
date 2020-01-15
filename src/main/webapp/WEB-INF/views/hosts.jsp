@@ -17,6 +17,19 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-12 text-center koturno-style">
+            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
+                Nowy host
+            </a>
+            <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-primary">
+                Importuj hosty
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-3">
         </div>
         <div class="col-6">
@@ -68,19 +81,6 @@
         <div class="col-3">
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
-                Nowy host
-            </a>
-            <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-primary">
-                Importuj hosty
-            </a>
-        </div>
-    </div>
-
-    <br>
 
     <div class="modal" id="newHostModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

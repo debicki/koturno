@@ -11,14 +11,17 @@
         <div class="h2">
             Beta
         </div>
+
+        <hr>
+
         <sec:authorize access="!isAuthenticated()">
-            <div style="font-size: 30px; line-height: 100px;">
+            <div>
                 <a href="/login" class="btn btn-primary btn-lg">Zaloguj</a>
                 <a href="/register" class="btn btn-primary btn-lg">Zarejestruj</a>
             </div>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <div style="font-size: 30px; line-height: 100px;">
+            <div>
                 <c:if test="${disabledMenuItem.equals('dashboard')}">
                     <a href="/" class="btn btn-secondary btn-lg">Podgląd</a>
                 </c:if>
@@ -47,5 +50,7 @@
             </div>
         </sec:authorize>
     </div>
+
+    <hr>
 
 </nav>

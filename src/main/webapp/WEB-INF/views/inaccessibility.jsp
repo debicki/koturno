@@ -18,6 +18,16 @@
 
     <div class="row">
         <div class="col-12 text-center koturno-style">
+            <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal" class="btn btn-primary">
+                Edycja opisu
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-12 text-center koturno-style">
             <div class="h1">${inaccessibility.host.name}</div>
             <div class="h2"><a href=/host?id=${inaccessibility.host.id}&action=info>${inaccessibility.host.address}</a></div>
             <div class="lead"><strong>Data początku: ${inaccessibility.dayOfBegin}</strong></div>
@@ -39,14 +49,6 @@
     </div>
 
     <br>
-
-    <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal" class="btn btn-primary">
-                Edycja opisu
-            </a>
-        </div>
-    </div>
 
     <div class="modal" id="editInaccessibilityModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
