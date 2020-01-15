@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/sacull/koturno.svg?branch=master)](https://travis-ci.org/sacull/koturno) 
 [![codecov](https://codecov.io/gh/sacull/koturno/branch/master/graph/badge.svg)](https://codecov.io/gh/sacull/koturno)
 
-![koturno alpha logo](https://user-images.githubusercontent.com/9057882/69221770-5a77c080-0b78-11ea-867b-5833e1c2e6b5.PNG)
+![koturno beta logo](https://user-images.githubusercontent.com/9057882/72439029-6792e380-37a6-11ea-849f-4fe8d4fef92e.PNG)
 
 #### *"We will check for you if your host is working."* ;)
 Koturno is a host availability checker. Simple web interface, possibility to add, modify, grouping and removing hosts, 
@@ -26,9 +26,9 @@ The application delivers four main and four additional pages.
 
 #### Main pages
 1. dashboard - where we have simple summary od inaccessibility;
-2. hosts - where we have a list of all host with basic information about them and where we can add new host;
+2. hosts - where we have a list of all host with basic information about them and where we can add new hosts;
 3. groups - where we have a list of all groups with information about the number of hosts in each group and where we 
-can add new group;
+can add new groups;
 4. history - where we have a history of all inaccessibility.
 
 #### Additional pages
@@ -45,5 +45,4 @@ where application is running). In group required is only name.
 
 ***Notes to the removing functions***
 
->Hosts can be removed anytime. Group can be removed only if is empty. If you want to remove the group with hosts you need 
-to move hosts from this group to another group to make group meant to remove empty.
+>Hosts can be removed anytime. Group can be removed only if is empty.
