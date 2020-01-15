@@ -17,6 +17,19 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-12 text-center koturno-style">
+            <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-primary">
+                Edytuj hosta
+            </a>
+            <a href="#removeHostModal" data-toggle="modal" data-target="#removeHostModal" class="btn btn-danger">
+                Usuń hosta
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-3">
         </div>
         <div class="col-6">
@@ -56,19 +69,6 @@
                 <div class="lead"><strong>Status: nieaktywny</strong></div>
             </c:if>
             <div class="lead"><strong>Opis: ${host.description}</strong></div>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-primary">
-                Edytuj hosta
-            </a>
-            <a href="#removeHostModal" data-toggle="modal" data-target="#removeHostModal" class="btn btn-danger">
-                Usuń hosta
-            </a>
         </div>
     </div>
 

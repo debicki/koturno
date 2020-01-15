@@ -17,6 +17,19 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-12 text-center koturno-style">
+            <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-primary">
+                Edytuj grupę
+            </a>
+            <a href="#removeGroupModal" data-toggle="modal" data-target="#removeGroupModal" class="btn btn-danger">
+                Usuń grupę
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-3">
         </div>
         <div class="col-6">
@@ -53,19 +66,6 @@
         <div class="col-12 text-center koturno-style">
             <div class="lead"><strong>Nazwa: ${group.name}</strong></div>
             <div class="lead"><strong>Opis: ${group.description}</strong></div>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-primary">
-                Edytuj grupę
-            </a>
-            <a href="#removeGroupModal" data-toggle="modal" data-target="#removeGroupModal" class="btn btn-danger">
-                Usuń grupę
-            </a>
         </div>
     </div>
 

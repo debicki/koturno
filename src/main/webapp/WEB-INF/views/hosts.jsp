@@ -17,6 +17,19 @@
 <div class="container">
 
     <div class="row">
+        <div class="col-12 text-center koturno-style">
+            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
+                Nowy host
+            </a>
+            <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-primary">
+                Importuj hosty
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-3">
         </div>
         <div class="col-6">
@@ -69,19 +82,6 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-primary">
-                Nowy host
-            </a>
-            <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-primary">
-                Importuj hosty
-            </a>
-        </div>
-    </div>
-
-    <br>
-
     <div class="modal" id="newHostModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content koturno-style">
@@ -97,7 +97,7 @@
                             <div class="form-group col-8">
                                 <label for="address">Adres</label>
                                 <input type="text" required name="address" id="address" class="form-control"
-                                       placeholder="Podaj adres hosta" autofocus="autofocus"/>
+                                       placeholder="Podaj adres hosta" autofocus="autofocus" autocomplete="off"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity">Aktywność</label>
