@@ -32,13 +32,15 @@ public class HistoryPageController {
     public String serveHistoryPage(Model model,
                                    Principal principal,
                                    @RequestParam(required = false, defaultValue = "only-offline") String filter,
-                                   @RequestParam(required = false, defaultValue = "100") Integer limit) {
+                                   @RequestParam(required = false, defaultValue = "25") Integer limit,
+                                   @RequestParam(required = false, defaultValue = "1") Integer page) {
         User loggedUser = userService.findByName(principal.getName());
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc(loggedUser);
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
-        for (Inaccessibility inaccessibility : allInaccessibilityList) {
+        for (int i = (page - 1) * limit; i < allInaccessibilityList.size(); i++) {
+            Inaccessibility inaccessibility = allInaccessibilityList.get(i);
             if (inaccessibility.isActive()) {
                 activeInaccessibilityList.add(inaccessibility);
             } else {
@@ -66,8 +68,11 @@ public class HistoryPageController {
                 limitedInaccessibilityList.add(inactiveInaccessibilityList .get(i));
             }
         }
+        Integer numberOfPages = allInaccessibilityList.size() / limit + 1;
         model.addAttribute("filter", filter);
         model.addAttribute("limit", limit);
+        model.addAttribute("page", page);
+        model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("limitedInaccessibilityList", limitedInaccessibilityList);
         model.addAttribute("disabledMenuItem", "history");
         return "/WEB-INF/views/history.jsp";
