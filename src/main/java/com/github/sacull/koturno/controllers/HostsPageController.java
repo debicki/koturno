@@ -18,11 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -110,59 +110,18 @@ public class HostsPageController {
     public String importHosts(RedirectAttributes redirectAttributes,
                               MultipartFile file,
                               Principal principal) throws IOException {
-        int importSuccess = 0;
-        int importWarnings = 0;
-        int importErrors = 0;
 
-        List<Host> importList = new ArrayList<>();
-        BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
-        String line;
-        while ((line = fileContent.readLine()) != null) {
-            if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hostToAdd = fileService.parse(line);
-                User user = userService.findByName(principal.getName());
-                hostToAdd.setOwner(user);
-                importList.add(hostToAdd);
-            }
-        }
+        Map<String, Integer> emptyReport = new HashMap<>();
+        emptyReport.put("importSuccess", 0);
+        emptyReport.put("importWarnings", 0);
+        emptyReport.put("importErrors", 0);
 
-        importErrors = importList.size();
         User loggedUser = userService.findByName(principal.getName());
-        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
-        for (Host host : hostsInDatabase) {
-            importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
-        }
-        importErrors -= importList.size();
+        Map<String, Integer> report = fileService.hostsImport(loggedUser, emptyReport, file);
 
-        HGroup defaultGroup = hGroupService.getGroupByName("default");
-        for (Host host : importList) {
-            if (host.getName().equals("") || host.getName() == null) {
-                host.setHostGroup(defaultGroup);
-            } else {
-                HGroup group = hGroupService.getGroupByName(host.getName());
-                if (group == null) {
-                    group = new HGroup(host.getName(), "");
-                    group = hGroupService.save(group);
-                }
-                host.setHostGroup(group);
-            }
-            host.setOwner(loggedUser);
-            if (fileService.isValidAddress(host.getAddress())) {
-                importSuccess++;
-            } else {
-                importWarnings++;
-            }
-        }
-
-        if (importList.size() > 0) {
-            for (Host host : importList) {
-                hostService.save(host);
-            }
-        }
-
-        redirectAttributes.addFlashAttribute("importSuccess", importSuccess);
-        redirectAttributes.addFlashAttribute("importWarnings", importWarnings);
-        redirectAttributes.addFlashAttribute("importErrors", importErrors);
+        redirectAttributes.addFlashAttribute("importSuccess", report.get("importSuccess"));
+        redirectAttributes.addFlashAttribute("importWarnings", report.get("importWarnings"));
+        redirectAttributes.addFlashAttribute("importErrors", report.get("importErrors"));
         return "redirect:/hosts";
     }
 }
