@@ -4,10 +4,7 @@ import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.entities.User;
-import com.github.sacull.koturno.services.HGroupService;
-import com.github.sacull.koturno.services.HostService;
-import com.github.sacull.koturno.services.InaccessibilityService;
-import com.github.sacull.koturno.services.UserService;
+import com.github.sacull.koturno.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,13 +34,19 @@ public class HostsPageController {
     private InaccessibilityService inaccessibilityService;
     private HGroupService hGroupService;
     private UserService userService;
+    private FileService fileService;
 
     @Autowired
-    public HostsPageController(HostService hostService, InaccessibilityService inaccessibilityService, HGroupService hGroupService, UserService userService) {
+    public HostsPageController(HostService hostService,
+                               InaccessibilityService inaccessibilityService,
+                               HGroupService hGroupService,
+                               UserService userService,
+                               FileService fileService) {
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.hGroupService = hGroupService;
         this.userService = userService;
+        this.fileService = fileService;
     }
 
     @GetMapping
@@ -92,7 +95,7 @@ public class HostsPageController {
                 hostToAdd.setActive(false);
             }
             hostService.save(hostToAdd);
-            if (isValidAddress(address)) {
+            if (fileService.isValidAddress(address)) {
                 redirectAttributes.addFlashAttribute("error", "0");
             } else {
                 redirectAttributes.addFlashAttribute("error", "3");
@@ -116,7 +119,7 @@ public class HostsPageController {
         String line;
         while ((line = fileContent.readLine()) != null) {
             if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hostToAdd = parse(line);
+                Host hostToAdd = fileService.parse(line);
                 User user = userService.findByName(principal.getName());
                 hostToAdd.setOwner(user);
                 importList.add(hostToAdd);
@@ -144,7 +147,7 @@ public class HostsPageController {
                 host.setHostGroup(group);
             }
             host.setOwner(loggedUser);
-            if (isValidAddress(host.getAddress())) {
+            if (fileService.isValidAddress(host.getAddress())) {
                 importSuccess++;
             } else {
                 importWarnings++;
@@ -161,44 +164,5 @@ public class HostsPageController {
         redirectAttributes.addFlashAttribute("importWarnings", importWarnings);
         redirectAttributes.addFlashAttribute("importErrors", importErrors);
         return "redirect:/hosts";
-    }
-
-    private boolean isValidAddress(String address) {
-        InetAddress host;
-        try {
-            host = InetAddress.getByName(address);
-        } catch (UnknownHostException e) {
-            return false;
-        }
-        return true;
-    }
-
-    private Host parse(String line) {
-        int charCounter = 0;
-        line = line.replace('\t', ' ');
-        StringBuilder address = new StringBuilder();
-        StringBuilder name = new StringBuilder();
-        StringBuilder description = new StringBuilder();
-        while (line.charAt(charCounter) == ' ') {
-            charCounter++;
-        }
-        while ((charCounter < line.length()) && (line.charAt(charCounter) != ' ')) {
-            address.append(line.charAt(charCounter));
-            charCounter++;
-        }
-        while ((charCounter < line.length()) && (line.charAt(charCounter) == ' ')) {
-            charCounter++;
-        }
-        String[] descriptionElements = line.substring(charCounter).split("\\*");
-        if (descriptionElements.length > 1) {
-            name.append(descriptionElements[0]);
-            for (int i = 1; i < descriptionElements.length; i++) {
-                description.append(descriptionElements[i]);
-                description.append(' ');
-            }
-        } else if (descriptionElements.length == 1) {
-            description.append(descriptionElements[0]);
-        }
-        return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 }
