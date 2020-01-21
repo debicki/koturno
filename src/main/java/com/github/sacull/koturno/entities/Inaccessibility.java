@@ -61,7 +61,7 @@ public class Inaccessibility {
 
     public String getHourOfBegin() {
         if (start.toLocalTime().toString().length() > 8) {
-            return start.toLocalTime().toString().substring(0,8);
+            return start.toLocalTime().toString().substring(0, 8);
         } else {
             return start.toLocalTime().toString();
         }
@@ -69,7 +69,7 @@ public class Inaccessibility {
 
     public String getHourOfEnd() {
         if (end.toLocalTime().toString().length() > 8) {
-            return end.toLocalTime().toString().substring(0,8);
+            return end.toLocalTime().toString().substring(0, 8);
         } else {
             return end.toLocalTime().toString();
         }

@@ -46,6 +46,6 @@ public class InaccessibilityController {
         Inaccessibility inaccessibilityToSave = inaccessibilityService.getInaccessibilityById(id);
         inaccessibilityToSave.setDescription(description);
         inaccessibilityService.save(inaccessibilityToSave);
-        return "redirect:/inaccessibility?id=" + inaccessibilityToSave.getId() +"&action=info";
+        return "redirect:/inaccessibility?id=" + inaccessibilityToSave.getId() + "&action=info";
     }
 }

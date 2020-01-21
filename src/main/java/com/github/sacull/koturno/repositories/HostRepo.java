@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface HostRepo extends JpaRepository<Host, Long> {
 
-    List<Host> findAllByOrderByName();
-
     List<Host> findAllByHostGroupAndOwner(HGroup group, User user);
 
     Host findByAddressAndOwner(String address, User user);
