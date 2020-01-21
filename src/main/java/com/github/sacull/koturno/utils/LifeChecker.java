@@ -12,7 +12,7 @@ import java.net.SocketAddress;
 @Component
 public class LifeChecker {
 
-    public boolean isReachable(Host host){
+    public boolean isReachable(Host host) {
         for (int i = 50; i <= 150; i += 50) {
             if (this.isReachable(host, i)) {
                 return true;
@@ -22,7 +22,7 @@ public class LifeChecker {
     }
 
     public boolean isReachableByTcp(Host host) {
-            for (int i = 50; i <= 150; i += 50) {
+        for (int i = 50; i <= 150; i += 50) {
             if (this.isReachableByTcp(host, 7, i)) {
                 return true;
             }
@@ -48,7 +48,7 @@ public class LifeChecker {
         return false;
     }
 
-    private boolean isReachable(Host host, int timeout){
+    private boolean isReachable(Host host, int timeout) {
         try {
             if (InetAddress.getByName(host.getAddress()).isReachable(timeout)) {
                 return true;
@@ -75,7 +75,7 @@ public class LifeChecker {
         try {
             String cmd;
 
-            if(System.getProperty("os.name").startsWith("Windows")) {
+            if (System.getProperty("os.name").startsWith("Windows")) {
                 cmd = "cmd /C ping -n 1 " + host.getAddress() + " | find \"TTL\"";
             } else {
                 cmd = "ping -c 1 " + host.getAddress();
@@ -85,7 +85,7 @@ public class LifeChecker {
             myProcess.waitFor();
 
             return myProcess.exitValue() == 0;
-        } catch(Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }

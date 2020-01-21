@@ -89,7 +89,8 @@
                         <div class="form-row">
                             <div class="form-group col-8">
                                 <label for="address">Adres</label>
-                                <input type="text" required name="address" id="address" class="form-control" value="${host.address}"/>
+                                <input type="text" required name="address" id="address" class="form-control"
+                                       value="${host.address}"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity">Aktywność</label>
@@ -104,22 +105,26 @@
                                     </c:if>
                                 </select>
                             </div>
-                        </div><div class="form-group">
+                        </div>
+                        <div class="form-group">
                             <label for="name">Nazwa</label>
                             <c:if test="${!host.name.equals('')}">
                                 <input type="text" name="name" id="name" class="form-control" value="${host.name}"/>
                             </c:if>
                             <c:if test="${host.name.equals('')}">
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Podaj nazwę hosta"/>
+                                <input type="text" name="name" id="name" class="form-control"
+                                       placeholder="Podaj nazwę hosta"/>
                             </c:if>
-                    </div>
+                        </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
                             <c:if test="${!host.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" value="${host.description}"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       value="${host.description}"/>
                             </c:if>
                             <c:if test="${host.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis hosta"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       placeholder="Podaj opis hosta"/>
                             </c:if>
                         </div>
                         <div class="form-group">
@@ -169,53 +174,54 @@
 
     <c:if test="${inaccessibilityList.size() == 0}">
         <div class="row">
-            <div class="col-12" style="padding-bottom: 20px">
+            <div class="col-12 pb-3">
                 <p class="h1 text-center koturno-style">Brak zarejestrowanych niedostępności</p>
             </div>
         </div>
     </c:if>
     <c:if test="${inaccessibilityList.size() > 0}">
-    <div class="row">
-        <div class="col-12" style="padding-bottom: 20px">
-            <table class="table table-hover table-bordered text-center koturno-style">
-                <thead>
-                <tr class="thead-dark">
-                    <th>Lp.</th>
-                    <th colspan="2">Początek</th>
-                    <th colspan="2">Koniec</th>
-                    <th>Opis</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${inaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
-                    <tr>
-                        <c:if test="${inaccessibility.isOfflineStatus()}">
-                            <td class="table-danger">${inaccessibilityStatus.count}</td>
-                        </c:if>
-                        <c:if test="${!inaccessibility.isOfflineStatus()}">
-                            <td class="table-warning">${inaccessibilityStatus.count}</td>
-                        </c:if>
-                        <td>${inaccessibility.dayOfBegin}</td>
-                        <td>${inaccessibility.hourOfBegin}</td>
-                        <c:if test="${inaccessibility.start == inaccessibility.end}">
-                            <td colspan="2">TRWA</td>
-                        </c:if>
-                        <c:if test="${inaccessibility.start != inaccessibility.end}">
-                            <td>${inaccessibility.dayOfEnd}</td>
-                            <td>${inaccessibility.hourOfEnd}</td>
-                        </c:if><td>${inaccessibility.description}</td>
-                        <td>
-                            <a href=/inaccessibility?id=${inaccessibility.id}&action=info>
-                                zobacz
-                            </a>
-                        </td>
+        <div class="row">
+            <div class="col-12 pb-3">
+                <table class="table table-hover table-bordered text-center koturno-style">
+                    <thead>
+                    <tr class="thead-dark">
+                        <th>Lp.</th>
+                        <th colspan="2">Początek</th>
+                        <th colspan="2">Koniec</th>
+                        <th>Opis</th>
+                        <th>Akcje</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${inaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
+                        <tr>
+                            <c:if test="${inaccessibility.isOfflineStatus()}">
+                                <td class="table-danger">${inaccessibilityStatus.count}</td>
+                            </c:if>
+                            <c:if test="${!inaccessibility.isOfflineStatus()}">
+                                <td class="table-warning">${inaccessibilityStatus.count}</td>
+                            </c:if>
+                            <td>${inaccessibility.dayOfBegin}</td>
+                            <td>${inaccessibility.hourOfBegin}</td>
+                            <c:if test="${inaccessibility.start == inaccessibility.end}">
+                                <td colspan="2">TRWA</td>
+                            </c:if>
+                            <c:if test="${inaccessibility.start != inaccessibility.end}">
+                                <td>${inaccessibility.dayOfEnd}</td>
+                                <td>${inaccessibility.hourOfEnd}</td>
+                            </c:if>
+                            <td>${inaccessibility.description}</td>
+                            <td>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info>
+                                    zobacz
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </c:if>
 
 </div>

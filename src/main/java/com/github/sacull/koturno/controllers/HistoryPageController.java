@@ -65,7 +65,7 @@ public class HistoryPageController {
         }
         if (limitedInaccessibilityList.size() < limit) {
             for (int i = 0; i < limit && i < inactiveInaccessibilityList.size(); i++) {
-                limitedInaccessibilityList.add(inactiveInaccessibilityList .get(i));
+                limitedInaccessibilityList.add(inactiveInaccessibilityList.get(i));
             }
         }
         Integer numberOfPages = allInaccessibilityList.size() / limit + 1;

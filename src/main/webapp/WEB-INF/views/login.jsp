@@ -31,7 +31,7 @@
         <div class="col-3"></div>
     </div>
 
-    <div class="row" style="margin-top: 20px; margin-bottom: 40px">
+    <div class="row mt-2 mb-4">
         <div class="col-3"></div>
         <div class="col-6 koturno-style text-center border border-secondary rounded bg-secondary text-white">
             <h2>Logowanie</h2>
@@ -60,6 +60,7 @@
         </div>
         <div class="col-3"></div>
     </div>
+
 </div>
 
 <script src="/jquery-3.3.1.slim.min.js"></script>

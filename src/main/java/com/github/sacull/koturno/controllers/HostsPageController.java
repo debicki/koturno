@@ -173,7 +173,7 @@ public class HostsPageController {
         return true;
     }
 
-    private Host parse (String line) {
+    private Host parse(String line) {
         int charCounter = 0;
         line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();

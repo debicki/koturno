@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "hosts")
+@Table(name = "hosts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id"})
 @ToString
-public class Host implements Comparable<Host>{
+public class Host implements Comparable<Host> {
 
     @Id
     @GeneratedValue

@@ -85,15 +85,18 @@
                         <input type="hidden" name="originName" value="${group.name}"/>
                         <div class="form-group">
                             <label for="name">Nazwa</label>
-                            <input type="text" required name="name" id="name" class="form-control" value="${group.name}"/>
+                            <input type="text" required name="name" id="name" class="form-control"
+                                   value="${group.name}"/>
                         </div>
                         <div class="form-group">
                             <label for="description">Opis</label>
                             <c:if test="${!group.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" value="${group.description}"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       value="${group.description}"/>
                             </c:if>
                             <c:if test="${group.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis grupy"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       placeholder="Podaj opis grupy"/>
                             </c:if>
                         </div>
                         <button class="btn btn-success" type="submit">Zapisz</button>
@@ -132,53 +135,53 @@
 
     <c:if test="${hosts.size() == 0}">
         <div class="row">
-            <div class="col-12" style="padding-bottom: 20px">
+            <div class="col-12 pb-3">
                 <p class="h1 text-center koturno-style">Grupa jest pusta</p>
             </div>
         </div>
     </c:if>
     <c:if test="${hosts.size() > 0}">
-    <div class="row">
-        <div class="col-12" style="padding-bottom: 20px">
-            <table class="table table-hover table-bordered text-center koturno-style">
-                <thead>
-                <tr class="thead-dark">
-                    <th>Lp.</th>
-                    <th>Nazwa</th>
-                    <th>Adres</th>
-                    <th>Opis</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
-                    <tr>
-                        <td class="align-middle">${hostStatus.count}</td>
-                        <td class="align-middle">${host.name}</td>
-                        <c:if test="${offlineHosts.contains(host)}">
-                            <td class="table-danger align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${unstableHosts.contains(host)}">
-                            <td class="table-warning align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                            <td class="table-success align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${!host.isActive()}">
-                            <td class="table-secondary align-middle">${host.address}</td>
-                        </c:if>
-                        <td>${host.description}</td>
-                        <td>
-                            <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
-                                zobacz
-                            </a>
-                        </td>
+        <div class="row">
+            <div class="col-12 pb-3">
+                <table class="table table-hover table-bordered text-center koturno-style">
+                    <thead>
+                    <tr class="thead-dark">
+                        <th>Lp.</th>
+                        <th>Nazwa</th>
+                        <th>Adres</th>
+                        <th>Opis</th>
+                        <th>Akcje</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
+                        <tr>
+                            <td class="align-middle">${hostStatus.count}</td>
+                            <td class="align-middle">${host.name}</td>
+                            <c:if test="${offlineHosts.contains(host)}">
+                                <td class="table-danger align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${unstableHosts.contains(host)}">
+                                <td class="table-warning align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
+                                <td class="table-success align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${!host.isActive()}">
+                                <td class="table-secondary align-middle">${host.address}</td>
+                            </c:if>
+                            <td>${host.description}</td>
+                            <td>
+                                <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
+                                    zobacz
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </c:if>
 
 </div>

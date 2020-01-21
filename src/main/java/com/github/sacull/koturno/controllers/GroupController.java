@@ -80,9 +80,9 @@ public class GroupController {
 
     @PostMapping
     public String editGroup(RedirectAttributes redirectAttributes,
-                           String originName,
-                           String name,
-                           String description) {
+                            String originName,
+                            String name,
+                            String description) {
         HGroup groupToSave = hGroupService.getGroupByName(originName);
         if (originName.equalsIgnoreCase("default")) {
             redirectAttributes.addFlashAttribute("error", "3");
@@ -94,6 +94,6 @@ public class GroupController {
         } else {
             redirectAttributes.addFlashAttribute("error", "2");
         }
-        return "redirect:/group?id=" + groupToSave.getId() +"&action=info";
+        return "redirect:/group?id=" + groupToSave.getId() + "&action=info";
     }
 }

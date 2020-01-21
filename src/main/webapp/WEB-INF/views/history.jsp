@@ -27,13 +27,16 @@
                 <a href=/history?filter=only-offline&limit=${limit} class="btn btn-secondary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${!filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-outline-secondary">Tylko hosty offline</a>
+                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-outline-secondary">Tylko hosty
+                    offline</a>
             </c:if>
             <c:if test="${filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-secondary">Historia bez ignorowanych</a>
+                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-secondary">Historia bez
+                    ignorowanych</a>
             </c:if>
             <c:if test="${!filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-outline-secondary">Historia bez ignorowanych</a>
+                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-outline-secondary">Historia bez
+                    ignorowanych</a>
             </c:if>
         </div>
     </div>
@@ -41,7 +44,7 @@
     <br>
 
     <div class="row">
-        <div class="col-12" style="padding-bottom: 20px">
+        <div class="col-12 pb-3">
             <c:if test="${activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0}">
                 <p class="h1 text-center koturno-style">Brak wpisów w historii</p>
             </c:if>
@@ -59,7 +62,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
+                    <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility"
+                               varStatus="inaccessibilityStatus">
                         <tr>
                             <td class="align-middle">${inaccessibilityStatus.count}</td>
                             <c:if test="${inaccessibility.isActive()}">
@@ -103,12 +107,14 @@
                                 <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                             </c:if>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info class="btn btn-primary btn-sm">
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info
+                                   class="btn btn-primary btn-sm">
                                     zobacz
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove class="btn btn-danger btn-sm">
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove
+                                   class="btn btn-danger btn-sm">
                                     usuń
                                 </a>
                             </td>

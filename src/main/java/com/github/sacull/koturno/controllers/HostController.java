@@ -66,13 +66,13 @@ public class HostController {
 
     @PostMapping
     public String editHost(RedirectAttributes redirectAttributes,
-                             Principal principal,
-                             String originAddress,
-                             String address,
-                             String activity,
-                             String name,
-                             String description,
-                             String hostGroupName) {
+                           Principal principal,
+                           String originAddress,
+                           String address,
+                           String activity,
+                           String name,
+                           String description,
+                           String hostGroupName) {
         User loggedUser = userService.findByName(principal.getName());
         Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
         if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
@@ -91,6 +91,6 @@ public class HostController {
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
-        return "redirect:/host?id=" + hostToSave.getId() +"&action=info";
+        return "redirect:/host?id=" + hostToSave.getId() + "&action=info";
     }
 }
