@@ -44,6 +44,7 @@ public class FileService {
 
         List<Host> importList = new ArrayList<>();
         HGroup defaultGroup = hGroupService.getGroupByName("default");
+        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
         BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
         if (Objects.equals(file.getContentType(), "text/plain")) {
             String line;
@@ -56,7 +57,6 @@ public class FileService {
             }
 
             importErrors = importList.size();
-            List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
             for (Host host : hostsInDatabase) {
                 importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
             }
@@ -90,7 +90,49 @@ public class FileService {
             CSVReaderBuilder readerBuilder = new CSVReaderBuilder(fileContent).withCSVParser(parserBuilder.build());
             CSVReader reader = readerBuilder.build();
             List<String[]> linesList = new ArrayList<>(reader.readAll());
-            // TODO: 21.01.2020 Start from here ;)
+
+            // CSV file structure
+            // address;name;description;group
+            for (String[] line : linesList) {
+                Host hostToAdd = new Host("", "", "", null, loggedUser);
+                if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
+                    hostToAdd.setAddress(line[0]);
+                    if (line.length > 1) {
+                        hostToAdd.setName(line[1]);
+                        if (line.length > 2) {
+                            hostToAdd.setDescription(line[2]);
+                            if (line.length > 3) {
+                                HGroup group = hGroupService.getGroupByName(line[3]);
+                                if (group == null) {
+                                    group = new HGroup(line[3], "");
+                                    group = hGroupService.save(group);
+                                }
+                                hostToAdd.setHostGroup(group);
+                            }
+                        }
+                    }
+                }
+                if (!hostToAdd.getAddress().equals("") && hostToAdd.getHostGroup() == null) {
+                    hostToAdd.setHostGroup(defaultGroup);
+                }
+                if (!hostToAdd.getAddress().equals("")) {
+                    importList.add(hostToAdd);
+                }
+            }
+
+            importErrors = importList.size();
+            for (Host host : hostsInDatabase) {
+                importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
+            }
+            importErrors -= importList.size();
+
+            for (Host host : importList) {
+                if (isValidAddress(host.getAddress())) {
+                    importSuccess++;
+                } else {
+                    importWarnings++;
+                }
+            }
         }
 
         if (importList.size() > 0) {
