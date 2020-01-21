@@ -18,7 +18,8 @@
 
     <div class="row">
         <div class="col-12 text-center koturno-style">
-            <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal" class="btn btn-primary">
+            <a href="#editInaccessibilityModal" data-toggle="modal" data-target="#editInaccessibilityModal"
+               class="btn btn-primary">
                 Edycja opisu
             </a>
         </div>
@@ -29,7 +30,8 @@
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <div class="h1">${inaccessibility.host.name}</div>
-            <div class="h2"><a href=/host?id=${inaccessibility.host.id}&action=info>${inaccessibility.host.address}</a></div>
+            <div class="h2"><a href=/host?id=${inaccessibility.host.id}&action=info>${inaccessibility.host.address}</a>
+            </div>
             <div class="lead"><strong>Data początku: ${inaccessibility.dayOfBegin}</strong></div>
             <div class="lead"><strong>Godzina początku: ${inaccessibility.hourOfBegin}</strong></div>
             <c:if test="${(inaccessibility.start == inaccessibility.end) && inaccessibility.isActive()}">
@@ -65,10 +67,12 @@
                         <div class="form-group">
                             <label for="description">Opis</label>
                             <c:if test="${!inaccessibility.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" value="${inaccessibility.description}"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       value="${inaccessibility.description}"/>
                             </c:if>
                             <c:if test="${inaccessibility.description.equals('')}">
-                                <input type="text" name="description" id="description" class="form-control" placeholder="Podaj opis"/>
+                                <input type="text" name="description" id="description" class="form-control"
+                                       placeholder="Podaj opis"/>
                             </c:if>
                         </div>
                         <button class="btn btn-success" type="submit">Zapisz</button>

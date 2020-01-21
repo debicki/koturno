@@ -108,7 +108,7 @@
 
     <div class="row">
         <div class="col-12 pb-3">
-           <table class="table table-hover table-bordered text-center koturno-style">
+            <table class="table table-hover table-bordered text-center koturno-style">
                 <thead>
                 <tr class="thead-dark">
                     <th>Lp.</th>

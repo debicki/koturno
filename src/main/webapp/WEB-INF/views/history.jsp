@@ -27,13 +27,16 @@
                 <a href=/history?filter=only-offline&limit=${limit} class="btn btn-secondary">Tylko hosty offline</a>
             </c:if>
             <c:if test="${!filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-outline-secondary">Tylko hosty offline</a>
+                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-outline-secondary">Tylko hosty
+                    offline</a>
             </c:if>
             <c:if test="${filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-secondary">Historia bez ignorowanych</a>
+                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-secondary">Historia bez
+                    ignorowanych</a>
             </c:if>
             <c:if test="${!filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-outline-secondary">Historia bez ignorowanych</a>
+                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-outline-secondary">Historia bez
+                    ignorowanych</a>
             </c:if>
         </div>
     </div>
@@ -59,7 +62,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
+                    <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility"
+                               varStatus="inaccessibilityStatus">
                         <tr>
                             <td class="align-middle">${inaccessibilityStatus.count}</td>
                             <c:if test="${inaccessibility.isActive()}">
@@ -103,12 +107,14 @@
                                 <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                             </c:if>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info class="btn btn-primary btn-sm">
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info
+                                   class="btn btn-primary btn-sm">
                                     zobacz
                                 </a>
                             </td>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove class="btn btn-danger btn-sm">
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=remove
+                                   class="btn btn-danger btn-sm">
                                     usuń
                                 </a>
                             </td>
