@@ -5,7 +5,7 @@ import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.*;
-import lombok.extern.slf4j.Slf4j;
+import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/hosts")
-@Slf4j
 public class HostsPageController {
 
     private HostService hostService;
@@ -106,7 +105,7 @@ public class HostsPageController {
     @PostMapping("/import")
     public String importHosts(RedirectAttributes redirectAttributes,
                               MultipartFile file,
-                              Principal principal) throws IOException {
+                              Principal principal) throws IOException, CsvException {
 
         Map<String, Integer> emptyReport = new HashMap<>();
         emptyReport.put("importSuccess", 0);

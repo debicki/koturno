@@ -3,6 +3,10 @@ package com.github.sacull.koturno.services;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.User;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +19,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,48 +36,61 @@ public class FileService {
 
     public Map<String, Integer> hostsImport(User loggedUser,
                                             Map<String, Integer> report,
-                                            MultipartFile file) throws IOException {
+                                            MultipartFile file) throws IOException, CsvException {
 
         int importSuccess = 0;
         int importWarnings = 0;
         int importErrors = 0;
 
         List<Host> importList = new ArrayList<>();
-        BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
-        String line;
-        while ((line = fileContent.readLine()) != null) {
-            if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hostToAdd = parse(line);
-                hostToAdd.setOwner(loggedUser);
-                importList.add(hostToAdd);
-            }
-        }
-
-        importErrors = importList.size();
-        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
-        for (Host host : hostsInDatabase) {
-            importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
-        }
-        importErrors -= importList.size();
-
         HGroup defaultGroup = hGroupService.getGroupByName("default");
-        for (Host host : importList) {
-            if (host.getName().equals("") || host.getName() == null) {
-                host.setHostGroup(defaultGroup);
-            } else {
-                HGroup group = hGroupService.getGroupByName(host.getName());
-                if (group == null) {
-                    group = new HGroup(host.getName(), "");
-                    group = hGroupService.save(group);
+        BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        if (Objects.equals(file.getContentType(), "text/plain")) {
+            String line;
+            while ((line = fileContent.readLine()) != null) {
+                if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
+                    Host hostToAdd = parse(line);
+                    hostToAdd.setOwner(loggedUser);
+                    importList.add(hostToAdd);
                 }
-                host.setHostGroup(group);
             }
-            host.setOwner(loggedUser);
-            if (isValidAddress(host.getAddress())) {
-                importSuccess++;
-            } else {
-                importWarnings++;
+
+            importErrors = importList.size();
+            List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
+            for (Host host : hostsInDatabase) {
+                importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
             }
+            importErrors -= importList.size();
+
+            for (Host host : importList) {
+                if (host.getName().equals("") || host.getName() == null) {
+                    host.setHostGroup(defaultGroup);
+                } else {
+                    HGroup group = hGroupService.getGroupByName(host.getName());
+                    if (group == null) {
+                        group = new HGroup(host.getName(), "");
+                        group = hGroupService.save(group);
+                    }
+                    host.setHostGroup(group);
+                }
+                host.setOwner(loggedUser);
+                if (isValidAddress(host.getAddress())) {
+                    importSuccess++;
+                } else {
+                    importWarnings++;
+                }
+            }
+        } else if (Objects.equals(file.getContentType(), "application/vnd.ms-excel")
+                || Objects.equals(file.getContentType(), "text/csv")) {
+            CSVParserBuilder parserBuilder = new CSVParserBuilder()
+                    .withEscapeChar('\\')
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .withQuoteChar('"')
+                    .withSeparator(';');
+            CSVReaderBuilder readerBuilder = new CSVReaderBuilder(fileContent).withCSVParser(parserBuilder.build());
+            CSVReader reader = readerBuilder.build();
+            List<String[]> linesList = new ArrayList<>(reader.readAll());
+            // TODO: 21.01.2020 Start from here ;)
         }
 
         if (importList.size() > 0) {
