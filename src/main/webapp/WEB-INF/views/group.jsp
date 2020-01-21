@@ -132,14 +132,14 @@
 
     <c:if test="${hosts.size() == 0}">
         <div class="row">
-            <div class="col-12" style="padding-bottom: 20px">
+            <div class="col-12 pb-3">
                 <p class="h1 text-center koturno-style">Grupa jest pusta</p>
             </div>
         </div>
     </c:if>
     <c:if test="${hosts.size() > 0}">
     <div class="row">
-        <div class="col-12" style="padding-bottom: 20px">
+        <div class="col-12 pb-3">
             <table class="table table-hover table-bordered text-center koturno-style">
                 <thead>
                 <tr class="thead-dark">

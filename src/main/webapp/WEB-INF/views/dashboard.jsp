@@ -17,7 +17,7 @@
 <div class="container">
 <sec:authorize access="isAuthenticated()">
     <div class="row">
-        <div class="col-12" style="padding-bottom: 20px">
+        <div class="col-12 pb-3">
             <c:if test="${instabilityHosts.size() == 0}">
                 <p class="h1 text-center koturno-style">Wszystkie hosty są ONLINE</p>
             </c:if>
