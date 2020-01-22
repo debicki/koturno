@@ -94,28 +94,12 @@ public class FileService {
             // CSV file structure
             // address;name;description;group
             for (String[] line : linesList) {
-                Host hostToAdd = new Host("", "", "", null, loggedUser);
-                if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
-                    hostToAdd.setAddress(line[0]);
-                    if (line.length > 1) {
-                        hostToAdd.setName(line[1]);
-                        if (line.length > 2) {
-                            hostToAdd.setDescription(line[2]);
-                            if (line.length > 3) {
-                                HGroup group = hGroupService.getGroupByName(line[3]);
-                                if (group == null) {
-                                    group = new HGroup(line[3], "");
-                                    group = hGroupService.save(group);
-                                }
-                                hostToAdd.setHostGroup(group);
-                            }
-                        }
-                    }
-                }
+                Host hostToAdd = parse(line);
                 if (!hostToAdd.getAddress().equals("") && hostToAdd.getHostGroup() == null) {
                     hostToAdd.setHostGroup(defaultGroup);
                 }
                 if (!hostToAdd.getAddress().equals("")) {
+                    hostToAdd.setOwner(loggedUser);
                     importList.add(hostToAdd);
                 }
             }
@@ -185,5 +169,27 @@ public class FileService {
             description.append(descriptionElements[0]);
         }
         return new Host(name.toString(), address.toString(), description.toString(), null, null);
+    }
+
+    private Host parse(String[] line) {
+        Host result = new Host("", "", "", null, null);
+        if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
+            result.setAddress(line[0]);
+            if (line.length > 1) {
+                result.setName(line[1]);
+                if (line.length > 2) {
+                    result.setDescription(line[2]);
+                    if (line.length > 3) {
+                        HGroup group = hGroupService.getGroupByName(line[3]);
+                        if (group == null) {
+                            group = new HGroup(line[3], "");
+                            group = hGroupService.save(group);
+                        }
+                        result.setHostGroup(group);
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
