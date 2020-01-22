@@ -53,7 +53,8 @@ where application is running). In group required is only name.
 ***Notes to the import functions***
 
 >Hosts can be import from text file. Application can use two formats of import files, TXT and CSV files. Look to 
-'examples' folder to check how to use them.
+['examples' folder](https://github.com/sacull/koturno/tree/master/examples) to check how to use them.
 
-For more information look to 'manuals' folder, where you can find user manual. Unfortunately user manual already is only 
+For more information look to ['manuals' folder](https://github.com/sacull/koturno/tree/master/manuals), where you can find user manual. Unfortunately user manual already is only 
 in Polish.
+
