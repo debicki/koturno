@@ -1,24 +1,27 @@
 [![Build Status](https://travis-ci.org/sacull/koturno.svg?branch=master)](https://travis-ci.org/sacull/koturno) 
-[![codecov](https://codecov.io/gh/sacull/koturno/branch/master/graph/badge.svg)](https://codecov.io/gh/sacull/koturno)
 
-![koturno beta logo](https://user-images.githubusercontent.com/9057882/72439029-6792e380-37a6-11ea-849f-4fe8d4fef92e.PNG)
+[![koturno](https://user-images.githubusercontent.com/9057882/72901019-46dc0800-3d29-11ea-8e32-43004957ad6f.png)](https://github.com/sacull/koturno)
 
 #### *"We will check for you if your host is working."* ;)
 Koturno is a host availability checker. Simple web interface, possibility to add, modify, grouping and removing hosts, 
 viewing history of inaccessibility are powers of that application. 
 
 #### Restrictions
-At the moment the user interface is only in Polish.
+At the moment the user interface and user manual are only in Polish.
 
 ### Usage
-After running the application we can connect with it via an internet browser. The first opened page will by a simple 
-dashboard, but the interface offers three other main pages. First from them is a list of all hosts in the database, 
-where we can manage hosts. Second, give us the possibility to view and manage host groups. Third shows the history of 
-all inaccessibility.
+After running the application we can connect with it via an internet browser. The first opened page, after register 
+and login, will by a simple dashboard, but the interface offers three other main pages. First from them is a list of 
+all hosts in the database, where we can manage hosts. Second, give us the possibility to view and manage host groups. 
+Third shows the history of all inaccessibility.
+
+#### Database
+On default, application use H2 in-memory database, but it can use MySQL database too. To use MySQL comment H2 row 
+and uncomment MySQL rows, with your login and password to database before compile.
 
 #### Launching the application
 After compile to package we got \*.war file, but in them, we have Apache Tomcat Embedded. That's mean we can run 
-an application from command line using command: `java -jar koturno-*.war`, where \* is version compiled application. 
+an application from command line using command: `java -jar *.war`, where \* is name of the application. 
 By default, the application will start on port 8080.
 
 ### User interface
@@ -46,3 +49,11 @@ where application is running). In group required is only name.
 ***Notes to the removing functions***
 
 >Hosts can be removed anytime. Group can be removed only if is empty.
+
+***Notes to the import functions***
+
+>Hosts can be import from text file. Application can use two formats of import files, TXT and CSV files. Look to 
+'examples' folder to check how to use them.
+
+For more information look to 'manuals' folder, where you can find user manual. Unfortunately user manual already is only 
+in Polish.
