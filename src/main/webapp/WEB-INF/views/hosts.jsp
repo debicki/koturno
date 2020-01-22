@@ -68,10 +68,10 @@
             </c:if>
             <c:if test="${importSuccess != null}">
                 <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                    Raport z importu hostów:<br>
-                    - dodanych i rozpoznanych przez DNS hostów: ${importSuccess}<br>
-                    - dodanych, lecz nierozpoznanych przed DNS hostów: ${importWarnings}<br>
-                    - pominiętych z powodu istnienia w bazie danych hostów: ${importErrors}
+                    <strong>Podsumowanie</strong><br>
+                    Hostów dodanych i rozpoznanych przez DNS: ${importSuccess}<br>
+                    Hostów dodanych, lecz nierozpoznanych przed DNS: ${importWarnings}<br>
+                    Hostów pominiętych z powodu istnienia w bazie danych: ${importErrors}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
