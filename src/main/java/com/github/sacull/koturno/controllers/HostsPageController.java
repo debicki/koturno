@@ -4,11 +4,8 @@ import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.entities.User;
-import com.github.sacull.koturno.services.HGroupService;
-import com.github.sacull.koturno.services.HostService;
-import com.github.sacull.koturno.services.InaccessibilityService;
-import com.github.sacull.koturno.services.UserService;
-import lombok.extern.slf4j.Slf4j;
+import com.github.sacull.koturno.services.*;
+import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,32 +15,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hosts")
-@Slf4j
 public class HostsPageController {
 
     private HostService hostService;
     private InaccessibilityService inaccessibilityService;
     private HGroupService hGroupService;
     private UserService userService;
+    private FileService fileService;
 
     @Autowired
-    public HostsPageController(HostService hostService, InaccessibilityService inaccessibilityService, HGroupService hGroupService, UserService userService) {
+    public HostsPageController(HostService hostService,
+                               InaccessibilityService inaccessibilityService,
+                               HGroupService hGroupService,
+                               UserService userService,
+                               FileService fileService) {
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.hGroupService = hGroupService;
         this.userService = userService;
+        this.fileService = fileService;
     }
 
     @GetMapping
@@ -92,7 +91,7 @@ public class HostsPageController {
                 hostToAdd.setActive(false);
             }
             hostService.save(hostToAdd);
-            if (isValidAddress(address)) {
+            if (fileService.isValidAddress(address)) {
                 redirectAttributes.addFlashAttribute("error", "0");
             } else {
                 redirectAttributes.addFlashAttribute("error", "3");
@@ -106,99 +105,19 @@ public class HostsPageController {
     @PostMapping("/import")
     public String importHosts(RedirectAttributes redirectAttributes,
                               MultipartFile file,
-                              Principal principal) throws IOException {
-        int importSuccess = 0;
-        int importWarnings = 0;
-        int importErrors = 0;
+                              Principal principal) throws IOException, CsvException {
 
-        List<Host> importList = new ArrayList<>();
-        BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
-        String line;
-        while ((line = fileContent.readLine()) != null) {
-            if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                Host hostToAdd = parse(line);
-                User user = userService.findByName(principal.getName());
-                hostToAdd.setOwner(user);
-                importList.add(hostToAdd);
-            }
-        }
+        Map<String, Integer> emptyReport = new HashMap<>();
+        emptyReport.put("importSuccess", 0);
+        emptyReport.put("importWarnings", 0);
+        emptyReport.put("importErrors", 0);
 
-        importErrors = importList.size();
         User loggedUser = userService.findByName(principal.getName());
-        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
-        for (Host host : hostsInDatabase) {
-            importList = importList.stream().filter(x -> !x.compareAddress(host)).collect(Collectors.toList());
-        }
-        importErrors -= importList.size();
+        Map<String, Integer> report = fileService.hostsImport(loggedUser, emptyReport, file);
 
-        HGroup defaultGroup = hGroupService.getGroupByName("default");
-        for (Host host : importList) {
-            if (host.getName().equals("") || host.getName() == null) {
-                host.setHostGroup(defaultGroup);
-            } else {
-                HGroup group = hGroupService.getGroupByName(host.getName());
-                if (group == null) {
-                    group = new HGroup(host.getName(), "");
-                    group = hGroupService.save(group);
-                }
-                host.setHostGroup(group);
-            }
-            host.setOwner(loggedUser);
-            if (isValidAddress(host.getAddress())) {
-                importSuccess++;
-            } else {
-                importWarnings++;
-            }
-        }
-
-        if (importList.size() > 0) {
-            for (Host host : importList) {
-                hostService.save(host);
-            }
-        }
-
-        redirectAttributes.addFlashAttribute("importSuccess", importSuccess);
-        redirectAttributes.addFlashAttribute("importWarnings", importWarnings);
-        redirectAttributes.addFlashAttribute("importErrors", importErrors);
+        redirectAttributes.addFlashAttribute("importSuccess", report.get("importSuccess"));
+        redirectAttributes.addFlashAttribute("importWarnings", report.get("importWarnings"));
+        redirectAttributes.addFlashAttribute("importErrors", report.get("importErrors"));
         return "redirect:/hosts";
-    }
-
-    private boolean isValidAddress(String address) {
-        InetAddress host;
-        try {
-            host = InetAddress.getByName(address);
-        } catch (UnknownHostException e) {
-            return false;
-        }
-        return true;
-    }
-
-    private Host parse(String line) {
-        int charCounter = 0;
-        line = line.replace('\t', ' ');
-        StringBuilder address = new StringBuilder();
-        StringBuilder name = new StringBuilder();
-        StringBuilder description = new StringBuilder();
-        while (line.charAt(charCounter) == ' ') {
-            charCounter++;
-        }
-        while ((charCounter < line.length()) && (line.charAt(charCounter) != ' ')) {
-            address.append(line.charAt(charCounter));
-            charCounter++;
-        }
-        while ((charCounter < line.length()) && (line.charAt(charCounter) == ' ')) {
-            charCounter++;
-        }
-        String[] descriptionElements = line.substring(charCounter).split("\\*");
-        if (descriptionElements.length > 1) {
-            name.append(descriptionElements[0]);
-            for (int i = 1; i < descriptionElements.length; i++) {
-                description.append(descriptionElements[i]);
-                description.append(' ');
-            }
-        } else if (descriptionElements.length == 1) {
-            description.append(descriptionElements[0]);
-        }
-        return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 }

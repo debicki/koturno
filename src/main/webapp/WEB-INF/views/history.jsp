@@ -45,10 +45,10 @@
 
     <div class="row">
         <div class="col-12 pb-3">
-            <c:if test="${activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0}">
+            <c:if test="${limitedInaccessibilityList == null || limitedInaccessibilityList.size() == 0}">
                 <p class="h1 text-center koturno-style">Brak wpisów w historii</p>
             </c:if>
-            <c:if test="${!(activeInaccessibilityList.size() == 0 && inactiveInaccessibilityList.size() == 0)}">
+            <c:if test="${limitedInaccessibilityList.size() > 0}">
                 <table class="table table-hover table-bordered text-center koturno-style">
                     <thead>
                     <tr class="thead-dark">
@@ -102,7 +102,7 @@
                             <c:if test="${!inaccessibility.isActive() && inaccessibility.start == inaccessibility.end}">
                                 <td colspan="2" class="align-middle">ZIGNOROWANY</td>
                             </c:if>
-                            <c:if test="${inaccessibility.start != inaccessibility.end}">
+                            <c:if test="${!inaccessibility.isActive() && inaccessibility.start != inaccessibility.end}">
                                 <td class="align-middle">${inaccessibility.dayOfEnd}</td>
                                 <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                             </c:if>
@@ -126,77 +126,79 @@
         </div>
     </div>
 
-    <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled"><a class="page-link" href="#">Pozycji na stronę:</a></li>
-            <c:if test="${limit == 25}">
-                <li class="page-item active">
-                    <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
-                </li>
-            </c:if>
-            <c:if test="${limit != 25}">
-                <li class="page-item">
-                    <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
-                </li>
-            </c:if>
-            <c:if test="${limit == 50}">
-                <li class="page-item active">
-                    <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
-                </li>
-            </c:if>
-            <c:if test="${limit != 50}">
-                <li class="page-item">
-                    <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
-                </li>
-            </c:if>
-            <c:if test="${limit == 75}">
-                <li class="page-item active">
-                    <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
-                </li>
-            </c:if>
-            <c:if test="${limit != 75}">
-                <li class="page-item">
-                    <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
-                </li>
-            </c:if>
-            <c:if test="${limit == 100}">
-                <li class="page-item active">
-                    <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
-                </li>
-            </c:if>
-            <c:if test="${limit != 100}">
-                <li class="page-item">
-                    <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
-                </li>
-            </c:if>
-        </ul>
-    </nav>
+    <c:if test="${limitedInaccessibilityList.size() > 0}">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled"><a class="page-link" href="#">Pozycji na stronę:</a></li>
+                <c:if test="${limit == 25}">
+                    <li class="page-item active">
+                        <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit != 25}">
+                    <li class="page-item">
+                        <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit == 50}">
+                    <li class="page-item active">
+                        <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit != 50}">
+                    <li class="page-item">
+                        <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit == 75}">
+                    <li class="page-item active">
+                        <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit != 75}">
+                    <li class="page-item">
+                        <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit == 100}">
+                    <li class="page-item active">
+                        <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
+                    </li>
+                </c:if>
+                <c:if test="${limit != 100}">
+                    <li class="page-item">
+                        <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
 
-    <nav>
-        <ul class="pagination justify-content-center">
-            <c:if test="${page > 1}">
-                <li class="page-item">
-                    <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page - 1}">
-                        <span>&laquo;</span>
-                    </a>
-                </li>
-            </c:if>
-            <c:if test="${page <= 1}">
-                <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
-            </c:if>
-            <li class="page-item disabled"><a class="page-link" href="#">strona ${page}/${numberOfPages}</a></li>
-            <c:if test="${page < numberOfPages}">
-                <li class="page-item">
-                    <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page + 1}">
-                        <span>&raquo;</span>
-                    </a>
-                </li>
-            </c:if>
-            <c:if test="${page >= numberOfPages}">
-                <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
-            </c:if>
-        </ul>
-    </nav>
+        <nav>
+            <ul class="pagination justify-content-center">
+                <c:if test="${page > 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page - 1}">
+                            <span>&laquo;</span>
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${page <= 1}">
+                    <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                </c:if>
+                <li class="page-item disabled"><a class="page-link" href="#">strona ${page}/${numberOfPages}</a></li>
+                <c:if test="${page < numberOfPages}">
+                    <li class="page-item">
+                        <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page + 1}">
+                            <span>&raquo;</span>
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${page >= numberOfPages}">
+                    <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+                </c:if>
+            </ul>
+        </nav>
+    </c:if>
 
 </div>
 
