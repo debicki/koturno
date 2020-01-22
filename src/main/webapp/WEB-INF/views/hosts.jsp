@@ -164,43 +164,48 @@
 
     <div class="row">
         <div class="col-12 pb-3">
-            <table class="table table-hover table-bordered text-center koturno-style">
-                <thead>
-                <tr class="thead-dark">
-                    <th>Lp.</th>
-                    <th>Nazwa</th>
-                    <th>Adres</th>
-                    <th>Opis</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
-                    <tr>
-                        <td class="align-middle">${hostStatus.count}</td>
-                        <td class="align-middle">${host.name}</td>
-                        <c:if test="${offlineHosts.contains(host)}">
-                            <td class="table-danger align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${unstableHosts.contains(host)}">
-                            <td class="table-warning align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                            <td class="table-success align-middle">${host.address}</td>
-                        </c:if>
-                        <c:if test="${!host.isActive()}">
-                            <td class="table-secondary align-middle">${host.address}</td>
-                        </c:if>
-                        <td class="align-middle">${host.description}</td>
-                        <td>
-                            <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
-                                zobacz
-                            </a>
-                        </td>
+            <c:if test="${hosts == null || hosts.size() == 0}">
+                <p class="h1 text-center koturno-style">Brak hostów w bazie danych</p>
+            </c:if>
+            <c:if test="${hosts.size() > 0}">
+                <table class="table table-hover table-bordered text-center koturno-style">
+                    <thead>
+                    <tr class="thead-dark">
+                        <th>Lp.</th>
+                        <th>Nazwa</th>
+                        <th>Adres</th>
+                        <th>Opis</th>
+                        <th>Akcje</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
+                        <tr>
+                            <td class="align-middle">${hostStatus.count}</td>
+                            <td class="align-middle">${host.name}</td>
+                            <c:if test="${offlineHosts.contains(host)}">
+                                <td class="table-danger align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${unstableHosts.contains(host)}">
+                                <td class="table-warning align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
+                                <td class="table-success align-middle">${host.address}</td>
+                            </c:if>
+                            <c:if test="${!host.isActive()}">
+                                <td class="table-secondary align-middle">${host.address}</td>
+                            </c:if>
+                            <td class="align-middle">${host.description}</td>
+                            <td>
+                                <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
+                                    zobacz
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
         </div>
     </div>
 
