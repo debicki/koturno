@@ -196,23 +196,24 @@
                     <c:forEach items="${inaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
                         <tr>
                             <c:if test="${inaccessibility.isOfflineStatus()}">
-                                <td class="table-danger">${inaccessibilityStatus.count}</td>
+                                <td class="table-danger align-middle">${inaccessibilityStatus.count}</td>
                             </c:if>
                             <c:if test="${!inaccessibility.isOfflineStatus()}">
-                                <td class="table-warning">${inaccessibilityStatus.count}</td>
+                                <td class="table-warning align-middle">${inaccessibilityStatus.count}</td>
                             </c:if>
-                            <td>${inaccessibility.dayOfBegin}</td>
-                            <td>${inaccessibility.hourOfBegin}</td>
+                            <td class="align-middle">${inaccessibility.dayOfBegin}</td>
+                            <td class="align-middle">${inaccessibility.hourOfBegin}</td>
                             <c:if test="${inaccessibility.start == inaccessibility.end}">
-                                <td colspan="2">TRWA</td>
+                                <td colspan="2" class="align-middle">TRWA</td>
                             </c:if>
                             <c:if test="${inaccessibility.start != inaccessibility.end}">
-                                <td>${inaccessibility.dayOfEnd}</td>
-                                <td>${inaccessibility.hourOfEnd}</td>
+                                <td class="align-middle">${inaccessibility.dayOfEnd}</td>
+                                <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                             </c:if>
-                            <td>${inaccessibility.description}</td>
+                            <td class="align-middle">${inaccessibility.description}</td>
                             <td>
-                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info>
+                                <a href=/inaccessibility?id=${inaccessibility.id}&action=info
+                                   class="btn btn-primary btn-sm">
                                     zobacz
                                 </a>
                             </td>
