@@ -183,10 +183,10 @@
                         <tr>
                             <td class="align-middle">${hostStatus.count}</td>
                             <td class="align-middle">${host.name}</td>
-                            <c:if test="${offlineHosts.contains(host)}">
+                            <c:if test="${host.isActive() && offlineHosts.contains(host)}">
                                 <td class="table-danger align-middle">${host.address}</td>
                             </c:if>
-                            <c:if test="${unstableHosts.contains(host)}">
+                            <c:if test="${host.isActive() && unstableHosts.contains(host)}">
                                 <td class="table-warning align-middle">${host.address}</td>
                             </c:if>
                             <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">

@@ -26,13 +26,18 @@ public class RegisterPageController {
 
     @PostMapping
     public String createUser(RedirectAttributes redirectAttributes,
-                             String username, String password) {
-        if (userService.findByName(username) == null) {
-            userService.registerUser(username, password, true, "ROLE_USER");
-            return "redirect:/login";
-        } else {
+                             String username,
+                             String password,
+                             String password2) {
+        if (userService.findByName(username) != null) {
             redirectAttributes.addFlashAttribute("error", "31");
             return "redirect:/register";
+        } else if (!password.equals(password2)) {
+            redirectAttributes.addFlashAttribute("error", "32");
+            return "redirect:/register";
+        } else {
+            userService.registerUser(username, password, true, "ROLE_USER");
+            return "redirect:/login";
         }
     }
 }
