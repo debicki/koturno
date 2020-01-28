@@ -31,7 +31,7 @@ public class HistoryPageController {
     @GetMapping
     public String serveHistoryPage(Model model,
                                    Principal principal,
-                                   @RequestParam(required = false, defaultValue = "only-offline") String filter,
+                                   @RequestParam(required = false, defaultValue = "all") String filter,
                                    @RequestParam(required = false, defaultValue = "25") Integer limit,
                                    @RequestParam(required = false, defaultValue = "1") Integer page) {
         User loggedUser = userService.findByName(principal.getName());

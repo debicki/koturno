@@ -1,0 +1,25 @@
+# >< Koturno ><
+
+# Example hosts file in TXT format
+
+# That example give sentence '8.8.8.8' as address, empty name, 'This is primary Google DNS' as description and add
+# to default group
+8.8.8.8             This is primary Google DNS
+
+# That example give sentence '8.8.4.4' as address, empty name, 'This is secondary Google DNS' as description and add
+# to default group
+8.8.4.4             This is secondary Google DNS
+
+# That example give sentence 'www.github.com' as address, 'GitHub' as name, 'Best version control system website ;)'
+# as description and add to group named 'GitHub' (and create group, if it is first host in group)
+www.github.com      GitHub*Best version control system website ;)
+
+# That example give sentence 'google.com' as address, empty name, empty description and add to default group
+google.com
+
+# That example give sentence 'gmail.com' as address, empty name, 'Postal' as description and add to default group
+gmail.com           Postal
+
+# That example give sentence '188.165.23.19' as address, empty name, 'SuperSecret Website' as description and add
+# to default group
+188.165.23.19       SuperSecret Website

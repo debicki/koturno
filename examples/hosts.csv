@@ -1,0 +1,26 @@
+# >< Koturno ><
+
+# Example hosts file in CSV format
+
+# That example give sentence '140.82.118.4' as address, 'switch-01' as name, description 'Budynek 1, pomieszczenie 1'
+# and add to group named 'Centrala' (and create group, if it is first host in group)
+140.82.118.4;switch-01;Budynek 1, pomieszczenie 1;Centrala
+
+# That example give sentence '216.58.215.110' as address, 'switch-02' as name, description 'Budynek 1, pomieszczenie 28'
+# and add to group named 'Centrala'
+"216.58.215.110";"switch-02";"Budynek 1, pomieszczenie 28";"Centrala"
+
+# That example give sentence '172.217.18.69' as address, 'switch-13' as name, description 'Budynek 3' and add to default
+# group
+"172.217.18.69";"switch-13";"Budynek 3"
+
+# That example give sentence '212.77.98.9' as address, 'switch-14' as name, description 'Budynek 4' and add to default
+# group
+212.77.98.9;switch-14;Budynek 4
+
+# That example give sentence '213.180.141.140' as address, 'MainRouter' as name, empty description and add to default
+# group
+"213.180.141.140";"MainRouter"
+
+# That example give sentence '77.55.194.211' as address, empty name, empty description and add to default group
+"77.55.194.211"

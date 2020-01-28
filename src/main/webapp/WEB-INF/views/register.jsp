@@ -27,6 +27,14 @@
                     </button>
                 </div>
             </c:if>
+            <c:if test="${error.equals('32')}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Podane hasła są różne
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
         </div>
         <div class="col-3"></div>
     </div>
@@ -52,6 +60,11 @@
                     <label for="password">Hasło</label>
                     <input type="password" required name="password" id="password" class="form-control text-center"
                            placeholder="Podaj hasło"/>
+                </div>
+                <div class="form-group">
+                    <label for="password2">Powtórz hasło</label>
+                    <input type="password" required name="password2" id="password2" class="form-control text-center"
+                           placeholder="Powtórz hasło"/>
                 </div>
                 <button class="btn btn-primary" type="submit">Zarejestruj</button>
                 <button class="btn btn-secondary" type="reset">Wyczyść dane</button>
