@@ -22,7 +22,6 @@ public class SecurityConfigTests {
     @Autowired
     private WebApplicationContext context;
 
-
     private MockMvc mvc;
 
     @Before
@@ -43,12 +42,17 @@ public class SecurityConfigTests {
 
     @Test
     public void shouldReturnOkWhenAnonymousUserOpenRegisterPage() throws Exception {
-        mvc.perform(get ("/register")).andExpect(status().is2xxSuccessful());
+        mvc.perform(get("/register")).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void shouldReturnOkWhenAnonymousUserOpenLoginPage() throws Exception {
-        mvc.perform(get ("/login")).andExpect(status().is2xxSuccessful());
+        mvc.perform(get("/login")).andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void shouldReturnOkWhenAnonymousUserOpenIndexPage() throws Exception {
+        mvc.perform(get("/")).andExpect(status().is2xxSuccessful());
     }
 
     @Test
@@ -70,5 +74,11 @@ public class SecurityConfigTests {
     @WithMockUser(username = "user", roles = "USER")
     public void shouldReturnErrorWhenLoggedUserOpenRegisterPage() throws Exception {
         mvc.perform(get("/register")).andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithMockUser(username = "user", roles = "USER")
+    public void shouldReturnOkWhenLoggerUserOpenIndexPage() throws Exception {
+        mvc.perform(get("/")).andExpect(status().is2xxSuccessful());
     }
 }
