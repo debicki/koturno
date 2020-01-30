@@ -28,7 +28,6 @@ import org.springframework.web.util.NestedServletException;
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -175,6 +174,40 @@ public class GroupPageControllerTests {
 
         mvc.perform(get("/group?id=666&action=remove"))
                 .andExpect(flash().attribute("error", Matchers.is("10")))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFailWhenDeleteDefaultGroup() throws Exception {
+        User user = new User("user", "user", true, "ROLE_USER");
+        HGroup hGroup = new HGroup("default", "");
+
+        Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
+        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+                .thenReturn(Collections.emptyList());
+        Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(0L);
+
+        mvc.perform(get("/group?id=666&action=remove"))
+                .andExpect(flash().attribute("error", Matchers.is("12")))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFailWhenDeleteGroupWithHosts() throws Exception {
+        User user = new User("user", "user", true, "ROLE_USER");
+        HGroup hGroup = new HGroup("group", "");
+
+        Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
+        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+                .thenReturn(Collections.emptyList());
+        Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(666L);
+
+        mvc.perform(get("/group?id=666&action=remove"))
+                .andExpect(flash().attribute("error", Matchers.is("11")))
                 .andExpect(status().is3xxRedirection());
     }
 }
