@@ -17,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -209,5 +211,88 @@ public class GroupPageControllerTests {
         mvc.perform(get("/group?id=666&action=remove"))
                 .andExpect(flash().attribute("error", Matchers.is("11")))
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFailWhenEditDefaultGroup() throws Exception {
+        String oldName = "default";
+        String newName = "test";
+        String newDescription = "test";
+        HGroup hGroup = new HGroup(oldName, "");
+
+        Mockito.when(hGroupServiceMock.getGroupByName("default")).thenReturn(hGroup);
+
+        mvc.perform(post("/group")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("originName", oldName)
+                .param("name", newName)
+                .param("description", newDescription)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("error", Matchers.is("3")));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFailWhenNewNameAreUsed() throws Exception {
+        String oldName = "test";
+        String newName = "testing";
+        String newDescription = "test";
+        HGroup hGroup = new HGroup(oldName, "");
+        HGroup hGroupInDatabase = new HGroup(newName, "");
+
+        Mockito.when(hGroupServiceMock.getGroupByName(oldName)).thenReturn(hGroup);
+        Mockito.when(hGroupServiceMock.getGroupByName(newName)).thenReturn(hGroupInDatabase);
+
+        mvc.perform(post("/group")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("originName", oldName)
+                .param("name", newName)
+                .param("description", newDescription)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("error", Matchers.is("2")));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldSuccessWhenNewNameArentUsed() throws Exception {
+        String oldName = "test";
+        String newName = "testing";
+        String newDescription = "test";
+        HGroup hGroup = new HGroup(oldName, "");
+
+        Mockito.when(hGroupServiceMock.getGroupByName(oldName)).thenReturn(hGroup);
+        Mockito.when(hGroupServiceMock.getGroupByName(newName)).thenReturn(null);
+
+        mvc.perform(post("/group")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("originName", oldName)
+                .param("name", newName)
+                .param("description", newDescription)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("error", Matchers.is("0")));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldSuccessWhenNewAndOldNamesAreEqual() throws Exception {
+        String oldName = "test";
+        String newName = "test";
+        String newDescription = "test";
+        HGroup hGroup = new HGroup(oldName, "");
+
+        Mockito.when(hGroupServiceMock.getGroupByName(newName)).thenReturn(hGroup);
+
+        mvc.perform(post("/group")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("originName", oldName)
+                .param("name", newName)
+                .param("description", newDescription)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("error", Matchers.is("0")));
     }
 }
