@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/inaccessibility")
-public class InaccessibilityController {
+public class InaccessibilityPageController {
 
     private InaccessibilityService inaccessibilityService;
 
     @Autowired
-    public InaccessibilityController(InaccessibilityService inaccessibilityService) {
+    public InaccessibilityPageController(InaccessibilityService inaccessibilityService) {
         this.inaccessibilityService = inaccessibilityService;
     }
 

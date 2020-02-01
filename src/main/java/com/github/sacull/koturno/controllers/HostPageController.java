@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/host")
-public class HostController {
+public class HostPageController {
 
     private InaccessibilityService inaccessibilityService;
     private HostService hostService;
@@ -30,10 +30,10 @@ public class HostController {
     private UserService userService;
 
     @Autowired
-    public HostController(InaccessibilityService inaccessibilityService,
-                          HostService hostService,
-                          HGroupService hGroupService,
-                          UserService userService) {
+    public HostPageController(InaccessibilityService inaccessibilityService,
+                              HostService hostService,
+                              HGroupService hGroupService,
+                              UserService userService) {
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
