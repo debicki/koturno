@@ -15,7 +15,6 @@ public class IGroupService {
         this.iGroupRepo = iGroupRepo;
     }
 
-
     public IGroup getGroup(String name) {
         return iGroupRepo.findByName(name);
     }
