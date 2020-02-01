@@ -142,7 +142,7 @@ public class FileService {
         return true;
     }
 
-    private Host parse(String line) {
+    public Host parse(String line) {
         int charCounter = 0;
         line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();
@@ -171,7 +171,7 @@ public class FileService {
         return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 
-    private Host parse(String[] line) {
+    public Host parse(String[] line) {
         Host result = new Host("", "", "", null, null);
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);
