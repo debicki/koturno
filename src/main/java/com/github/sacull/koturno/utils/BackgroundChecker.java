@@ -89,13 +89,13 @@ public class BackgroundChecker {
     }
 
     private void setOfflineStatus(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.findByHostAndActiveIsTrueOrderByEndDesc(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.getLastInaccessibilityByHost(host);
         inaccessibilityToUpdate.setOfflineStatus(true);
         inaccessibilityService.save(inaccessibilityToUpdate);
     }
 
     private void updateEndTime(Host host) {
-        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.findByHostAndActiveIsTrueOrderByEndDesc(host);
+        Inaccessibility inaccessibilityToUpdate = inaccessibilityService.getLastInaccessibilityByHost(host);
         inaccessibilityToUpdate.setEnd(LocalDateTime.now());
         inaccessibilityToUpdate.setActive(false);
         inaccessibilityService.save(inaccessibilityToUpdate);
