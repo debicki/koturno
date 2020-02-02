@@ -142,7 +142,11 @@ public class FileService {
         return true;
     }
 
-    private Host parse(String line) {
+    public Host parse(String line) {
+        if (line.trim().length() == 0)
+        {
+            return new Host("", "", "", null, null);
+        }
         int charCounter = 0;
         line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();
@@ -161,17 +165,18 @@ public class FileService {
         String[] descriptionElements = line.substring(charCounter).split("\\*");
         if (descriptionElements.length > 1) {
             name.append(descriptionElements[0]);
-            for (int i = 1; i < descriptionElements.length; i++) {
+            for (int i = 1; i < descriptionElements.length - 1; i++) {
                 description.append(descriptionElements[i]);
                 description.append(' ');
             }
+            description.append(descriptionElements[descriptionElements.length - 1]);
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
         return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 
-    private Host parse(String[] line) {
+    public Host parse(String[] line) {
         Host result = new Host("", "", "", null, null);
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);
