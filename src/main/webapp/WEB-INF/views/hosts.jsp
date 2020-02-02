@@ -175,7 +175,7 @@
                         <th>Nazwa</th>
                         <th>Adres</th>
                         <th>Opis</th>
-                        <th>Akcje</th>
+                        <th colspan="2">Akcje</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -199,6 +199,12 @@
                             <td>
                                 <a href=/host?id=${host.id}&action=info class="btn btn-primary btn-sm">
                                     zobacz
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm"
+                                   onclick="window.open('/ping?address=${host.address}','_blank');return false">
+                                    ping
                                 </a>
                             </td>
                         </tr>
