@@ -1,9 +1,12 @@
 language: java
 jdk: oraclejdk8
 dist: trusty
+cache:
+  directories:
+    - .autoconf
+    - $HOME/.m2
 script:
   - "mvn cobertura:cobertura"
   - jdk_switcher use oraclejdk8
-  - mvn clean install -q
 after_success:
   - bash <(curl -s https://codecov.io/bash)
