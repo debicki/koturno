@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/sacull/koturno.svg?branch=master)](https://travis-ci.org/sacull/koturno) 
-
 [![koturno](https://user-images.githubusercontent.com/9057882/72901019-46dc0800-3d29-11ea-8e32-43004957ad6f.png)](https://github.com/sacull/koturno)
 
 #### *"We will check for you if your host is working."* ;)
