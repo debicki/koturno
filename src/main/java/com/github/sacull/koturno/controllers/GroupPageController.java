@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/group")
-public class GroupController {
+public class GroupPageController {
 
     private HGroupService hGroupService;
     private HostService hostService;
@@ -31,7 +31,7 @@ public class GroupController {
     private UserService userService;
 
     @Autowired
-    public GroupController(HGroupService hGroupService, HostService hostService, InaccessibilityService inaccessibilityService, UserService userService) {
+    public GroupPageController(HGroupService hGroupService, HostService hostService, InaccessibilityService inaccessibilityService, UserService userService) {
         this.hGroupService = hGroupService;
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;

@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/host").authenticated()
                 .antMatchers("/group").authenticated()
                 .antMatchers("/inaccessibility").authenticated()
+                .antMatchers("/ping").authenticated()
                 .antMatchers("/*").permitAll()
                 .anyRequest().authenticated()
                 .and()

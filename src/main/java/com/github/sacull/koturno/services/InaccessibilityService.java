@@ -19,7 +19,6 @@ public class InaccessibilityService {
         this.inaccessibilityRepo = inaccessibilityRepo;
     }
 
-
     public List<Inaccessibility> getAllInaccessibility() {
         return inaccessibilityRepo.findAll();
     }
@@ -28,7 +27,7 @@ public class InaccessibilityService {
         return inaccessibilityRepo.save(inaccessibility);
     }
 
-    public Inaccessibility findByHostAndActiveIsTrueOrderByEndDesc(Host host) {
+    public Inaccessibility getLastInaccessibilityByHost(Host host) {
         return inaccessibilityRepo.findByHostAndActiveIsTrueOrderByEndDesc(host);
     }
 
