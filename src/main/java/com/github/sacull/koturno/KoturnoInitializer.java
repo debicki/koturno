@@ -9,13 +9,11 @@ import com.github.sacull.koturno.services.InaccessibilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Order(1)
 @Component
 @Slf4j
 public class KoturnoInitializer implements CommandLineRunner {

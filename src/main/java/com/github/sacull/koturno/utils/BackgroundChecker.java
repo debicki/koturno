@@ -7,8 +7,7 @@ import com.github.sacull.koturno.services.IGroupService;
 import com.github.sacull.koturno.services.InaccessibilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -16,10 +15,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Order(2)
 @Component
 @Slf4j
-public class BackgroundChecker implements CommandLineRunner {
+public class BackgroundChecker {
 
     private HostService hostService;
     private InaccessibilityService inaccessibilityService;
@@ -37,18 +35,11 @@ public class BackgroundChecker implements CommandLineRunner {
         this.lifeChecker = lifeChecker;
     }
 
-    @Override
-    public void run(String... args) {
-        log.info("BackgroundChecker started");
+    @Scheduled(fixedDelay = 5000, initialDelay = 5000)
+    public void runChecker() {
         List<Host> hosts;
         List<Long> offlineHosts = new ArrayList<>();
         List<Long> instabilityHosts = new ArrayList<>();
-        while (true) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                log.error("BackgroundChecker sleep time interrupted");
-            }
             hosts = hostService.getAllHosts();
             log.info("New scan started {}", LocalTime.now());
             for (Host host : hosts) {
@@ -81,7 +72,6 @@ public class BackgroundChecker implements CommandLineRunner {
                     }
                 }
             }
-        }
     }
 
     private void setStartTime(Host host) {
