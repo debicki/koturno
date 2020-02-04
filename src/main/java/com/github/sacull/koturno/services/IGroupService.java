@@ -18,4 +18,12 @@ public class IGroupService {
     public IGroup getGroup(String name) {
         return iGroupRepo.findByName(name);
     }
+
+    public IGroup getGroupByName(String name) {
+        return iGroupRepo.findByName(name);
+    }
+
+    public IGroup save(IGroup group) {
+        return iGroupRepo.save(group);
+    }
 }
