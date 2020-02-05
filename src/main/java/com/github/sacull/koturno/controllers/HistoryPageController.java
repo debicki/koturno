@@ -60,7 +60,7 @@ public class HistoryPageController {
                 limitedInaccessibilityList.add(inactiveInaccessibilityList.get(i));
             }
         }
-        Integer numberOfPages = allInaccessibilityList.size() / limit + 1;
+        Integer numberOfPages = (allInaccessibilityList.size() - 1) / limit + 1;
         model.addAttribute("limit", limit);
         model.addAttribute("range", range);
         model.addAttribute("page", page);
