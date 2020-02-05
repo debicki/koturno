@@ -24,6 +24,9 @@ public class BackgroundChecker {
     private IGroupService iGroupService;
     private LifeChecker lifeChecker;
 
+    private List<Long> offlineHosts = new ArrayList<>();
+    private List<Long> instabilityHosts = new ArrayList<>();
+
     @Autowired
     public BackgroundChecker(HostService hostService,
                              InaccessibilityService inaccessibilityService,
@@ -38,40 +41,38 @@ public class BackgroundChecker {
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void runChecker() {
         List<Host> hosts;
-        List<Long> offlineHosts = new ArrayList<>();
-        List<Long> instabilityHosts = new ArrayList<>();
-            hosts = hostService.getAllHosts();
-            log.info("New scan started {}", LocalTime.now());
-            for (Host host : hosts) {
-                boolean isReachable = lifeChecker.isReachable(host);
-                if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
-                    offlineHosts.remove(host.getId());
-                    instabilityHosts.remove(host.getId());
-                    this.updateEndTime(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is removed from offline/instability hosts list", host.getName());
-                    }
-                } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
-                    instabilityHosts.add(host.getId());
-                    this.setStartTime(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is added to instability hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is added to instability hosts list", host.getName());
-                    }
-                } else if (host.isActive() && !isReachable &&
-                        instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
-                    offlineHosts.add(host.getId());
-                    this.setOfflineStatus(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is added to offline hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is added to offline hosts list", host.getName());
-                    }
+        hosts = hostService.getAllHosts();
+        log.info("New scan started {}", LocalTime.now());
+        for (Host host : hosts) {
+            boolean isReachable = lifeChecker.isReachable(host);
+            if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
+                offlineHosts.remove(host.getId());
+                instabilityHosts.remove(host.getId());
+                this.updateEndTime(host);
+                if (host.getName().equals("")) {
+                    log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is removed from offline/instability hosts list", host.getName());
+                }
+            } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
+                instabilityHosts.add(host.getId());
+                this.setStartTime(host);
+                if (host.getName().equals("")) {
+                    log.info("Host {} is added to instability hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is added to instability hosts list", host.getName());
+                }
+            } else if (host.isActive() && !isReachable &&
+                    instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
+                offlineHosts.add(host.getId());
+                this.setOfflineStatus(host);
+                if (host.getName().equals("")) {
+                    log.info("Host {} is added to offline hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is added to offline hosts list", host.getName());
                 }
             }
+        }
     }
 
     private void setStartTime(Host host) {
