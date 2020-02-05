@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="pl_PL">
 <head>
@@ -16,29 +17,26 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-12 text-center koturno-style">
-            <c:if test="${filter.equals('all')}">
-                <a href=/history?filter=all&limit=${limit} class="btn btn-secondary">Wszystkie</a>
-            </c:if>
-            <c:if test="${!filter.equals('all')}">
-                <a href=/history?filter=all&limit=${limit} class="btn btn-outline-secondary">Wszystkie</a>
-            </c:if>
-            <c:if test="${filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-secondary">Tylko hosty offline</a>
-            </c:if>
-            <c:if test="${!filter.equals('only-offline')}">
-                <a href=/history?filter=only-offline&limit=${limit} class="btn btn-outline-secondary">Tylko hosty
-                    offline</a>
-            </c:if>
-            <c:if test="${filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-secondary">Historia bez
-                    ignorowanych</a>
-            </c:if>
-            <c:if test="${!filter.equals('no-ignored')}">
-                <a href=/history?filter=no-ignored&limit=${limit} class="btn btn-outline-secondary">Historia bez
-                    ignorowanych</a>
-            </c:if>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form method="get" action="/history" class="koturno-style">
+                <div class="form-row">
+                    <input type="hidden" name="limit" value="${limit}">
+                    <input type="hidden" name="page" value="${page}">
+                </div>
+                <div class="form-row">
+                    <div class="col-9">
+                        <label for="range">Niedostępności dłuższe niż <span id="range-value"></span> minut</label>
+                        <input type="range" id="range" min="0" max="120" name="range"
+                               class="form-control-range custom-range" value="${range}">
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-primary mt-3" type="submit">Zastosuj</button>
+                    </div>
+                </div>
+            </form>
         </div>
+        <div class="col-3"></div>
     </div>
 
     <br>
@@ -132,42 +130,42 @@
                 <li class="page-item disabled"><a class="page-link" href="#">Pozycji na stronę:</a></li>
                 <c:if test="${limit == 25}">
                     <li class="page-item active">
-                        <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
+                        <a class="page-link" href=/history?limit=25&range=${range}>25</a>
                     </li>
                 </c:if>
                 <c:if test="${limit != 25}">
                     <li class="page-item">
-                        <a class="page-link" href=/history?filter=${filter}&limit=25>25</a>
+                        <a class="page-link" href=/history?limit=25&range=${range}>25</a>
                     </li>
                 </c:if>
                 <c:if test="${limit == 50}">
                     <li class="page-item active">
-                        <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
+                        <a class="page-link" href=/history?limit=50&range=${range}>50</a>
                     </li>
                 </c:if>
                 <c:if test="${limit != 50}">
                     <li class="page-item">
-                        <a class="page-link" href=/history?filter=${filter}&limit=50>50</a>
+                        <a class="page-link" href=/history?limit=50&range=${range}>50</a>
                     </li>
                 </c:if>
                 <c:if test="${limit == 75}">
                     <li class="page-item active">
-                        <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
+                        <a class="page-link" href=/history?limit=75&range=${range}>75</a>
                     </li>
                 </c:if>
                 <c:if test="${limit != 75}">
                     <li class="page-item">
-                        <a class="page-link" href=/history?filter=${filter}&limit=75>75</a>
+                        <a class="page-link" href=/history?limit=75&range=${range}>75</a>
                     </li>
                 </c:if>
                 <c:if test="${limit == 100}">
                     <li class="page-item active">
-                        <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
+                        <a class="page-link" href=/history?limit=100&range=${range}>100</a>
                     </li>
                 </c:if>
                 <c:if test="${limit != 100}">
                     <li class="page-item">
-                        <a class="page-link" href=/history?filter=${filter}&limit=100>100</a>
+                        <a class="page-link" href=/history?limit=100&range=${range}>100</a>
                     </li>
                 </c:if>
             </ul>
@@ -177,7 +175,7 @@
             <ul class="pagination justify-content-center">
                 <c:if test="${page > 1}">
                     <li class="page-item">
-                        <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page - 1}">
+                        <a class="page-link" href="/history?limit=${limit}&page=${page - 1}&range=${range}">
                             <span>&laquo;</span>
                         </a>
                     </li>
@@ -188,7 +186,7 @@
                 <li class="page-item disabled"><a class="page-link" href="#">strona ${page}/${numberOfPages}</a></li>
                 <c:if test="${page < numberOfPages}">
                     <li class="page-item">
-                        <a class="page-link" href="/history?filter=${filter}&limit=${limit}&page=${page + 1}">
+                        <a class="page-link" href="/history?limit=${limit}&page=${page + 1}&range=${range}">
                             <span>&raquo;</span>
                         </a>
                     </li>
@@ -202,6 +200,14 @@
 
 </div>
 
+<script>
+    var slider = document.getElementById("range");
+    var output = document.getElementById("range-value");
+    output.innerHTML = slider.value;
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script>
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>

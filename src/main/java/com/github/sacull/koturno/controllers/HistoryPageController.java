@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class HistoryPageController {
     @GetMapping
     public String serveHistoryPage(Model model,
                                    Principal principal,
-                                   @RequestParam(required = false, defaultValue = "all") String filter,
                                    @RequestParam(required = false, defaultValue = "25") Integer limit,
-                                   @RequestParam(required = false, defaultValue = "1") Integer page) {
+                                   @RequestParam(required = false, defaultValue = "1") Integer page,
+                                   @RequestParam(required = false, defaultValue = "5") Integer range) {
         User loggedUser = userService.findByName(principal.getName());
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc(loggedUser);
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
@@ -44,19 +45,10 @@ public class HistoryPageController {
             if (inaccessibility.isActive()) {
                 activeInaccessibilityList.add(inaccessibility);
             } else {
-                if (filter.equalsIgnoreCase("only-offline")) {
-                    if (inaccessibility.isOfflineStatus()) {
-                        inactiveInaccessibilityList.add(inaccessibility);
-                    }
-                    filter = "only-offline";
-                } else if (filter.equalsIgnoreCase("no-ignored")) {
-                    if (!inaccessibility.getStart().equals(inaccessibility.getEnd())) {
-                        inactiveInaccessibilityList.add(inaccessibility);
-                    }
-                    filter = "no-ignored";
-                } else {
+                if (Duration
+                        .between(inaccessibility.getStart(), inaccessibility.getEnd())
+                        .toMinutes() >= Long.valueOf(range)) {
                     inactiveInaccessibilityList.add(inaccessibility);
-                    filter = "all";
                 }
             }
         }
@@ -69,8 +61,8 @@ public class HistoryPageController {
             }
         }
         Integer numberOfPages = allInaccessibilityList.size() / limit + 1;
-        model.addAttribute("filter", filter);
         model.addAttribute("limit", limit);
+        model.addAttribute("range", range);
         model.addAttribute("page", page);
         model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("limitedInaccessibilityList", limitedInaccessibilityList);
