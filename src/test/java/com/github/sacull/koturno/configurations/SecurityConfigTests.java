@@ -72,8 +72,8 @@ public class SecurityConfigTests {
 
     @Test
     @WithMockUser(username = "user", roles = "USER")
-    public void shouldReturnErrorWhenLoggedUserOpenRegisterPage() throws Exception {
-        mvc.perform(get("/register")).andExpect(status().is4xxClientError());
+    public void shouldReturnOkWhenLoggedUserOpenRegisterPage() throws Exception {
+        mvc.perform(get("/register")).andExpect(status().isOk());
     }
 
     @Test

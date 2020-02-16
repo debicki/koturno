@@ -58,8 +58,6 @@ public class DashboardPageControllerTests {
         Inaccessibility first = new Inaccessibility(host, "First inaccessibility", iGroup);
         Inaccessibility second = new Inaccessibility(host, "Second inaccessibility", iGroup);
 
-        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrueOrderByStartDesc())
                 .thenReturn(Arrays.asList(first, second));
 
@@ -72,7 +70,6 @@ public class DashboardPageControllerTests {
                 .andExpect(model().attribute("instabilityHosts", Matchers.hasItem(
                         Matchers.hasProperty("description", Matchers.is("Second inaccessibility")))));
 
-        Mockito.verify(userServiceMock, Mockito.times(1)).findByName(Mockito.anyString());
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(1))
                 .findAllByActiveIsTrueOrderByStartDesc();
     }
@@ -94,10 +91,10 @@ public class DashboardPageControllerTests {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("/WEB-INF/views/dashboard.jsp"))
-                .andExpect(model().attribute("instabilityHosts", Matchers.hasSize(0)));
+                .andExpect(model().attribute("instabilityHosts", Matchers.hasSize(2)));
 
         Mockito.verify(userServiceMock, Mockito.times(0)).findByName(Mockito.anyString());
-        Mockito.verify(inaccessibilityServiceMock, Mockito.times(0))
+        Mockito.verify(inaccessibilityServiceMock, Mockito.times(1))
                 .findAllByActiveIsTrueOrderByStartDesc();
     }
 

@@ -48,7 +48,7 @@ public class HostServiceTests {
         Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
         Host thirdHost = new Host("thirdHost", "localhost", "", firstGroup);
 
-        Mockito.when(hostRepoMock.findAllBy()).thenReturn(Arrays.asList(firstHost, secondHost));
+        Mockito.when(hostRepoMock.findAll()).thenReturn(Arrays.asList(firstHost, secondHost));
 
         Assert.assertEquals(2, hostService.getAllHosts().size());
     }
@@ -63,8 +63,7 @@ public class HostServiceTests {
         Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
         Host thirdHost = new Host("thirdHost", "localhost", "", firstGroup);
 
-        Mockito.when(hostRepoMock.findAllBy())
-                .thenReturn(Arrays.asList(firstHost));
+        Mockito.when(hostRepoMock.findAll()).thenReturn(Arrays.asList(firstHost));
 
         Assert.assertEquals(1, hostService.getAllHosts().size());
     }

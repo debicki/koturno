@@ -89,8 +89,6 @@ public class HostsPageControllerTests {
                 .andExpect(model().attribute("hostGroupList", Matchers.hasSize(1)))
                 .andExpect(model().attribute("hostGroupList", Matchers.hasItem(
                         Matchers.hasProperty("name", Matchers.is("default")))))
-                .andExpect(model().attribute("unstableHosts", Matchers.hasSize(0)))
-                .andExpect(model().attribute("offlineHosts", Matchers.hasSize(0)))
                 .andExpect(model().attribute("disabledMenuItem", Matchers.is("hosts")));
     }
 
