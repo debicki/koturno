@@ -14,20 +14,30 @@
 
         <hr>
 
-        <sec:authorize access="!isAuthenticated()">
-            <div>
-                <a href="/login" class="btn btn-primary btn-lg">Zaloguj</a>
-                <a href="/register" class="btn btn-primary btn-lg">Zarejestruj</a>
-            </div>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-            <div>
-                <c:if test="${disabledMenuItem.equals('dashboard')}">
-                    <a href="/" class="btn btn-secondary btn-lg">Podgląd</a>
+        <div>
+            <c:if test="${disabledMenuItem.equals('dashboard')}">
+                <a href="/" class="btn btn-secondary btn-lg">Podgląd</a>
+            </c:if>
+            <c:if test="${!disabledMenuItem.equals('dashboard')}">
+                <a href="/" class="btn btn-primary btn-lg">Podgląd</a>
+            </c:if>
+            <sec:authorize access="!isAuthenticated()">
+                <c:if test="${disabledMenuItem.equals('login')}">
+                    <a href="/login" class="btn btn-secondary btn-lg ml-5">Zaloguj</a>
                 </c:if>
-                <c:if test="${!disabledMenuItem.equals('dashboard')}">
-                    <a href="/" class="btn btn-primary btn-lg">Podgląd</a>
+                <c:if test="${!disabledMenuItem.equals('login')}">
+                    <a href="/login" class="btn btn-primary btn-lg ml-5">Zaloguj</a>
                 </c:if>
+                <c:if test="${firstUser != null && firstUser == true}">
+                    <c:if test="${disabledMenuItem.equals('register')}">
+                        <a href="/register" class="btn btn-secondary btn-lg">Zarejestruj</a>
+                    </c:if>
+                    <c:if test="${!disabledMenuItem.equals('register')}">
+                        <a href="/register" class="btn btn-primary btn-lg">Zarejestruj</a>
+                    </c:if>
+                </c:if>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
                 <c:if test="${disabledMenuItem.equals('hosts')}">
                     <a href="/hosts" class="btn btn-secondary btn-lg">Hosty</a>
                 </c:if>
@@ -47,8 +57,16 @@
                     <a href="/history" class="btn btn-primary btn-lg">Historia</a>
                 </c:if>
                 <a href="/logout" class="btn btn-primary btn-lg ml-5">Wyloguj</a>
-            </div>
-        </sec:authorize>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <c:if test="${disabledMenuItem.equals('register')}">
+                        <a href="/register" class="btn btn-secondary btn-lg">Zarejestruj</a>
+                    </c:if>
+                    <c:if test="${!disabledMenuItem.equals('register')}">
+                        <a href="/register" class="btn btn-primary btn-lg">Zarejestruj</a>
+                    </c:if>
+                </sec:authorize>
+            </sec:authorize>
+        </div>
     </div>
 
     <hr>

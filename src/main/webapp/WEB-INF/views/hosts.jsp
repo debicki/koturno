@@ -217,6 +217,8 @@
 
 </div>
 
+<jsp:include page="fragments/footer.jsp"/>
+
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>

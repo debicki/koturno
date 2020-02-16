@@ -28,22 +28,18 @@ public class Host implements Comparable<Host> {
     private String description;
     @ManyToOne
     private HGroup hostGroup;
-    @ManyToOne
-    private User owner;
 
     @Builder
     public Host(String name,
                 String address,
                 String description,
-                HGroup hostGroup,
-                User owner) {
+                HGroup hostGroup) {
         this.name = name;
         this.address = address;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
         this.hostGroup = hostGroup;
-        this.owner = owner;
     }
 
     public String getDayWhenCreated() {

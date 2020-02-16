@@ -27,18 +27,15 @@ public class HostPageController {
     private InaccessibilityService inaccessibilityService;
     private HostService hostService;
     private HGroupService hGroupService;
-    private UserService userService;
 
     @Autowired
     public HostPageController(InaccessibilityService inaccessibilityService,
                               HostService hostService,
-                              HGroupService hGroupService,
-                              UserService userService) {
+                              HGroupService hGroupService) {
 
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
-        this.userService = userService;
     }
 
     @GetMapping
@@ -73,7 +70,6 @@ public class HostPageController {
 
     @PostMapping
     public String editHost(RedirectAttributes redirectAttributes,
-                           Principal principal,
                            String originAddress,
                            String address,
                            String activity,
@@ -81,10 +77,9 @@ public class HostPageController {
                            String description,
                            String hostGroupName) {
 
-        User loggedUser = userService.findByName(principal.getName());
-        Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
+        Host hostToSave = hostService.getHostByAddress(originAddress);
 
-        if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
+        if (hostService.getHostByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
 

@@ -57,7 +57,7 @@ public class InaccessibilityPageControllerTests {
     public void shouldRedirectWhenUnknownAction() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("default", "");
         Inaccessibility inaccessibility = new Inaccessibility(host, "inaccessibility", iGroup);
 
@@ -73,7 +73,7 @@ public class InaccessibilityPageControllerTests {
     public void shouldRedirectWhenIgnoreAction() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("default", "");
         Inaccessibility inaccessibility = new Inaccessibility(host, "inaccessibility", iGroup);
 
@@ -89,7 +89,7 @@ public class InaccessibilityPageControllerTests {
     public void shouldRedirectWhenRemoveAction() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("default", "");
         Inaccessibility inaccessibility = new Inaccessibility(host, "inaccessibility", iGroup);
 
@@ -105,7 +105,7 @@ public class InaccessibilityPageControllerTests {
     public void shouldAddInaccessibilityToModelWhenInfoAction() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("default", "");
         Inaccessibility inaccessibility = new Inaccessibility(host, "inaccessibility", iGroup);
 
@@ -123,7 +123,7 @@ public class InaccessibilityPageControllerTests {
     public void shouldRedirectAfterInaccessibilityDescriptionChange() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("default", "");
         Inaccessibility inaccessibility = new Inaccessibility(host, "inaccessibility", iGroup);
         ReflectionTestUtils.setField(inaccessibility, "id", 666L);

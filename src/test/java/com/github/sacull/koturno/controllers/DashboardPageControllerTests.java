@@ -53,14 +53,14 @@ public class DashboardPageControllerTests {
     public void shouldPrepareDashboardPageForLoggedUser() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility first = new Inaccessibility(host, "First inaccessibility", iGroup);
         Inaccessibility second = new Inaccessibility(host, "Second inaccessibility", iGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
 
-        Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrueOrderByStartDesc(Mockito.any(User.class)))
+        Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrueOrderByStartDesc())
                 .thenReturn(Arrays.asList(first, second));
 
         mvc.perform(get("/"))
@@ -74,21 +74,21 @@ public class DashboardPageControllerTests {
 
         Mockito.verify(userServiceMock, Mockito.times(1)).findByName(Mockito.anyString());
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(1))
-                .findAllByActiveIsTrueOrderByStartDesc(user);
+                .findAllByActiveIsTrueOrderByStartDesc();
     }
 
     @Test
     public void shouldPrepareDashboardPageForAnonymousUser() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host host = new Host("host", "localhost", "", hGroup, user);
+        Host host = new Host("host", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility first = new Inaccessibility(host, "First inaccessibility", iGroup);
         Inaccessibility second = new Inaccessibility(host, "Second inaccessibility", iGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
 
-        Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrueOrderByStartDesc(Mockito.any(User.class)))
+        Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrueOrderByStartDesc())
                 .thenReturn(Arrays.asList(first, second));
 
         mvc.perform(get("/"))
@@ -98,7 +98,7 @@ public class DashboardPageControllerTests {
 
         Mockito.verify(userServiceMock, Mockito.times(0)).findByName(Mockito.anyString());
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(0))
-                .findAllByActiveIsTrueOrderByStartDesc(user);
+                .findAllByActiveIsTrueOrderByStartDesc();
     }
 
     @Test

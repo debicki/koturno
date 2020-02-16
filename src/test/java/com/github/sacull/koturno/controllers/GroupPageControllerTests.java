@@ -75,7 +75,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
 
@@ -90,7 +90,7 @@ public class GroupPageControllerTests {
         Mockito.verify(hGroupServiceMock, Mockito.times(1)).getGroupById(Mockito.anyLong());
         Mockito.verify(userServiceMock, Mockito.times(1)).findByName(Mockito.anyString());
         Mockito.verify(hostServiceMock, Mockito.times(1))
-                .findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class));
+                .findAllByHostGroup(Mockito.any(HGroup.class));
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(1)).findAllByActiveIsTrue();
     }
 
@@ -99,12 +99,12 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup, user);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup, user);
+        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Arrays.asList(firstHost, secondHost));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
 
@@ -125,10 +125,10 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoUnstableAndOneOfflineHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup, user);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup, user);
-        Host thirdHost = new Host("thirdHost", "localhost", "", hGroup, user);
-        Host fourthHost = new Host("fourthHost", "localhost", "", hGroup, user);
+        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", hGroup);
+        Host fourthHost = new Host("fourthHost", "localhost", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(thirdHost, "secondInaccessibility", iGroup);
@@ -137,7 +137,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Arrays.asList(firstHost, secondHost, thirdHost, fourthHost));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue())
                 .thenReturn(Arrays.asList(firstInaccessibility, secondInaccessibility, thirdInaccessibility));
@@ -170,7 +170,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(0L);
 
@@ -187,7 +187,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(0L);
 
@@ -204,7 +204,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(666L);
 
