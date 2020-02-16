@@ -9,7 +9,7 @@
             <strong>Koturno</strong>
         </div>
         <div class="h2">
-            v1.2
+            v1.3
         </div>
 
         <hr>
