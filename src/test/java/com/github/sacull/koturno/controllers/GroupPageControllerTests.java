@@ -75,7 +75,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
 
@@ -90,7 +90,7 @@ public class GroupPageControllerTests {
         Mockito.verify(hGroupServiceMock, Mockito.times(1)).getGroupById(Mockito.anyLong());
         Mockito.verify(userServiceMock, Mockito.times(1)).findByName(Mockito.anyString());
         Mockito.verify(hostServiceMock, Mockito.times(1))
-                .findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class));
+                .findAllByHostGroup(Mockito.any(HGroup.class));
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(1)).findAllByActiveIsTrue();
     }
 
@@ -104,7 +104,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Arrays.asList(firstHost, secondHost));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
 
@@ -137,7 +137,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Arrays.asList(firstHost, secondHost, thirdHost, fourthHost));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue())
                 .thenReturn(Arrays.asList(firstInaccessibility, secondInaccessibility, thirdInaccessibility));
@@ -170,7 +170,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(0L);
 
@@ -187,7 +187,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(0L);
 
@@ -204,7 +204,7 @@ public class GroupPageControllerTests {
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(hostServiceMock.countAllByHostGroup(hGroup)).thenReturn(666L);
 

@@ -96,6 +96,8 @@
     </div>
 </div>
 
+<jsp:include page="fragments/footer.jsp"/>
+
 <script src="/koturno.reloader.js"></script>
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>

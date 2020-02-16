@@ -236,8 +236,7 @@ public class HostsPageControllerTests {
         report.put("importErrors", 4);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(fileServiceMock.hostsImport(
-                Mockito.any(User.class), Mockito.anyMap(), Mockito.any()))
+        Mockito.when(fileServiceMock.hostsImport(Mockito.anyMap(), Mockito.any()))
                 .thenReturn(report);
 
         mvc.perform(MockMvcRequestBuilders.multipart("/hosts/import")

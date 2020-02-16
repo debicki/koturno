@@ -200,6 +200,8 @@
 
 </div>
 
+<jsp:include page="fragments/footer.jsp"/>
+
 <script>
     var slider = document.getElementById("range");
     var output = document.getElementById("range-value");
