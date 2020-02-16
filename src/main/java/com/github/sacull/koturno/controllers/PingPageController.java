@@ -1,5 +1,6 @@
 package com.github.sacull.koturno.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 
 @Controller
 @RequestMapping("/ping")
+@Slf4j
 public class PingPageController {
 
     @GetMapping
@@ -19,6 +21,7 @@ public class PingPageController {
         StringBuilder linesToPrint = new StringBuilder();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("cmd.exe", "/c", "ping -n 4 " + address);
+
         try {
             Process process = processBuilder.start();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -28,7 +31,7 @@ public class PingPageController {
                 linesToPrint.append("<br>");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("Ping command error: {}", e.getMessage());
         }
 
         return linesToPrint.toString();

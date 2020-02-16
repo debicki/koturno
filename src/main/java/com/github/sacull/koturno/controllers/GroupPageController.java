@@ -31,7 +31,11 @@ public class GroupPageController {
     private UserService userService;
 
     @Autowired
-    public GroupPageController(HGroupService hGroupService, HostService hostService, InaccessibilityService inaccessibilityService, UserService userService) {
+    public GroupPageController(HGroupService hGroupService,
+                               HostService hostService,
+                               InaccessibilityService inaccessibilityService,
+                               UserService userService) {
+
         this.hGroupService = hGroupService;
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
@@ -44,9 +48,14 @@ public class GroupPageController {
                                        Principal principal,
                                        Long id,
                                        @RequestParam(required = false, defaultValue = "info") String action) {
+
         HGroup hGroup = hGroupService.getGroupById(id);
+        model.addAttribute("group", hGroup);
+
         User loggedUser = userService.findByName(principal.getName());
         List<Host> groupHosts = hostService.findAllByHostGroup(hGroup, loggedUser);
+        model.addAttribute("hosts", groupHosts);
+
         if (action.equalsIgnoreCase("remove")) {
             if (hGroup.getName().equalsIgnoreCase("default")) {
                 redirectAttributes.addFlashAttribute("error", "12");
@@ -66,14 +75,13 @@ public class GroupPageController {
             for (Inaccessibility inaccessibility : allInaccessibilityList) {
                 if (inaccessibility.isOfflineStatus()) {
                     allOfflineHosts.add(inaccessibility.getHost());
+                    model.addAttribute("offlineHosts", allOfflineHosts);
                 } else {
                     allUnstableHosts.add(inaccessibility.getHost());
+                    model.addAttribute("unstableHosts", allUnstableHosts);
                 }
             }
-            model.addAttribute("group", hGroup);
-            model.addAttribute("hosts", groupHosts);
-            model.addAttribute("unstableHosts", allUnstableHosts);
-            model.addAttribute("offlineHosts", allOfflineHosts);
+
             return "/WEB-INF/views/group.jsp";
         }
     }
@@ -83,7 +91,9 @@ public class GroupPageController {
                             String originName,
                             String name,
                             String description) {
+
         HGroup groupToSave = hGroupService.getGroupByName(originName);
+
         if (originName.equalsIgnoreCase("default")) {
             redirectAttributes.addFlashAttribute("error", "3");
         } else if (hGroupService.getGroupByName(name) == null || name.equalsIgnoreCase(originName)) {
@@ -94,6 +104,7 @@ public class GroupPageController {
         } else {
             redirectAttributes.addFlashAttribute("error", "2");
         }
+
         return "redirect:/group?id=" + groupToSave.getId() + "&action=info";
     }
 }

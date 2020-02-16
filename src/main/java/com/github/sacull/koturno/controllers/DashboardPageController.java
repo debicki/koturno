@@ -22,7 +22,9 @@ public class DashboardPageController {
     private UserService userService;
 
     @Autowired
-    public DashboardPageController(InaccessibilityService inaccessibilityService, UserService userService) {
+    public DashboardPageController(InaccessibilityService inaccessibilityService,
+                                   UserService userService) {
+
         this.inaccessibilityService = inaccessibilityService;
         this.userService = userService;
     }
@@ -30,6 +32,7 @@ public class DashboardPageController {
     @GetMapping
     public String serveDashboardPage(Model model,
                                      Principal principal) {
+
         if (principal != null) {
             User loggedUser = userService.findByName(principal.getName());
             List<Inaccessibility> instabilityHosts =
@@ -38,6 +41,7 @@ public class DashboardPageController {
         } else {
             model.addAttribute("instabilityHosts", new ArrayList<Inaccessibility>());
         }
+
         model.addAttribute("disabledMenuItem", "dashboard");
         return "/WEB-INF/views/dashboard.jsp";
     }

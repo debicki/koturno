@@ -28,7 +28,10 @@ public class GroupsPageController {
     private UserService userService;
 
     @Autowired
-    public GroupsPageController(HGroupService hGroupService, HostService hostService, UserService userService) {
+    public GroupsPageController(HGroupService hGroupService,
+                                HostService hostService,
+                                UserService userService) {
+
         this.hGroupService = hGroupService;
         this.hostService = hostService;
         this.userService = userService;
@@ -37,19 +40,25 @@ public class GroupsPageController {
     @GetMapping
     public String serveGroupsPage(Model model,
                                   Principal principal) {
-        User loggedUser = userService.findByName(principal.getName());
+
         List<HGroup> hGroups = hGroupService.getAllGroups();
+        model.addAttribute("groups", hGroups);
+
+        User loggedUser = userService.findByName(principal.getName());
         List<Host> allHosts = hostService.getAllHostsByUser(loggedUser);
+
         Map<String, Integer> hGroupMembersCounter = new HashMap<>();
+
         for (HGroup hGroup : hGroups) {
             hGroupMembersCounter.put(hGroup.getName(), 0);
         }
+
         for (Host host : allHosts) {
             hGroupMembersCounter.replace(host.getHostGroup().getName(),
                     hGroupMembersCounter.get(host.getHostGroup().getName()) + 1);
         }
-        model.addAttribute("groups", hGroups);
         model.addAttribute("groupMembersCounter", hGroupMembersCounter);
+
         model.addAttribute("disabledMenuItem", "groups");
         return "/WEB-INF/views/groups.jsp";
     }
@@ -58,9 +67,11 @@ public class GroupsPageController {
     public String addNewHost(RedirectAttributes redirectAttributes,
                              String name,
                              String description) {
+
         if (description == null) {
             description = "";
         }
+
         if (hGroupService.getGroupByName(name) == null) {
             HGroup hGroupToAdd = new HGroup(name, description);
             hGroupService.save(hGroupToAdd);
@@ -68,6 +79,7 @@ public class GroupsPageController {
         } else {
             redirectAttributes.addFlashAttribute("error", "2");
         }
+
         return "redirect:/groups";
     }
 }

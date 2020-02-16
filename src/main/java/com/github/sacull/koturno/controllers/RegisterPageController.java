@@ -29,6 +29,7 @@ public class RegisterPageController {
                              String username,
                              String password,
                              String password2) {
+
         if (userService.findByName(username) != null) {
             redirectAttributes.addFlashAttribute("error", "31");
             return "redirect:/register";
