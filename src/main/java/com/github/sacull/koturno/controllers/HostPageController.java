@@ -34,6 +34,7 @@ public class HostPageController {
                               HostService hostService,
                               HGroupService hGroupService,
                               UserService userService) {
+
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
@@ -45,21 +46,27 @@ public class HostPageController {
                                       Model model,
                                       Long id,
                                       @RequestParam(required = false, defaultValue = "info") String action) {
+
         Host host = hostService.getHostById(id);
+        model.addAttribute("host", host);
+
         if (action.equalsIgnoreCase("remove")) {
             List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHost(host);
+
             for (Inaccessibility inaccessibility : hostInaccessibilityList) {
                 inaccessibilityService.delete(inaccessibility);
             }
             hostService.delete(host);
+
             redirectAttributes.addFlashAttribute("error", "10");
             return "redirect:/hosts";
         } else {
             List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHostOrderByStartDesc(host);
-            List<HGroup> hostGroupList = hGroupService.getAllGroups();
-            model.addAttribute("host", host);
             model.addAttribute("inaccessibilityList", hostInaccessibilityList);
+
+            List<HGroup> hostGroupList = hGroupService.getAllGroups();
             model.addAttribute("hostGroupList", hostGroupList);
+
             return "/WEB-INF/views/host.jsp";
         }
     }
@@ -73,24 +80,30 @@ public class HostPageController {
                            String name,
                            String description,
                            String hostGroupName) {
+
         User loggedUser = userService.findByName(principal.getName());
         Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
+
         if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
+
             if (activity.equalsIgnoreCase("Aktywny")) {
                 hostToSave.setActive(true);
             } else {
                 hostToSave.setActive(false);
             }
+
             hostToSave.setName(name);
             hostToSave.setDescription(description);
             hostToSave.setHostGroup(hostGroup);
             hostService.save(hostToSave);
+
             redirectAttributes.addFlashAttribute("error", "0");
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
+
         return "redirect:/host?id=" + hostToSave.getId() + "&action=info";
     }
 }

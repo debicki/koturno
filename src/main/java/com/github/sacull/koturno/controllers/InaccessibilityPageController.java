@@ -25,7 +25,9 @@ public class InaccessibilityPageController {
                                                  Long id,
                                                  String action,
                                                  String filter) {
+
         Inaccessibility inaccessibility = inaccessibilityService.getInaccessibilityById(id);
+
         switch (action) {
             case "ignore":
                 inaccessibility.setActive(false);
@@ -38,6 +40,7 @@ public class InaccessibilityPageController {
                 model.addAttribute("inaccessibility", inaccessibility);
                 return "/WEB-INF/views/inaccessibility.jsp";
         }
+
         return "redirect:/";
     }
 
@@ -46,6 +49,7 @@ public class InaccessibilityPageController {
         Inaccessibility inaccessibilityToSave = inaccessibilityService.getInaccessibilityById(id);
         inaccessibilityToSave.setDescription(description);
         inaccessibilityService.save(inaccessibilityToSave);
+
         return "redirect:/inaccessibility?id=" + inaccessibilityToSave.getId() + "&action=info";
     }
 }

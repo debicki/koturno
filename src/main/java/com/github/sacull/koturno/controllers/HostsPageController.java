@@ -38,6 +38,7 @@ public class HostsPageController {
                                HGroupService hGroupService,
                                UserService userService,
                                FileService fileService) {
+
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.hGroupService = hGroupService;
@@ -48,23 +49,28 @@ public class HostsPageController {
     @GetMapping
     public String serveHostsPage(Model model,
                                  Principal principal) {
+
         User loggedUser = userService.findByName(principal.getName());
         List<Host> allHosts = hostService.findAllByByOwnerOrderByName(loggedUser);
+        model.addAttribute("hosts", allHosts);
+
         List<HGroup> hostGroupList = hGroupService.getAllGroups();
+        model.addAttribute("hostGroupList", hostGroupList);
+
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByActiveIsTrue();
         List<Host> allUnstableHosts = new ArrayList<>();
         List<Host> allOfflineHosts = new ArrayList<>();
+
         for (Inaccessibility inaccessibility : allInaccessibilityList) {
             if (inaccessibility.isOfflineStatus()) {
                 allOfflineHosts.add(inaccessibility.getHost());
+                model.addAttribute("offlineHosts", allOfflineHosts);
             } else {
                 allUnstableHosts.add(inaccessibility.getHost());
+                model.addAttribute("unstableHosts", allUnstableHosts);
             }
         }
-        model.addAttribute("hosts", allHosts);
-        model.addAttribute("hostGroupList", hostGroupList);
-        model.addAttribute("unstableHosts", allUnstableHosts);
-        model.addAttribute("offlineHosts", allOfflineHosts);
+
         model.addAttribute("disabledMenuItem", "hosts");
         return "/WEB-INF/views/hosts.jsp";
     }
@@ -77,20 +83,27 @@ public class HostsPageController {
                              String description,
                              String hostGroupName,
                              Principal principal) {
+
         User user = userService.findByName(principal.getName());
+
         if (name == null) {
             name = "";
         }
+
         if (description == null) {
             description = "";
         }
+
         if (hostService.getHostByAddress(address, user) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             Host hostToAdd = new Host(name, address, description, hostGroup, user);
+
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);
             }
+
             hostService.save(hostToAdd);
+
             if (fileService.isValidAddress(address)) {
                 redirectAttributes.addFlashAttribute("error", "0");
             } else {
@@ -99,6 +112,7 @@ public class HostsPageController {
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
+
         return "redirect:/hosts";
     }
 
