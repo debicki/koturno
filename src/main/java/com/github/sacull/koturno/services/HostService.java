@@ -27,7 +27,7 @@ public class HostService {
         return hostRepo.save(host);
     }
 
-    public List<Host> findAllByHostGroup(HGroup hGroup, User user) {
+    public List<Host> findAllByHostGroup(HGroup hGroup) {
         return hostRepo.findAllByHostGroup(hGroup);
     }
 

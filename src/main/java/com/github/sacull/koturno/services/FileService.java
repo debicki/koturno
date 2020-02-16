@@ -36,8 +36,7 @@ public class FileService {
         this.hGroupService = hGroupService;
     }
 
-    public Map<String, Integer> hostsImport(User loggedUser,
-                                            Map<String, Integer> report,
+    public Map<String, Integer> hostsImport(Map<String, Integer> report,
                                             MultipartFile file) throws IOException, CsvException {
 
         int importSuccess = 0;

@@ -2,7 +2,6 @@ package com.github.sacull.koturno.services;
 
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.repositories.InaccessibilityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
