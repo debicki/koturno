@@ -36,7 +36,7 @@ public class DashboardPageController {
         if (principal != null) {
             User loggedUser = userService.findByName(principal.getName());
             List<Inaccessibility> instabilityHosts =
-                    inaccessibilityService.findAllByActiveIsTrueOrderByStartDesc(loggedUser);
+                    inaccessibilityService.findAllByActiveIsTrueOrderByStartDesc();
             model.addAttribute("instabilityHosts", instabilityHosts);
         } else {
             model.addAttribute("instabilityHosts", new ArrayList<Inaccessibility>());

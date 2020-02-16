@@ -45,7 +45,7 @@ public class GroupsPageController {
         model.addAttribute("groups", hGroups);
 
         User loggedUser = userService.findByName(principal.getName());
-        List<Host> allHosts = hostService.getAllHostsByUser(loggedUser);
+        List<Host> allHosts = hostService.getAllHosts();
 
         Map<String, Integer> hGroupMembersCounter = new HashMap<>();
 

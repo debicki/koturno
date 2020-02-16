@@ -72,7 +72,7 @@ public class GroupsPageControllerTests {
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(hGroup));
-        Mockito.when(hostServiceMock.getAllHostsByUser(Mockito.any(User.class))).thenReturn(Collections.emptyList());
+        Mockito.when(hostServiceMock.getAllHosts()).thenReturn(Collections.emptyList());
 
         mvc.perform(get("/groups"))
                 .andExpect(model().attribute("groups", Matchers.hasSize(1)))
@@ -86,12 +86,12 @@ public class GroupsPageControllerTests {
     public void shouldModelHaveListWithDefaultGroupWithTwoHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup, user);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup, user);
+        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(hGroup));
-        Mockito.when(hostServiceMock.getAllHostsByUser(Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.getAllHosts())
                 .thenReturn(Arrays.asList(firstHost, secondHost));
 
         mvc.perform(get("/groups"))
@@ -105,12 +105,12 @@ public class GroupsPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("test", "");
-        Host firstHost = new Host("firstHost", "localhost", "", secondGroup, user);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup, user);
+        Host firstHost = new Host("firstHost", "localhost", "", secondGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(firstGroup, secondGroup));
-        Mockito.when(hostServiceMock.getAllHostsByUser(Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.getAllHosts())
                 .thenReturn(Arrays.asList(firstHost, secondHost));
 
         mvc.perform(get("/groups"))

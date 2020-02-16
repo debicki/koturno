@@ -39,7 +39,7 @@ public class HistoryPageController {
                                    @RequestParam(required = false, defaultValue = "5") Integer range) {
 
         User loggedUser = userService.findByName(principal.getName());
-        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc(loggedUser);
+        List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc();
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();

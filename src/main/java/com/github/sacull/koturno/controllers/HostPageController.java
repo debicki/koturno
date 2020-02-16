@@ -82,9 +82,9 @@ public class HostPageController {
                            String hostGroupName) {
 
         User loggedUser = userService.findByName(principal.getName());
-        Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
+        Host hostToSave = hostService.getHostByAddress(originAddress);
 
-        if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
+        if (hostService.getHostByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
 

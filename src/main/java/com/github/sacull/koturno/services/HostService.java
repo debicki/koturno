@@ -23,16 +23,12 @@ public class HostService {
         return hostRepo.findAll();
     }
 
-    public List<Host> getAllHostsByUser(User user) {
-        return hostRepo.findAllByOwner(user);
-    }
-
     public Host save(Host host) {
         return hostRepo.save(host);
     }
 
     public List<Host> findAllByHostGroup(HGroup hGroup, User user) {
-        return hostRepo.findAllByHostGroupAndOwner(hGroup, user);
+        return hostRepo.findAllByHostGroup(hGroup);
     }
 
     public Host getHostById(Long id) {
@@ -43,12 +39,12 @@ public class HostService {
         hostRepo.delete(host);
     }
 
-    public Host getHostByAddress(String address, User user) {
-        return hostRepo.findByAddressAndOwner(address, user);
+    public Host getHostByAddress(String address) {
+        return hostRepo.findByAddress(address);
     }
 
-    public List<Host> findAllByByOwnerOrderByName(User user) {
-        return hostRepo.findAllByOwnerOrderByName(user);
+    public List<Host> findAllByName() {
+        return hostRepo.findAllByOrderByName();
     }
 
     public Long countAllByHostGroup(HGroup group) {

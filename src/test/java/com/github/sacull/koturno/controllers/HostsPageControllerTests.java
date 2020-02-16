@@ -77,7 +77,7 @@ public class HostsPageControllerTests {
         HGroup hGroup = new HGroup("default", "");
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByByOwnerOrderByName(Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByName())
                 .thenReturn(Collections.emptyList());
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(hGroup));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
@@ -100,16 +100,16 @@ public class HostsPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("test", "");
-        Host firstHost = new Host("firstHost", "localhost", "", secondGroup, user);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup, user);
-        Host thirdHost = new Host("thirdHost", "localhost", "", secondGroup, user);
+        Host firstHost = new Host("firstHost", "localhost", "", secondGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", secondGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(secondHost, "secondInaccessibility", iGroup);
         secondInaccessibility.setOfflineStatus(true);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.findAllByByOwnerOrderByName(Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.findAllByName())
                 .thenReturn(Arrays.asList(firstHost, secondHost, thirdHost));
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(firstGroup, secondGroup));
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue())
@@ -149,10 +149,10 @@ public class HostsPageControllerTests {
         String hostGroupName = "default";
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup(hostGroupName, "");
-        Host host = new Host(name, address, description, hGroup, user);
+        Host host = new Host(name, address, description, hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address)))
                 .thenReturn(host);
 
         mvc.perform(post("/hosts")
@@ -179,7 +179,7 @@ public class HostsPageControllerTests {
         HGroup hGroup = new HGroup(hostGroupName, "");
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address)))
                 .thenReturn(null);
         Mockito.when(hGroupServiceMock.getGroupByName(Mockito.anyString())).thenReturn(hGroup);
         Mockito.when(fileServiceMock.isValidAddress(Mockito.anyString())).thenReturn(true);
@@ -208,7 +208,7 @@ public class HostsPageControllerTests {
         HGroup hGroup = new HGroup(hostGroupName, "");
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address), Mockito.any(User.class)))
+        Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address)))
                 .thenReturn(null);
         Mockito.when(hGroupServiceMock.getGroupByName(Mockito.anyString())).thenReturn(hGroup);
         Mockito.when(fileServiceMock.isValidAddress(Mockito.anyString())).thenReturn(false);

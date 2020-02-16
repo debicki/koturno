@@ -51,7 +51,7 @@ public class HostsPageController {
                                  Principal principal) {
 
         User loggedUser = userService.findByName(principal.getName());
-        List<Host> allHosts = hostService.findAllByByOwnerOrderByName(loggedUser);
+        List<Host> allHosts = hostService.findAllByName();
         model.addAttribute("hosts", allHosts);
 
         List<HGroup> hostGroupList = hGroupService.getAllGroups();
@@ -94,9 +94,9 @@ public class HostsPageController {
             description = "";
         }
 
-        if (hostService.getHostByAddress(address, user) == null) {
+        if (hostService.getHostByAddress(address) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
-            Host hostToAdd = new Host(name, address, description, hostGroup, user);
+            Host hostToAdd = new Host(name, address, description, hostGroup);
 
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);
