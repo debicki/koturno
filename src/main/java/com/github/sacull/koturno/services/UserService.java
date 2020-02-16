@@ -13,7 +13,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepo,
+                       PasswordEncoder passwordEncoder) {
+
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
@@ -24,5 +26,13 @@ public class UserService {
 
     public User findByName(String name) {
         return userRepo.findByUsername(name);
+    }
+
+    public int countUsers() {
+        if (userRepo.countAllByActive(true) == null) {
+            return 0;
+        } else {
+            return userRepo.countAllByActive(true);
+        }
     }
 }

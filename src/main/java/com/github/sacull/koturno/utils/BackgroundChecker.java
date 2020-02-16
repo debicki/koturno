@@ -7,14 +7,13 @@ import com.github.sacull.koturno.services.IGroupService;
 import com.github.sacull.koturno.services.InaccessibilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
@@ -25,59 +24,61 @@ public class BackgroundChecker {
     private IGroupService iGroupService;
     private LifeChecker lifeChecker;
 
+    private List<Long> offlineHosts = new ArrayList<>();
+    private List<Long> instabilityHosts = new ArrayList<>();
+
     @Autowired
     public BackgroundChecker(HostService hostService,
                              InaccessibilityService inaccessibilityService,
                              IGroupService iGroupService,
                              LifeChecker lifeChecker) {
+
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.iGroupService = iGroupService;
         this.lifeChecker = lifeChecker;
     }
 
-    @Async
-    public CompletableFuture<String> start() {
+    @Scheduled(fixedDelay = 5000, initialDelay = 5000)
+    public void runChecker() {
         List<Host> hosts;
-        List<Long> offlineHosts = new ArrayList<>();
-        List<Long> instabilityHosts = new ArrayList<>();
-        while (true) {
-            hosts = hostService.getAllHosts();
-            log.info("New scan started {}", LocalTime.now());
-            for (Host host : hosts) {
-                boolean isReachable = lifeChecker.isReachable(host);
-                if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
-                    offlineHosts.remove(host.getId());
-                    instabilityHosts.remove(host.getId());
-                    this.updateEndTime(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is removed from offline/instability hosts list", host.getName());
-                    }
-                } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
-                    instabilityHosts.add(host.getId());
-                    this.setStartTime(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is added to instability hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is added to instability hosts list", host.getName());
-                    }
-                } else if (host.isActive() && !isReachable &&
-                        instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
-                    offlineHosts.add(host.getId());
-                    this.setOfflineStatus(host);
-                    if (host.getName().equals("")) {
-                        log.info("Host {} is added to offline hosts list", host.getAddress());
-                    } else {
-                        log.info("Host {} is added to offline hosts list", host.getName());
-                    }
+        hosts = hostService.getAllHosts();
+        log.info("New scan started {}", LocalTime.now());
+
+        for (Host host : hosts) {
+            boolean isReachable = lifeChecker.isReachable(host);
+
+            if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
+                offlineHosts.remove(host.getId());
+                instabilityHosts.remove(host.getId());
+                this.updateEndTime(host);
+
+                if (host.getName().equals("")) {
+                    log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is removed from offline/instability hosts list", host.getName());
                 }
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                log.error("BackgroundChecker sleep time interrupted");
+
+            } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
+                instabilityHosts.add(host.getId());
+                this.setStartTime(host);
+
+                if (host.getName().equals("")) {
+                    log.info("Host {} is added to instability hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is added to instability hosts list", host.getName());
+                }
+
+            } else if (host.isActive() && !isReachable &&
+                    instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
+                offlineHosts.add(host.getId());
+                this.setOfflineStatus(host);
+
+                if (host.getName().equals("")) {
+                    log.info("Host {} is added to offline hosts list", host.getAddress());
+                } else {
+                    log.info("Host {} is added to offline hosts list", host.getName());
+                }
             }
         }
     }

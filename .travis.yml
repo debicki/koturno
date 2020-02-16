@@ -6,7 +6,4 @@ cache:
     - .autoconf
     - $HOME/.m2
 script:
-  - "mvn cobertura:cobertura"
   - jdk_switcher use oraclejdk8
-after_success:
-  - bash <(curl -s https://codecov.io/bash)

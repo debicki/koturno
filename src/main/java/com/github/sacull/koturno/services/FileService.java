@@ -29,13 +29,14 @@ public class FileService {
     private HGroupService hGroupService;
 
     @Autowired
-    public FileService(HostService hostService, HGroupService hGroupService) {
+    public FileService(HostService hostService,
+                       HGroupService hGroupService) {
+
         this.hostService = hostService;
         this.hGroupService = hGroupService;
     }
 
-    public Map<String, Integer> hostsImport(User loggedUser,
-                                            Map<String, Integer> report,
+    public Map<String, Integer> hostsImport(Map<String, Integer> report,
                                             MultipartFile file) throws IOException, CsvException {
 
         int importSuccess = 0;
@@ -44,14 +45,15 @@ public class FileService {
 
         List<Host> importList = new ArrayList<>();
         HGroup defaultGroup = hGroupService.getGroupByName("default");
-        List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
+        List<Host> hostsInDatabase = hostService.getAllHosts();
         BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
+
         if (Objects.equals(file.getContentType(), "text/plain")) {
             String line;
+
             while ((line = fileContent.readLine()) != null) {
                 if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
                     Host hostToAdd = parse(line);
-                    hostToAdd.setOwner(loggedUser);
                     importList.add(hostToAdd);
                 }
             }
@@ -63,6 +65,7 @@ public class FileService {
             importErrors -= importList.size();
 
             for (Host host : importList) {
+
                 if (host.getName().equals("") || host.getName() == null) {
                     host.setHostGroup(defaultGroup);
                 } else {
@@ -73,7 +76,7 @@ public class FileService {
                     }
                     host.setHostGroup(group);
                 }
-                host.setOwner(loggedUser);
+
                 if (isValidAddress(host.getAddress())) {
                     importSuccess++;
                 } else {
@@ -99,7 +102,6 @@ public class FileService {
                     hostToAdd.setHostGroup(defaultGroup);
                 }
                 if (!hostToAdd.getAddress().equals("")) {
-                    hostToAdd.setOwner(loggedUser);
                     importList.add(hostToAdd);
                 }
             }
@@ -134,34 +136,40 @@ public class FileService {
 
     public boolean isValidAddress(String address) {
         InetAddress host;
+
         try {
             host = InetAddress.getByName(address);
         } catch (UnknownHostException e) {
             return false;
         }
+
         return true;
     }
 
     public Host parse(String line) {
         if (line.trim().length() == 0)
         {
-            return new Host("", "", "", null, null);
+            return new Host("", "", "", null);
         }
         int charCounter = 0;
         line = line.replace('\t', ' ');
         StringBuilder address = new StringBuilder();
         StringBuilder name = new StringBuilder();
         StringBuilder description = new StringBuilder();
+
         while (line.charAt(charCounter) == ' ') {
             charCounter++;
         }
+
         while ((charCounter < line.length()) && (line.charAt(charCounter) != ' ')) {
             address.append(line.charAt(charCounter));
             charCounter++;
         }
+
         while ((charCounter < line.length()) && (line.charAt(charCounter) == ' ')) {
             charCounter++;
         }
+
         String[] descriptionElements = line.substring(charCounter).split("\\*");
         if (descriptionElements.length > 1) {
             name.append(descriptionElements[0]);
@@ -173,11 +181,13 @@ public class FileService {
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
-        return new Host(name.toString(), address.toString(), description.toString(), null, null);
+
+        return new Host(name.toString(), address.toString(), description.toString(), null);
     }
 
     public Host parse(String[] line) {
-        Host result = new Host("", "", "", null, null);
+        Host result = new Host("", "", "", null);
+
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);
             if (line.length > 1) {
@@ -195,6 +205,7 @@ public class FileService {
                 }
             }
         }
+
         return result;
     }
 }

@@ -27,17 +27,15 @@ public class HostPageController {
     private InaccessibilityService inaccessibilityService;
     private HostService hostService;
     private HGroupService hGroupService;
-    private UserService userService;
 
     @Autowired
     public HostPageController(InaccessibilityService inaccessibilityService,
                               HostService hostService,
-                              HGroupService hGroupService,
-                              UserService userService) {
+                              HGroupService hGroupService) {
+
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
-        this.userService = userService;
     }
 
     @GetMapping
@@ -45,52 +43,62 @@ public class HostPageController {
                                       Model model,
                                       Long id,
                                       @RequestParam(required = false, defaultValue = "info") String action) {
+
         Host host = hostService.getHostById(id);
+        model.addAttribute("host", host);
+
         if (action.equalsIgnoreCase("remove")) {
             List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHost(host);
+
             for (Inaccessibility inaccessibility : hostInaccessibilityList) {
                 inaccessibilityService.delete(inaccessibility);
             }
             hostService.delete(host);
+
             redirectAttributes.addFlashAttribute("error", "10");
             return "redirect:/hosts";
         } else {
             List<Inaccessibility> hostInaccessibilityList = inaccessibilityService.findAllByHostOrderByStartDesc(host);
-            List<HGroup> hostGroupList = hGroupService.getAllGroups();
-            model.addAttribute("host", host);
             model.addAttribute("inaccessibilityList", hostInaccessibilityList);
+
+            List<HGroup> hostGroupList = hGroupService.getAllGroups();
             model.addAttribute("hostGroupList", hostGroupList);
+
             return "/WEB-INF/views/host.jsp";
         }
     }
 
     @PostMapping
     public String editHost(RedirectAttributes redirectAttributes,
-                           Principal principal,
                            String originAddress,
                            String address,
                            String activity,
                            String name,
                            String description,
                            String hostGroupName) {
-        User loggedUser = userService.findByName(principal.getName());
-        Host hostToSave = hostService.getHostByAddress(originAddress, loggedUser);
-        if (hostService.getHostByAddress(address, loggedUser) == null || address.equalsIgnoreCase(originAddress)) {
+
+        Host hostToSave = hostService.getHostByAddress(originAddress);
+
+        if (hostService.getHostByAddress(address) == null || address.equalsIgnoreCase(originAddress)) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
+
             if (activity.equalsIgnoreCase("Aktywny")) {
                 hostToSave.setActive(true);
             } else {
                 hostToSave.setActive(false);
             }
+
             hostToSave.setName(name);
             hostToSave.setDescription(description);
             hostToSave.setHostGroup(hostGroup);
             hostService.save(hostToSave);
+
             redirectAttributes.addFlashAttribute("error", "0");
         } else {
             redirectAttributes.addFlashAttribute("error", "1");
         }
+
         return "redirect:/host?id=" + hostToSave.getId() + "&action=info";
     }
 }
