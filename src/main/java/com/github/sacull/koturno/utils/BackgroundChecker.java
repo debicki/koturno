@@ -32,6 +32,7 @@ public class BackgroundChecker {
                              InaccessibilityService inaccessibilityService,
                              IGroupService iGroupService,
                              LifeChecker lifeChecker) {
+
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.iGroupService = iGroupService;
@@ -43,29 +44,36 @@ public class BackgroundChecker {
         List<Host> hosts;
         hosts = hostService.getAllHosts();
         log.info("New scan started {}", LocalTime.now());
+
         for (Host host : hosts) {
             boolean isReachable = lifeChecker.isReachable(host);
+
             if (host.isActive() && isReachable && instabilityHosts.contains(host.getId())) {
                 offlineHosts.remove(host.getId());
                 instabilityHosts.remove(host.getId());
                 this.updateEndTime(host);
+
                 if (host.getName().equals("")) {
                     log.info("Host {} is removed from offline/instability hosts list", host.getAddress());
                 } else {
                     log.info("Host {} is removed from offline/instability hosts list", host.getName());
                 }
+
             } else if (host.isActive() && !isReachable && !instabilityHosts.contains(host.getId())) {
                 instabilityHosts.add(host.getId());
                 this.setStartTime(host);
+
                 if (host.getName().equals("")) {
                     log.info("Host {} is added to instability hosts list", host.getAddress());
                 } else {
                     log.info("Host {} is added to instability hosts list", host.getName());
                 }
+
             } else if (host.isActive() && !isReachable &&
                     instabilityHosts.contains(host.getId()) && !offlineHosts.contains(host.getId())) {
                 offlineHosts.add(host.getId());
                 this.setOfflineStatus(host);
+
                 if (host.getName().equals("")) {
                     log.info("Host {} is added to offline hosts list", host.getAddress());
                 } else {

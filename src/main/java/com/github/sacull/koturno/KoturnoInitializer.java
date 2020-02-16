@@ -26,6 +26,7 @@ public class KoturnoInitializer implements CommandLineRunner {
     public KoturnoInitializer(HGroupService hGroupService,
                               IGroupService iGroupService,
                               InaccessibilityService inaccessibilityService) {
+
         this.hGroupService = hGroupService;
         this.iGroupService = iGroupService;
         this.inaccessibilityService = inaccessibilityService;

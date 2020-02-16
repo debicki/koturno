@@ -29,7 +29,9 @@ public class FileService {
     private HGroupService hGroupService;
 
     @Autowired
-    public FileService(HostService hostService, HGroupService hGroupService) {
+    public FileService(HostService hostService,
+                       HGroupService hGroupService) {
+
         this.hostService = hostService;
         this.hGroupService = hGroupService;
     }
@@ -46,8 +48,10 @@ public class FileService {
         HGroup defaultGroup = hGroupService.getGroupByName("default");
         List<Host> hostsInDatabase = hostService.getAllHostsByUser(loggedUser);
         BufferedReader fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()));
+
         if (Objects.equals(file.getContentType(), "text/plain")) {
             String line;
+
             while ((line = fileContent.readLine()) != null) {
                 if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
                     Host hostToAdd = parse(line);
@@ -63,6 +67,7 @@ public class FileService {
             importErrors -= importList.size();
 
             for (Host host : importList) {
+
                 if (host.getName().equals("") || host.getName() == null) {
                     host.setHostGroup(defaultGroup);
                 } else {
@@ -74,6 +79,7 @@ public class FileService {
                     host.setHostGroup(group);
                 }
                 host.setOwner(loggedUser);
+
                 if (isValidAddress(host.getAddress())) {
                     importSuccess++;
                 } else {
@@ -134,11 +140,13 @@ public class FileService {
 
     public boolean isValidAddress(String address) {
         InetAddress host;
+
         try {
             host = InetAddress.getByName(address);
         } catch (UnknownHostException e) {
             return false;
         }
+
         return true;
     }
 
@@ -152,16 +160,20 @@ public class FileService {
         StringBuilder address = new StringBuilder();
         StringBuilder name = new StringBuilder();
         StringBuilder description = new StringBuilder();
+
         while (line.charAt(charCounter) == ' ') {
             charCounter++;
         }
+
         while ((charCounter < line.length()) && (line.charAt(charCounter) != ' ')) {
             address.append(line.charAt(charCounter));
             charCounter++;
         }
+
         while ((charCounter < line.length()) && (line.charAt(charCounter) == ' ')) {
             charCounter++;
         }
+
         String[] descriptionElements = line.substring(charCounter).split("\\*");
         if (descriptionElements.length > 1) {
             name.append(descriptionElements[0]);
@@ -173,11 +185,13 @@ public class FileService {
         } else if (descriptionElements.length == 1) {
             description.append(descriptionElements[0]);
         }
+
         return new Host(name.toString(), address.toString(), description.toString(), null, null);
     }
 
     public Host parse(String[] line) {
         Host result = new Host("", "", "", null, null);
+
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);
             if (line.length > 1) {
@@ -195,6 +209,7 @@ public class FileService {
                 }
             }
         }
+
         return result;
     }
 }
