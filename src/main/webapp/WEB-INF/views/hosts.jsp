@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<fmt:setBundle basename="message"/>
+<fmt:setBundle basename="lang"/>
 
 <html lang="pl_PL">
 <head>
@@ -99,8 +99,9 @@
                         <div class="form-row">
                             <div class="form-group col-8">
                                 <label for="address"><fmt:message key="modal.body.address"/></label>
+                                <fmt:message key="form.placeholder.provide-host-name" var="provideHostName"/>
                                 <input type="text" required name="address" id="address" class="form-control"
-                                       placeholder="Podaj adres hosta" autofocus="autofocus" autocomplete="off"/>
+                                       placeholder="${provideHostName}" autofocus="autofocus" autocomplete="off"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity"><fmt:message key="modal.body.activity"/></label>
