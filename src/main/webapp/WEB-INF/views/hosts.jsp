@@ -99,9 +99,9 @@
                         <div class="form-row">
                             <div class="form-group col-8">
                                 <label for="address"><fmt:message key="modal.body.address"/></label>
-                                <fmt:message key="form.placeholder.provide-host-name" var="provideHostName"/>
+                                <fmt:message key="form.placeholder.provide-host-address" var="provideHostAddress"/>
                                 <input type="text" required name="address" id="address" class="form-control"
-                                       placeholder="${provideHostName}" autofocus="autofocus" autocomplete="off"/>
+                                       placeholder="${provideHostAddress}" autofocus="autofocus" autocomplete="off"/>
                             </div>
                             <div class="form-group col-4">
                                 <label for="activity"><fmt:message key="modal.body.activity"/></label>
