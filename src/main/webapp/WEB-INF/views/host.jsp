@@ -80,6 +80,11 @@
                 </div>
             </c:if>
             <div class="lead"><strong><fmt:message key="body.label.description"/>: ${host.description}</strong></div>
+            <c:if test="${host.externalLink.length() > 0}">
+                <div class="lead">
+                    <a href="${host.externalLink}">${host.externalLink}</a>
+                </div>
+            </c:if>
         </div>
     </div>
 

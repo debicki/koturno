@@ -95,8 +95,8 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
@@ -119,10 +119,10 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoUnstableAndOneOfflineHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", hGroup);
-        Host fourthHost = new Host("fourthHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", hGroup);
+        Host fourthHost = new Host("fourthHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(thirdHost, "secondInaccessibility", iGroup);

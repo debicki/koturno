@@ -98,9 +98,9 @@ public class HostsPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("test", "");
-        Host firstHost = new Host("firstHost", "localhost", "", secondGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", secondGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", secondGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", secondGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", secondGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(secondHost, "secondInaccessibility", iGroup);
@@ -144,10 +144,11 @@ public class HostsPageControllerTests {
         String activity = "Nieaktywny";
         String name = "name";
         String description = "";
+        String externalLink = "";
         String hostGroupName = "default";
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup(hostGroupName, "");
-        Host host = new Host(name, address, description, hGroup);
+        Host host = new Host(name, address, description, externalLink, hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(address)))

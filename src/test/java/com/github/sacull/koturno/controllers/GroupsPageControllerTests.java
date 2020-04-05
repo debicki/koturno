@@ -86,8 +86,8 @@ public class GroupsPageControllerTests {
     public void shouldModelHaveListWithDefaultGroupWithTwoHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(hGroup));
@@ -105,8 +105,8 @@ public class GroupsPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("test", "");
-        Host firstHost = new Host("firstHost", "localhost", "", secondGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", secondGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", secondGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hGroupServiceMock.getAllGroups()).thenReturn(Arrays.asList(firstGroup, secondGroup));

@@ -4,7 +4,7 @@
 
 # That example give sentence '140.82.118.4' as address, 'switch-01' as name, description 'Budynek 1, pomieszczenie 1'
 # and add to group named 'Centrala' (and create group, if it is first host in group)
-140.82.118.4;switch-01;Budynek 1, pomieszczenie 1;Centrala
+140.82.118.4;switch-01;Budynek 1, pomieszczenie 1;Centrala;http://google.pl
 
 # That example give sentence '216.58.215.110' as address, 'switch-02' as name, description 'Budynek 1, pomieszczenie 28'
 # and add to group named 'Centrala'

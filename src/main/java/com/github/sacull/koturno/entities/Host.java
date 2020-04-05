@@ -26,6 +26,7 @@ public class Host implements Comparable<Host> {
     @Getter(AccessLevel.NONE)
     private Boolean active;
     private String description;
+    private String externalLink;
     @ManyToOne
     private HGroup hostGroup;
 
@@ -33,12 +34,14 @@ public class Host implements Comparable<Host> {
     public Host(String name,
                 String address,
                 String description,
+                String externalLink,
                 HGroup hostGroup) {
         this.name = name;
         this.address = address;
         this.whenCreated = LocalDateTime.now();
         this.active = true;
         this.description = description;
+        this.externalLink = externalLink;
         this.hostGroup = hostGroup;
     }
 

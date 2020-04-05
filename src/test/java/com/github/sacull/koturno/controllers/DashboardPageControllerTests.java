@@ -53,7 +53,7 @@ public class DashboardPageControllerTests {
     public void shouldPrepareDashboardPageForLoggedUser() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host host = new Host("host", "localhost", "", hGroup);
+        Host host = new Host("host", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility first = new Inaccessibility(host, "First inaccessibility", iGroup);
         Inaccessibility second = new Inaccessibility(host, "Second inaccessibility", iGroup);
@@ -78,7 +78,7 @@ public class DashboardPageControllerTests {
     public void shouldPrepareDashboardPageForAnonymousUser() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host host = new Host("host", "localhost", "", hGroup);
+        Host host = new Host("host", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility first = new Inaccessibility(host, "First inaccessibility", iGroup);
         Inaccessibility second = new Inaccessibility(host, "Second inaccessibility", iGroup);

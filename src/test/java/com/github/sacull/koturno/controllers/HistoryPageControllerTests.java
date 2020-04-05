@@ -76,7 +76,7 @@ public class HistoryPageControllerTests {
     public void shouldReturnHistoryWithOneEventWithFilterAll() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
 
@@ -96,7 +96,7 @@ public class HistoryPageControllerTests {
     public void shouldReturnEmptyHistoryWithFilterOnlyOffline() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         firstInaccessibility.setActive(false);
@@ -115,8 +115,8 @@ public class HistoryPageControllerTests {
     public void shouldReturnHistoryWithOneActiveAndTOneOldEventsWithFilterOnlyOffline() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(secondHost, "secondInaccessibility", iGroup);
