@@ -1,10 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<fmt:setBundle basename="messages"/>
 
 <html lang="pl_PL">
 <head>
-    <title>Historia</title>
+    <title><fmt:message key="head.title.history"/></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="blue">
@@ -26,12 +29,18 @@
                 </div>
                 <div class="form-row">
                     <div class="col-9">
-                        <label for="range">Niedostępności dłuższe niż <span id="range-value"></span> minut</label>
+                        <label for="range">
+                            <fmt:message key="body.filter.inaccesibility-longer-than"/>
+                            <span id="range-value"></span>
+                            <fmt:message key="body.filter.minutes"/>
+                        </label>
                         <input type="range" id="range" min="0" max="120" name="range"
                                class="form-control-range custom-range" value="${range}">
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-primary mt-3" type="submit">Zastosuj</button>
+                        <button class="btn btn-primary mt-3" type="submit">
+                            <fmt:message key="modal.button.submit"/>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -44,19 +53,19 @@
     <div class="row">
         <div class="col-12 pb-3">
             <c:if test="${limitedInaccessibilityList == null || limitedInaccessibilityList.size() == 0}">
-                <p class="h1 text-center koturno-style">Brak wpisów w historii</p>
+                <p class="h1 text-center koturno-style"><fmt:message key="messages.information.history-is-empty"/></p>
             </c:if>
             <c:if test="${limitedInaccessibilityList.size() > 0}">
                 <table class="table table-hover table-bordered text-center koturno-style">
                     <thead>
                     <tr class="thead-dark">
-                        <th>Lp.</th>
-                        <th>Status</th>
-                        <th>Nazwa</th>
-                        <th>Adres</th>
-                        <th colspan="2">Początek</th>
-                        <th colspan="2">Koniec</th>
-                        <th colspan="2">Akcje</th>
+                        <th><fmt:message key="table.head.number"/></th>
+                        <th><fmt:message key="table.head.status"/></th>
+                        <th><fmt:message key="table.head.name"/></th>
+                        <th><fmt:message key="table.head.address"/></th>
+                        <th colspan="2"><fmt:message key="table.head.begin"/></th>
+                        <th colspan="2"><fmt:message key="table.head.end"/></th>
+                        <th colspan="2"><fmt:message key="table.head.actions"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,10 +74,10 @@
                         <tr>
                             <td class="align-middle">${inaccessibilityStatus.count}</td>
                             <c:if test="${inaccessibility.isActive()}">
-                                <td class="align-middle">Aktywny</td>
+                                <td class="align-middle"><fmt:message key="table.body.active"/></td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive()}">
-                                <td class="align-middle">Archiwalny</td>
+                                <td class="align-middle"><fmt:message key="table.body.archival"/></td>
                             </c:if>
                             <td class="align-middle">${inaccessibility.host.name}</td>
                             <c:if test="${inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
@@ -95,10 +104,10 @@
                             <td class="align-middle">${inaccessibility.dayOfBegin}</td>
                             <td class="align-middle">${inaccessibility.hourOfBegin}</td>
                             <c:if test="${inaccessibility.isActive()}">
-                                <td colspan="2" class="align-middle">TRWA</td>
+                                <td colspan="2" class="align-middle"><fmt:message key="table.body.continues"/></td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive() && inaccessibility.start == inaccessibility.end}">
-                                <td colspan="2" class="align-middle">ZIGNOROWANY</td>
+                                <td colspan="2" class="align-middle"><fmt:message key="table.body.ignored"/></td>
                             </c:if>
                             <c:if test="${!inaccessibility.isActive() && inaccessibility.start != inaccessibility.end}">
                                 <td class="align-middle">${inaccessibility.dayOfEnd}</td>
@@ -107,13 +116,13 @@
                             <td>
                                 <a href=/inaccessibility?id=${inaccessibility.id}&action=info
                                    class="btn btn-primary btn-sm">
-                                    zobacz
+                                    <fmt:message key="table.button-label.see"/>
                                 </a>
                             </td>
                             <td>
                                 <a href=/inaccessibility?id=${inaccessibility.id}&action=remove
                                    class="btn btn-danger btn-sm">
-                                    usuń
+                                    <fmt:message key="table.button-label.remove"/>
                                 </a>
                             </td>
                         </tr>
@@ -127,7 +136,9 @@
     <c:if test="${limitedInaccessibilityList.size() > 0}">
         <nav>
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled"><a class="page-link" href="#">Pozycji na stronę:</a></li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#"><fmt:message key="body.filter.positions-per-page"/>:</a>
+                </li>
                 <c:if test="${limit == 25}">
                     <li class="page-item active">
                         <a class="page-link" href=/history?limit=25&range=${range}>25</a>
@@ -183,7 +194,9 @@
                 <c:if test="${page <= 1}">
                     <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
                 </c:if>
-                <li class="page-item disabled"><a class="page-link" href="#">strona ${page}/${numberOfPages}</a></li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#"><fmt:message key="body.filter.page"/> ${page}/${numberOfPages}</a>
+                </li>
                 <c:if test="${page < numberOfPages}">
                     <li class="page-item">
                         <a class="page-link" href="/history?limit=${limit}&page=${page + 1}&range=${range}">
@@ -206,7 +219,7 @@
     var slider = document.getElementById("range");
     var output = document.getElementById("range-value");
     output.innerHTML = slider.value;
-    slider.oninput = function() {
+    slider.oninput = function () {
         output.innerHTML = this.value;
     }
 </script>
