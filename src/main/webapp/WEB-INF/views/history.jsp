@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
+
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">
@@ -30,7 +31,7 @@
                 <div class="form-row">
                     <div class="col-9">
                         <label for="range">
-                            <fmt:message key="body.filter.inaccesibility-longer-than"/>
+                            <fmt:message key="body.filter.inaccessibility-longer-than"/>
                             <span id="range-value"></span>
                             <fmt:message key="body.filter.minutes"/>
                         </label>

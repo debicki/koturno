@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
+
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">

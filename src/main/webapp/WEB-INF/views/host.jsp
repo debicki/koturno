@@ -1,10 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<fmt:setBundle basename="message"/>
 
 <html lang="pl_PL">
 <head>
-    <title>Szczegóły hosta</title>
+    <title><fmt:message key="head.title.host-details"/></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="blue">
@@ -12,6 +15,7 @@
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
+
 <jsp:include page="fragments/main-menu.jsp"/>
 
 <div class="container">
@@ -19,10 +23,10 @@
     <div class="row">
         <div class="col-12 text-center koturno-style">
             <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-primary">
-                Edytuj hosta
+                <fmt:message key="submenu.label.edit-host"/>
             </a>
             <a href="#removeHostModal" data-toggle="modal" data-target="#removeHostModal" class="btn btn-danger">
-                Usuń hosta
+                <fmt:message key="submenu.label.remove-host"/>
             </a>
         </div>
     </div>
@@ -35,7 +39,7 @@
         <div class="col-6">
             <c:if test="${error.equals('0')}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Host został zapisany pomyślnie
+                    <fmt:message key="messages.information.host-saved"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -43,7 +47,7 @@
             </c:if>
             <c:if test="${error.equals('1')}">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Host z tym adresem już istnieje
+                    <fmt:message key="messages.error.host-exists"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -59,16 +63,23 @@
             <div class="h1">${host.name}</div>
             <div class="h2">${host.address}</div>
             <div class="lead">
-                <strong>Grupa: <a href=/group?id=${host.hostGroup.id}&action=info>${host.hostGroup.name}</a></strong>
+                <strong>
+                    <fmt:message key="body.label.group"/>:
+                    <a href=/group?id=${host.hostGroup.id}&action=info> ${host.hostGroup.name}</a>
+                </strong>
             </div>
-            <div class="lead"><strong>Dodany dnia: ${host.dayWhenCreated}</strong></div>
+            <div class="lead"><strong><fmt:message key="body.label.added-at"/>: ${host.dayWhenCreated}</strong></div>
             <c:if test="${host.isActive()}">
-                <div class="lead"><strong>Status: aktywny</strong></div>
+                <div class="lead">
+                    <strong><fmt:message key="body.label.status"/>: <fmt:message key="body.label.active"/></strong>
+                </div>
             </c:if>
             <c:if test="${!host.isActive()}">
-                <div class="lead"><strong>Status: nieaktywny</strong></div>
+                <div class="lead">
+                    <strong><fmt:message key="body.label.status"/>: <fmt:message key="body.label.inactive"/></strong>
+                </div>
             </c:if>
-            <div class="lead"><strong>Opis: ${host.description}</strong></div>
+            <div class="lead"><strong><fmt:message key="body.label.description"/>: ${host.description}</strong></div>
         </div>
     </div>
 
@@ -78,7 +89,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content koturno-style">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edycja hosta</h5>
+                    <h5 class="modal-title"><fmt:message key="modal.title.edit-host"/></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -88,47 +99,50 @@
                         <input type="hidden" name="originAddress" value="${host.address}"/>
                         <div class="form-row">
                             <div class="form-group col-8">
-                                <label for="address">Adres</label>
+                                <label for="address"><fmt:message key="modal.body.address"/></label>
                                 <input type="text" required name="address" id="address" class="form-control"
                                        value="${host.address}"/>
                             </div>
                             <div class="form-group col-4">
-                                <label for="activity">Aktywność</label>
+                                <label for="activity"><fmt:message key="modal.body.activity"/></label>
                                 <select name="activity" id="activity" class="form-control">
                                     <c:if test="${host.isActive()}">
-                                        <option selected>Aktywny</option>
-                                        <option>Nieaktywny</option>
+                                        <option selected><fmt:message key="modal.body.active"/></option>
+                                        <option><fmt:message key="modal.body.inactive"/></option>
                                     </c:if>
                                     <c:if test="${!host.isActive()}">
-                                        <option selected>Nieaktywny</option>
-                                        <option>Aktywny</option>
+                                        <option selected><fmt:message key="modal.body.inactive"/></option>
+                                        <option><fmt:message key="modal.body.active"/></option>
                                     </c:if>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name">Nazwa</label>
+                            <label for="name"><fmt:message key="modal.body.name"/></label>
                             <c:if test="${!host.name.equals('')}">
                                 <input type="text" name="name" id="name" class="form-control" value="${host.name}"/>
                             </c:if>
                             <c:if test="${host.name.equals('')}">
+                                <fmt:message key="form.placeholder.provide-host-name" var="provideHostName"/>
                                 <input type="text" name="name" id="name" class="form-control"
-                                       placeholder="Podaj nazwę hosta"/>
+                                       placeholder="${provideHostName}"/>
                             </c:if>
                         </div>
                         <div class="form-group">
-                            <label for="description">Opis</label>
+                            <label for="description"><fmt:message key="modal.body.description"/></label>
                             <c:if test="${!host.description.equals('')}">
                                 <input type="text" name="description" id="description" class="form-control"
                                        value="${host.description}"/>
                             </c:if>
                             <c:if test="${host.description.equals('')}">
+                                <fmt:message key="form.placeholder.provide-host-description"
+                                             var="provideHostDescription"/>
                                 <input type="text" name="description" id="description" class="form-control"
-                                       placeholder="Podaj opis hosta"/>
+                                       placeholder="${provideHostDescription}"/>
                             </c:if>
                         </div>
                         <div class="form-group">
-                            <label for="hostGroupName">Grupa</label>
+                            <label for="hostGroupName"><fmt:message key="modal.body.group"/></label>
                             <select name="hostGroupName" id="hostGroupName" class="form-control">
                                 <option selected>${host.hostGroup.name}</option>
                                 <c:forEach items="${hostGroupList}" var="hostGroup" varStatus="hostGroupStatus">
@@ -138,9 +152,11 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <button class="btn btn-success" type="submit">Zapisz</button>
-                        <button class="btn btn-secondary" type="reset">Wyczyść pola</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button class="btn btn-success" type="submit"><fmt:message key="modal.button.save"/></button>
+                        <button class="btn btn-secondary" type="reset"><fmt:message key="modal.button.clear"/></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <fmt:message key="modal.button.cancel"/>
+                        </button>
                         <sec:csrfInput/>
                     </form>
                 </div>
@@ -152,7 +168,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content koturno-style">
                 <div class="modal-header">
-                    <h5 class="modal-title">Usuwanie hosta</h5>
+                    <h5 class="modal-title"><fmt:message key="modal.title.remove-host"/></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -161,10 +177,14 @@
                     <form method="get" action="/host">
                         <input type="hidden" name="id" value="${host.id}"/>
                         <input type="hidden" name="action" value="remove"/>
-                        <div class="koturno-style">Usunąć hosta z adresem ${host.address}?</div>
+                        <div class="koturno-style">
+                            <fmt:message key="modal.body.remove-host-question"/> ${host.address}?
+                        </div>
                         <br>
-                        <button class="btn btn-danger" type="submit">Usuń</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button class="btn btn-danger" type="submit"><fmt:message key="modal.button.remove"/></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <fmt:message key="modal.button.cancel"/>
+                        </button>
                         <sec:csrfInput/>
                     </form>
                 </div>
@@ -175,7 +195,9 @@
     <c:if test="${inaccessibilityList.size() == 0}">
         <div class="row">
             <div class="col-12 pb-3">
-                <p class="h1 text-center koturno-style">Brak zarejestrowanych niedostępności</p>
+                <p class="h1 text-center koturno-style">
+                    <fmt:message key="messages.information.host-history-is-empty"/>
+                </p>
             </div>
         </div>
     </c:if>
@@ -185,11 +207,11 @@
                 <table class="table table-hover table-bordered text-center koturno-style">
                     <thead>
                     <tr class="thead-dark">
-                        <th>Lp.</th>
-                        <th colspan="2">Początek</th>
-                        <th colspan="2">Koniec</th>
-                        <th>Opis</th>
-                        <th>Akcje</th>
+                        <th><fmt:message key="table.head.number"/></th>
+                        <th colspan="2"><fmt:message key="table.head.begin"/></th>
+                        <th colspan="2"><fmt:message key="table.head.end"/></th>
+                        <th><fmt:message key="table.head.description"/></th>
+                        <th><fmt:message key="table.head.actions"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -204,7 +226,7 @@
                             <td class="align-middle">${inaccessibility.dayOfBegin}</td>
                             <td class="align-middle">${inaccessibility.hourOfBegin}</td>
                             <c:if test="${inaccessibility.start == inaccessibility.end}">
-                                <td colspan="2" class="align-middle">TRWA</td>
+                                <td colspan="2" class="align-middle"><fmt:message key="table.body.continues"/></td>
                             </c:if>
                             <c:if test="${inaccessibility.start != inaccessibility.end}">
                                 <td class="align-middle">${inaccessibility.dayOfEnd}</td>
@@ -214,7 +236,7 @@
                             <td>
                                 <a href=/inaccessibility?id=${inaccessibility.id}&action=info
                                    class="btn btn-primary btn-sm">
-                                    zobacz
+                                    <fmt:message key="table.button-label.see"/>
                                 </a>
                             </td>
                         </tr>
