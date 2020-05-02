@@ -72,7 +72,7 @@ public class HostPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("group", "");
-        Host host = new Host("firstHost", "localhost", "", secondGroup);
+        Host host = new Host("firstHost", "localhost", "", "", secondGroup);
 
         Mockito.when(hostServiceMock.getHostById(Mockito.anyLong())).thenReturn(host);
         Mockito.when(inaccessibilityServiceMock.findAllByHostOrderByStartDesc(Mockito.any(Host.class)))
@@ -94,7 +94,7 @@ public class HostPageControllerTests {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("group", "");
-        Host host = new Host("firstHost", "localhost", "", secondGroup);
+        Host host = new Host("firstHost", "localhost", "", "", secondGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(host, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(host, "secondInaccessibility", iGroup);
@@ -122,7 +122,7 @@ public class HostPageControllerTests {
     public void shouldRedirectAfterHostDelete() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host host = new Host("firstHost", "localhost", "", hGroup);
+        Host host = new Host("firstHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(host, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(host, "secondInaccessibility", iGroup);
@@ -148,8 +148,8 @@ public class HostPageControllerTests {
         String hostGroupName = "";
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", originAddress, "", hGroup);
-        Host hostInDatabase = new Host("host", address, "", hGroup);
+        Host host = new Host("host", originAddress, "", "", hGroup);
+        Host hostInDatabase = new Host("host", address, "", "", hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(originAddress))).thenReturn(host);
@@ -179,7 +179,7 @@ public class HostPageControllerTests {
         String hostGroupName = "";
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", originAddress, "", hGroup);
+        Host host = new Host("host", originAddress, "", "", hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(originAddress))).thenReturn(host);
@@ -209,8 +209,8 @@ public class HostPageControllerTests {
         String hostGroupName = "";
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("default", "");
-        Host host = new Host("host", originAddress, "", hGroup);
-        Host hostInDatabase = new Host("host", address, "", hGroup);
+        Host host = new Host("host", originAddress, "", "", hGroup);
+        Host hostInDatabase = new Host("host", address, "", "", hGroup);
 
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hostServiceMock.getHostByAddress(Mockito.eq(originAddress))).thenReturn(host);

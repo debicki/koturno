@@ -76,7 +76,7 @@ public class HistoryPageControllerTests {
     public void shouldReturnHistoryWithOneEventWithFilterAll() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
 
@@ -96,7 +96,7 @@ public class HistoryPageControllerTests {
     public void shouldReturnEmptyHistoryWithFilterOnlyOffline() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         firstInaccessibility.setActive(false);
@@ -112,64 +112,11 @@ public class HistoryPageControllerTests {
 
     @Test
     @WithMockUser
-    public void shouldReturnHistoryWithOneOldEventWithFilterAll() throws Exception {
-        User user = new User("user", "user", true, "ROLE_USER");
-        HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        IGroup iGroup = new IGroup("group", "");
-        Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
-        firstInaccessibility.setOfflineStatus(true);
-        firstInaccessibility.setActive(false);
-
-        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(inaccessibilityServiceMock.findAllByOrderByStartDesc())
-                .thenReturn(Arrays.asList(firstInaccessibility));
-
-        mvc.perform(get("/history?filter=all"))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasSize(1)))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
-                        Matchers.hasProperty("description", Matchers.is("firstInaccessibility")))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser
-    public void shouldReturnHistoryWithOneActiveAndTwoOldEventsWithFilterAll() throws Exception {
-        User user = new User("user", "user", true, "ROLE_USER");
-        HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
-        IGroup iGroup = new IGroup("group", "");
-        Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
-        Inaccessibility secondInaccessibility = new Inaccessibility(secondHost, "secondInaccessibility", iGroup);
-        Inaccessibility thirdInaccessibility = new Inaccessibility(secondHost, "thirdInaccessibility", iGroup);
-        firstInaccessibility.setOfflineStatus(true);
-        secondInaccessibility.setActive(false);
-        thirdInaccessibility.setOfflineStatus(true);
-        thirdInaccessibility.setActive(false);
-
-        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
-        Mockito.when(inaccessibilityServiceMock.findAllByOrderByStartDesc())
-                .thenReturn(Arrays.asList(firstInaccessibility, secondInaccessibility, thirdInaccessibility));
-
-        mvc.perform(get("/history?filter=all"))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasSize(3)))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
-                        Matchers.hasProperty("description", Matchers.is("firstInaccessibility")))))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
-                        Matchers.hasProperty("description", Matchers.is("secondInaccessibility")))))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
-                        Matchers.hasProperty("description", Matchers.is("thirdInaccessibility")))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser
     public void shouldReturnHistoryWithOneActiveAndTOneOldEventsWithFilterOnlyOffline() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(secondHost, "secondInaccessibility", iGroup);
@@ -179,16 +126,13 @@ public class HistoryPageControllerTests {
         thirdInaccessibility.setOfflineStatus(true);
         thirdInaccessibility.setActive(false);
 
-        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(inaccessibilityServiceMock.findAllByOrderByStartDesc())
                 .thenReturn(Arrays.asList(firstInaccessibility, secondInaccessibility, thirdInaccessibility));
 
         mvc.perform(get("/history?filter=only-offline"))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasSize(2)))
+                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasSize(1)))
                 .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
                         Matchers.hasProperty("description", Matchers.is("firstInaccessibility")))))
-                .andExpect(model().attribute("limitedInaccessibilityList", Matchers.hasItem(
-                        Matchers.hasProperty("description", Matchers.is("thirdInaccessibility")))))
                 .andExpect(status().isOk());
     }
 }

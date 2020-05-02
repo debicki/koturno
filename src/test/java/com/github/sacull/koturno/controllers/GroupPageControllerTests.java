@@ -74,7 +74,6 @@ public class GroupPageControllerTests {
         HGroup hGroup = new HGroup("group", "");
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
-        Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
         Mockito.when(hostServiceMock.findAllByHostGroup(Mockito.any(HGroup.class)))
                 .thenReturn(Collections.emptyList());
         Mockito.when(inaccessibilityServiceMock.findAllByActiveIsTrue()).thenReturn(Collections.emptyList());
@@ -83,12 +82,9 @@ public class GroupPageControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("/WEB-INF/views/group.jsp"))
                 .andExpect(model().attribute("group", Matchers.equalTo(hGroup)))
-                .andExpect(model().attribute("hosts", Matchers.hasSize(0)))
-                .andExpect(model().attribute("unstableHosts", Matchers.hasSize(0)))
-                .andExpect(model().attribute("offlineHosts", Matchers.hasSize(0)));
+                .andExpect(model().attribute("hosts", Matchers.hasSize(0)));
 
         Mockito.verify(hGroupServiceMock, Mockito.times(1)).getGroupById(Mockito.anyLong());
-        Mockito.verify(userServiceMock, Mockito.times(1)).findByName(Mockito.anyString());
         Mockito.verify(hostServiceMock, Mockito.times(1))
                 .findAllByHostGroup(Mockito.any(HGroup.class));
         Mockito.verify(inaccessibilityServiceMock, Mockito.times(1)).findAllByActiveIsTrue();
@@ -99,8 +95,8 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
 
         Mockito.when(hGroupServiceMock.getGroupById(Mockito.anyLong())).thenReturn(hGroup);
         Mockito.when(userServiceMock.findByName(Mockito.anyString())).thenReturn(user);
@@ -115,9 +111,7 @@ public class GroupPageControllerTests {
                 .andExpect(model().attribute("hosts", Matchers.hasItem(
                         Matchers.hasProperty("name", Matchers.is("firstHost")))))
                 .andExpect(model().attribute("hosts", Matchers.hasItem(
-                        Matchers.hasProperty("name", Matchers.is("secondHost")))))
-                .andExpect(model().attribute("unstableHosts", Matchers.hasSize(0)))
-                .andExpect(model().attribute("offlineHosts", Matchers.hasSize(0)));
+                        Matchers.hasProperty("name", Matchers.is("secondHost")))));
     }
 
     @Test
@@ -125,10 +119,10 @@ public class GroupPageControllerTests {
     public void shouldReturnValidModelAttributesWithGroupWithTwoUnstableAndOneOfflineHosts() throws Exception {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup hGroup = new HGroup("group", "");
-        Host firstHost = new Host("firstHost", "localhost", "", hGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", hGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", hGroup);
-        Host fourthHost = new Host("fourthHost", "localhost", "", hGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", hGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", hGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", hGroup);
+        Host fourthHost = new Host("fourthHost", "localhost", "", "", hGroup);
         IGroup iGroup = new IGroup("group", "");
         Inaccessibility firstInaccessibility = new Inaccessibility(firstHost, "firstInaccessibility", iGroup);
         Inaccessibility secondInaccessibility = new Inaccessibility(thirdHost, "secondInaccessibility", iGroup);

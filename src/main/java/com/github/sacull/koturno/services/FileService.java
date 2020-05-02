@@ -2,7 +2,6 @@ package com.github.sacull.koturno.services;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
-import com.github.sacull.koturno.entities.User;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -53,7 +52,7 @@ public class FileService {
 
             while ((line = fileContent.readLine()) != null) {
                 if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                    Host hostToAdd = parse(line);
+                    Host hostToAdd = this.parse(line);
                     importList.add(hostToAdd);
                 }
             }
@@ -97,7 +96,7 @@ public class FileService {
             // CSV file structure
             // address;name;description;group
             for (String[] line : linesList) {
-                Host hostToAdd = parse(line);
+                Host hostToAdd = this.parse(line);
                 if (!hostToAdd.getAddress().equals("") && hostToAdd.getHostGroup() == null) {
                     hostToAdd.setHostGroup(defaultGroup);
                 }
@@ -149,7 +148,7 @@ public class FileService {
     public Host parse(String line) {
         if (line.trim().length() == 0)
         {
-            return new Host("", "", "", null);
+            return new Host("", "", "", "", null);
         }
         int charCounter = 0;
         line = line.replace('\t', ' ');
@@ -182,11 +181,11 @@ public class FileService {
             description.append(descriptionElements[0]);
         }
 
-        return new Host(name.toString(), address.toString(), description.toString(), null);
+        return new Host(name.toString(), address.toString(), description.toString(), "", null);
     }
 
     public Host parse(String[] line) {
-        Host result = new Host("", "", "", null);
+        Host result = new Host("", "", "", "", null);
 
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);
@@ -201,6 +200,9 @@ public class FileService {
                             group = hGroupService.save(group);
                         }
                         result.setHostGroup(group);
+                        if (line.length > 4) {
+                            result.setExternalLink(line[4]);
+                        }
                     }
                 }
             }

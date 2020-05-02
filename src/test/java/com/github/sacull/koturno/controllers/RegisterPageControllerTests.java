@@ -54,9 +54,9 @@ public class RegisterPageControllerTests {
 
     @Test
     @WithMockUser
-    public void shouldLoggedUserGetError() throws Exception {
+    public void shouldLoggedUserGetOk() throws Exception {
         mvc.perform(get("/register"))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk());
     }
 
     @Test

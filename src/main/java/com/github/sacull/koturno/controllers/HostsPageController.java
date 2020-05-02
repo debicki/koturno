@@ -73,6 +73,7 @@ public class HostsPageController {
                              String activity,
                              String name,
                              String description,
+                             String externalLink,
                              String hostGroupName) {
 
         if (name == null) {
@@ -83,9 +84,13 @@ public class HostsPageController {
             description = "";
         }
 
+        if (externalLink == null) {
+            externalLink = "";
+        }
+
         if (hostService.getHostByAddress(address) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
-            Host hostToAdd = new Host(name, address, description, hostGroup);
+            Host hostToAdd = new Host(name, address, description, externalLink, hostGroup);
 
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);

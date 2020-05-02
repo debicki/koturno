@@ -29,9 +29,9 @@ public class HostServiceTests {
         User admin = new User("admin", "admin", true, "ROLE_ADMIN");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", firstGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", firstGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", firstGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", secondGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", firstGroup);
 
         Mockito.when(hostRepoMock.findAll()).thenReturn(Arrays.asList(firstHost, secondHost, thirdHost));
 
@@ -44,11 +44,11 @@ public class HostServiceTests {
         User admin = new User("admin", "admin", true, "ROLE_ADMIN");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", firstGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", firstGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", firstGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", secondGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", firstGroup);
 
-        Mockito.when(hostRepoMock.findAllBy()).thenReturn(Arrays.asList(firstHost, secondHost));
+        Mockito.when(hostRepoMock.findAll()).thenReturn(Arrays.asList(firstHost, secondHost));
 
         Assert.assertEquals(2, hostService.getAllHosts().size());
     }
@@ -59,12 +59,11 @@ public class HostServiceTests {
         User admin = new User("admin", "admin", true, "ROLE_ADMIN");
         HGroup firstGroup = new HGroup("default", "");
         HGroup secondGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", firstGroup);
-        Host secondHost = new Host("secondHost", "localhost", "", secondGroup);
-        Host thirdHost = new Host("thirdHost", "localhost", "", firstGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", firstGroup);
+        Host secondHost = new Host("secondHost", "localhost", "", "", secondGroup);
+        Host thirdHost = new Host("thirdHost", "localhost", "", "", firstGroup);
 
-        Mockito.when(hostRepoMock.findAllBy())
-                .thenReturn(Arrays.asList(firstHost));
+        Mockito.when(hostRepoMock.findAll()).thenReturn(Arrays.asList(firstHost));
 
         Assert.assertEquals(1, hostService.getAllHosts().size());
     }
@@ -73,7 +72,7 @@ public class HostServiceTests {
     public void shouldReturnValidHostById() {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", firstGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", firstGroup);
 
         Mockito.when(hostRepoMock.getOne(Mockito.anyLong())).thenReturn(firstHost);
 
@@ -84,7 +83,7 @@ public class HostServiceTests {
     public void shouldReturnValidHostByAddress() {
         User user = new User("user", "user", true, "ROLE_USER");
         HGroup firstGroup = new HGroup("default", "");
-        Host firstHost = new Host("firstHost", "localhost", "", firstGroup);
+        Host firstHost = new Host("firstHost", "localhost", "", "", firstGroup);
 
         Mockito.when(hostRepoMock.findByAddress(Mockito.anyString())).thenReturn(firstHost);
 
