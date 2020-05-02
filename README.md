@@ -23,7 +23,8 @@ and uncomment MySQL rows, with your login and password to database before compil
 #### Launching the application
 After compile to package we got \*.war file, but in them, we have Apache Tomcat Embedded. That's mean we can run 
 an application from command line using command: `java -jar *.war`, where \* is name of the application. 
-By default, the application will start on port 8080.
+By default, the application will start on ports 8080 and 8443, but all requests to port 8080 will be redirected to
+port 8443.
 
 ### User interface
 The application delivers four main and four additional pages. 
