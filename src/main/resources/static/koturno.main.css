@@ -1,5 +1,4 @@
 .koturno-style {
-    color: black;
     font-variant: small-caps;
 }
 
@@ -8,9 +7,13 @@
 }
 
 .koturno-darker {
-background-color: #414141 !important;
+    background-color: #414141 !important;
 }
 
 .koturno-dark {
-background-color: #505050 !important;
+    background-color: #505050 !important;
+}
+
+html,body {
+  height: 100%;
 }

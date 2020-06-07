@@ -50,4 +50,16 @@ public class HostService {
     public Long countAllByHostGroup(HGroup group) {
         return hostRepo.countAllByHostGroup(group);
     }
+
+    public Long countAllActiveHost() {
+        return hostRepo.countAllByActiveTrue();
+    }
+
+    public Long countAllHosts() {
+        return hostRepo.countAllBy();
+    }
+
+    public Long countAllInactiveHost() {
+        return hostRepo.countAllByActiveFalse();
+    }
 }

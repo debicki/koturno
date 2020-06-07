@@ -17,4 +17,10 @@ public interface HostRepo extends JpaRepository<Host, Long> {
     List<Host> findAllByOrderByName();
 
     List<Host> findAllBy();
+
+    Long countAllByActiveTrue();
+
+    Long countAllByActiveFalse();
+
+    Long countAllBy();
 }
