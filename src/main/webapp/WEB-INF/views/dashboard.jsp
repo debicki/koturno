@@ -21,9 +21,7 @@
 <div class="container-fluid">
     <div class="row min-vh-100">
 
-        <div class="col-2 koturno-darker koturno-style">
-            <jsp:include page="fragments/left-menu.jsp"/>
-        </div>
+        <jsp:include page="fragments/left-menu.jsp"/>
 
         <div class="col-10 koturno-dark text-light">
 
@@ -73,7 +71,7 @@
                         </p>
                     </c:if>
                     <c:if test="${instabilityHosts.size() > 0}">
-                        <table class="table table-hover table-bordered text-center text-light koturno-style koturno-dark">
+                        <table class="table table-bordered table-dark table-sm text-center text-light koturno-style koturno-dark">
                             <thead>
                             <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
@@ -91,14 +89,16 @@
                                     <td class="align-middle">${instabilityHost.host.name}</td>
                                     <c:if test="${instabilityHost.isOfflineStatus()}">
                                         <td class="bg-danger align-middle">
-                                            <a href=/host?id=${instabilityHost.host.id}&action=info>
+                                            <a href=/host?id=${instabilityHost.host.id}&action=info
+                                                class="text-decoration-none text-light">
                                                     ${instabilityHost.host.address}
                                             </a>
                                         </td>
                                     </c:if>
                                     <c:if test="${!instabilityHost.isOfflineStatus()}">
                                         <td class="bg-warning align-middle">
-                                            <a href=/host?id=${instabilityHost.host.id}&action=info>
+                                            <a href=/host?id=${instabilityHost.host.id}&action=info
+                                                class="text-decoration-none text-light">
                                                     ${instabilityHost.host.address}
                                             </a>
                                         </td>
@@ -108,12 +108,12 @@
                                     <c:if test="${!instabilityHost.isOfflineStatus()}">
                                         <td colspan="2">
                                             <a href=/inaccessibility?id=${instabilityHost.id}&action=info
-                                               class="btn btn-primary btn-sm">
+                                               class="btn btn-outline-light btn-sm">
                                                 <fmt:message key="table.button-label.see"/>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"
+                                            <a href="#" class="btn btn-outline-light btn-sm"
                                                onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                                 <fmt:message key="table.button-label.ping"/>
                                             </a>
@@ -122,18 +122,18 @@
                                     <c:if test="${instabilityHost.isOfflineStatus()}">
                                         <td>
                                             <a href=/inaccessibility?id=${instabilityHost.id}&action=info
-                                               class="btn btn-primary btn-sm">
+                                               class="btn btn-outline-light btn-sm">
                                                 <fmt:message key="table.button-label.see"/>
                                             </a>
                                         </td>
                                         <td>
                                             <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore
-                                               class="btn btn-primary btn-sm">
+                                               class="btn btn-outline-light btn-sm">
                                                 <fmt:message key="table.button-label.ignore"/>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm"
+                                            <a href="#" class="btn btn-outline-light btn-sm"
                                                onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
                                                 <fmt:message key="table.button-label.ping"/>
                                             </a>

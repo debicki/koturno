@@ -5,7 +5,7 @@
 
 <fmt:setBundle basename="lang"/>
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark koturno-darkest">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark koturno-darkest border-bottom border-secondary">
     <a class="navbar-brand" href="/">
         <svg class="bi bi-exclude" width="32" height="32" viewBox="0 0 16 16" fill="currentColor"
         xmlns="http://www.w3.org/2000/svg">
