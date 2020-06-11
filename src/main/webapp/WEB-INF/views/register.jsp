@@ -28,7 +28,7 @@
             <div class="row mt-4">
                 <div class="col-1"></div>
                 <div class="col-6" style="min-height: 5rem">
-                    <c:if test="${error.equals('31')}">
+                    <c:if test="${error.equals('user-exists')}">
                         <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
                             <strong>
                                 <fmt:message key="messages.title.error"/>
@@ -38,7 +38,7 @@
                             </button>
                         </div>
                     </c:if>
-                    <c:if test="${error.equals('32')}">
+                    <c:if test="${error.equals('passwords-mismatch')}">
                         <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
                             <strong>
                                 <fmt:message key="messages.title.error"/>

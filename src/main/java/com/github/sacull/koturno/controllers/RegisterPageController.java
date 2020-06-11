@@ -52,10 +52,10 @@ public class RegisterPageController {
                              Principal principal) {
 
         if (userService.findByName(username) != null) {
-            redirectAttributes.addFlashAttribute("error", "31");
+            redirectAttributes.addFlashAttribute("error", "user-exists");
             return "redirect:/register";
         } else if (!password.equals(password2)) {
-            redirectAttributes.addFlashAttribute("error", "32");
+            redirectAttributes.addFlashAttribute("error", "passwords-mismatch");
             return "redirect:/register";
         } else {
             userService.registerUser(username, password, true, "ROLE_ADMIN");
