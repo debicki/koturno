@@ -65,9 +65,14 @@
 
             <div class="row mt-5">
                 <div class="col-12 pb-3">
-                    <c:if test="${instabilityHosts.size() == 0}">
+                    <c:if test="${instabilityHosts.size() == 0 && hostsNumber > 0}">
                         <p class="h1 text-center koturno-style">
                             <fmt:message key="messages.information.all-hosts-are-online"/>
+                        </p>
+                    </c:if>
+                    <c:if test="${hostsNumber == 0}">
+                        <p class="h1 text-center koturno-style">
+                            <fmt:message key="messages.information.hosts-are-empty"/>
                         </p>
                     </c:if>
                     <c:if test="${instabilityHosts.size() > 0}">

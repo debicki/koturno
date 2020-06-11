@@ -46,6 +46,9 @@ public class DashboardPageController {
             model.addAttribute("loggedUser", null);
         }
 
+        Long hostsNumber = hostService.countAllHosts();
+        model.addAttribute("hostsNumber", hostsNumber);
+
         List<Inaccessibility> instabilityHosts =
                 inaccessibilityService.findAllByActiveIsTrueOrderByStartDesc();
         model.addAttribute("instabilityHosts", instabilityHosts);
