@@ -15,7 +15,7 @@ import java.security.Principal;
 @RequestMapping("/register")
 public class RegisterPageController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public RegisterPageController(UserService userService) {
@@ -25,11 +25,7 @@ public class RegisterPageController {
     @GetMapping
     public String showRegisterPage(Model model, Principal principal) {
 
-        if (userService.countUsers() == 0) {
-            model.addAttribute("firstUser", true);
-        } else {
-            model.addAttribute("firstUser", false);
-        }
+        model.addAttribute("firstUser", userService.countUsers() == 0);
 
 //        if (principal != null) {
 //            model.addAttribute("loggedUser", principal.getName());

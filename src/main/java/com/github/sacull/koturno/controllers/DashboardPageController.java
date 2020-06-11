@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping("/")
 public class DashboardPageController {
 
-    private HostService hostService;
-    private InaccessibilityService inaccessibilityService;
-    private UserService userService;
+    private final HostService hostService;
+    private final InaccessibilityService inaccessibilityService;
+    private final UserService userService;
 
     @Autowired
     public DashboardPageController(HostService hostService,
@@ -34,11 +34,7 @@ public class DashboardPageController {
     @GetMapping
     public String serveDashboardPage(Model model, Principal principal) {
 
-        if (userService.countUsers() == 0) {
-            model.addAttribute("firstUser", true);
-        } else {
-            model.addAttribute("firstUser", false);
-        }
+        model.addAttribute("firstUser", userService.countUsers() == 0);
 
         if (principal != null) {
             model.addAttribute("loggedUser", principal.getName());

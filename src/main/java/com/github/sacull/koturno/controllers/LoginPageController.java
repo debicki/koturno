@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginPageController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public LoginPageController(UserService userService) {
@@ -20,13 +20,7 @@ public class LoginPageController {
 
     @GetMapping("/login")
     public String showLoginPage(Model model) {
-
-        if (userService.countUsers() == 0) {
-            model.addAttribute("firstUser", true);
-        } else {
-            model.addAttribute("firstUser", false);
-        }
-
+        model.addAttribute("firstUser", userService.countUsers() == 0);
         return "/WEB-INF/views/login.jsp";
     }
 
