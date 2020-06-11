@@ -20,11 +20,13 @@ public class LoginPageController {
 
     @GetMapping("/login")
     public String showLoginPage(Model model) {
+
         if (userService.countUsers() == 0) {
             model.addAttribute("firstUser", true);
+        } else {
+            model.addAttribute("firstUser", false);
         }
 
-        model.addAttribute("disabledMenuItem", "login");
         return "/WEB-INF/views/login.jsp";
     }
 

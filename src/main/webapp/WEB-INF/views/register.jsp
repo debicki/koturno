@@ -15,74 +15,86 @@
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
-<jsp:include page="fragments/main-menu.jsp"/>
 
-<div class="container">
+<jsp:include page="fragments/title-bar.jsp"/>
 
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <c:if test="${error.equals('31')}">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <fmt:message key="messages.error.username-exists"/>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+<div class="container-fluid">
+    <div class="row min-vh-100">
+
+        <jsp:include page="fragments/left-menu.jsp"/>
+
+        <div class="col-10 koturno-dark text-light">
+
+            <div class="row mt-4">
+                <div class="col-1"></div>
+                <div class="col-6" style="min-height: 5rem">
+                    <c:if test="${error.equals('31')}">
+                        <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.username-exists"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('32')}">
+                        <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.passwords-mismatch"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
                 </div>
-            </c:if>
-            <c:if test="${error.equals('32')}">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <fmt:message key="messages.error.passwords-mismatch"/>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="col-5"></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-1"></div>
+                <div class="col-6 pb-1 koturno-style border border-secondary rounded koturno-darkest text-white koturno-title-display">
+                    <fmt:message key="body.label.register"/>
                 </div>
-            </c:if>
+                <div class="col-5"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-6">
+                    <form method="post" action="/register" class="koturno-style">
+                        <div class="form-group">
+                            <label for="username"><fmt:message key="body.label.username"/></label>
+                            <fmt:message key="form.placeholder.provide-username" var="provideUsername"/>
+                            <input type="text" required name="username" id="username" class="form-control koturno-dark text-light"
+                                   placeholder="${provideUsername}" autofocus="autofocus" autocomplete="off"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><fmt:message key="body.label.password"/></label>
+                            <fmt:message key="form.placeholder.provide-password" var="providePassword"/>
+                            <input type="password" required name="password" id="password" class="form-control koturno-dark text-light"
+                                   placeholder="${providePassword}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password2"><fmt:message key="body.label.repeat-password"/></label>
+                            <fmt:message key="form.placeholder.repeat-password" var="repeatPassword"/>
+                            <input type="password" required name="password2" id="password2" class="form-control koturno-dark text-light"
+                                   placeholder="${repeatPassword}"/>
+                        </div>
+                        <button class="btn btn-outline-light" type="submit"><fmt:message key="security.button.register"/></button>
+                        <button class="btn btn-outline-secondary" type="reset"><fmt:message key="security.button.clear"/></button>
+                        <sec:csrfInput/>
+                    </form>
+                </div>
+                <div class="col-5"></div>
+            </div>
+
         </div>
-        <div class="col-3"></div>
     </div>
-
-    <div class="row mt-2 mb-4">
-        <div class="col-3"></div>
-        <div class="col-6 koturno-style text-center border border-secondary rounded bg-secondary text-white">
-            <h2><fmt:message key="body.label.register"/></h2>
-        </div>
-        <div class="col-3"></div>
-    </div>
-
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6 text-center">
-            <form method="post" action="/register" class="koturno-style">
-                <div class="form-group">
-                    <label for="username"><fmt:message key="body.label.username"/></label>
-                    <fmt:message key="form.placeholder.provide-username" var="provideUsername"/>
-                    <input type="text" required name="username" id="username" class="form-control text-center"
-                           placeholder="${provideUsername}" autofocus="autofocus" autocomplete="off"/>
-                </div>
-                <div class="form-group">
-                    <label for="password"><fmt:message key="body.label.password"/></label>
-                    <fmt:message key="form.placeholder.provide-password" var="providePassword"/>
-                    <input type="password" required name="password" id="password" class="form-control text-center"
-                           placeholder="${providePassword}"/>
-                </div>
-                <div class="form-group">
-                    <label for="password2"><fmt:message key="body.label.repeat-password"/></label>
-                    <fmt:message key="form.placeholder.repeat-password" var="repeatPassword"/>
-                    <input type="password" required name="password2" id="password2" class="form-control text-center"
-                           placeholder="${repeatPassword}"/>
-                </div>
-                <button class="btn btn-primary" type="submit"><fmt:message key="security.button.register"/></button>
-                <button class="btn btn-secondary" type="reset"><fmt:message key="security.button.clear"/></button>
-                <sec:csrfInput/>
-            </form>
-        </div>
-        <div class="col-3"></div>
-    </div>
-
 </div>
 
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="fragments/footer-bar.jsp"/>
 
 <script src="/jquery-3.3.1.slim.min.js"></script>
 <script src="/popper.min.js"></script>

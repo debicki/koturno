@@ -24,11 +24,22 @@ public class RegisterPageController {
 
     @GetMapping
     public String showRegisterPage(Model model, Principal principal) {
+
+        if (userService.countUsers() == 0) {
+            model.addAttribute("firstUser", true);
+        } else {
+            model.addAttribute("firstUser", false);
+        }
+
+//        if (principal != null) {
+//            model.addAttribute("loggedUser", principal.getName());
+//        } else {
+//            model.addAttribute("loggedUser", null);
+//        }
+
         if (userService.countUsers() != 0 && principal == null) {
             return "403";
         } else {
-            model.addAttribute("firstUser", true);
-            model.addAttribute("disabledMenuItem", "register");
             return "/WEB-INF/views/register.jsp";
         }
     }

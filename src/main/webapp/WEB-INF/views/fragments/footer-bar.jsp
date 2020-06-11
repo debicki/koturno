@@ -5,7 +5,7 @@
 
 <fmt:setBundle basename="lang"/>
 
-<div class="koturno-darkest koturno-style text-light">
+<div class="koturno-darkest koturno-style text-secondary border-top border-secondary">
     <jsp:useBean id="now" class="java.util.Date" />
     <fmt:formatDate var="year" value="${now}" pattern="yyyy" />
     <p class="m-0 text-center">Copyright &copy; Łukasz Dębicki ${year}</p>
