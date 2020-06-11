@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,22 +28,34 @@ public class HostsPageController {
     private HostService hostService;
     private InaccessibilityService inaccessibilityService;
     private HGroupService hGroupService;
-        private FileService fileService;
+    private FileService fileService;
+    private UserService userService;
 
     @Autowired
     public HostsPageController(HostService hostService,
                                InaccessibilityService inaccessibilityService,
                                HGroupService hGroupService,
-                               FileService fileService) {
+                               FileService fileService,
+                               UserService userService) {
 
         this.hostService = hostService;
         this.inaccessibilityService = inaccessibilityService;
         this.hGroupService = hGroupService;
         this.fileService = fileService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public String serveHostsPage(Model model) {
+    public String serveHostsPage(Model model, Principal principal) {
+
+        model.addAttribute("firstUser", userService.countUsers() == 0);
+
+        if (principal != null) {
+            model.addAttribute("loggedUser", principal.getName());
+        } else {
+            model.addAttribute("loggedUser", null);
+        }
+
         List<Host> allHosts = hostService.findAllByName();
         model.addAttribute("hosts", allHosts);
 

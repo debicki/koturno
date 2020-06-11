@@ -20,6 +20,18 @@
     border-color: #dc3545;
 }
 
+.koturno-alert-warning {
+    color: #f8f9fa;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.koturno-alert-success {
+    color: #f8f9fa;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
 .koturno-title-display {
     font-size: 2rem;
     font-weight: 300;
