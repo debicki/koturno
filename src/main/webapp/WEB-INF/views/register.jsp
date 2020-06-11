@@ -82,8 +82,8 @@
                             <input type="password" required name="password2" id="password2" class="form-control koturno-dark text-light"
                                    placeholder="${repeatPassword}"/>
                         </div>
-                        <button class="btn btn-outline-light" type="submit"><fmt:message key="security.button.register"/></button>
-                        <button class="btn btn-outline-secondary" type="reset"><fmt:message key="security.button.clear"/></button>
+                        <button class="btn btn-outline-success" type="submit"><fmt:message key="security.button.register"/></button>
+                        <button class="btn btn-outline-light" type="reset"><fmt:message key="security.button.clear"/></button>
                         <sec:csrfInput/>
                     </form>
                 </div>
