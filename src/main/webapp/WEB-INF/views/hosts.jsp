@@ -113,23 +113,23 @@
         <div class="col-10 koturno-dark text-light">
 
             <div class="row mt-4">
-                <div class="col-12 koturno-style text-center">
-                    <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-outline-light">
-                        <fmt:message key="submenu.label.new-host"/>
-                    </a>
-                    <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-outline-light">
-                        <fmt:message key="submenu.label.import-hosts"/>
-                    </a>
+                <div class="col-4 pb-1 koturno-style">
+                <h1><span class="badge text-light koturno-darkest border border-secondary">
+                    <fmt:message key="head.title.hosts"/>
+                </span></h1>
                 </div>
+                <div class="col-8"></div>
             </div>
 
             <div class="row mt-4">
-                <div class="col-3">
+                <div class="col-1">
                 </div>
-                <div class="col-6" style="min-height: 5rem">
+                <div class="col-10" style="min-height: 5rem">
                     <c:if test="${error.equals('0')}">
                         <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
-                            <fmt:message key="messages.information.host-added"/>
+                            <strong>
+                                <fmt:message key="messages.title.success"/>
+                            </strong> <fmt:message key="messages.information.host-added"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -137,7 +137,9 @@
                     </c:if>
                     <c:if test="${error.equals('1')}">
                         <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
-                            <fmt:message key="messages.error.host-exists"/>
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.host-exists"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -145,7 +147,9 @@
                     </c:if>
                     <c:if test="${error.equals('3')}">
                         <div class="alert koturno-alert-warning alert-dismissible fade show" role="alert">
-                            <fmt:message key="messages.error.check-host"/>
+                            <strong>
+                                <fmt:message key="messages.title.warning"/>
+                            </strong> <fmt:message key="messages.error.check-host"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -153,7 +157,9 @@
                     </c:if>
                     <c:if test="${error.equals('10')}">
                         <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
-                            <fmt:message key="messages.information.host-removed"/>
+                            <strong>
+                                <fmt:message key="messages.title.success"/>
+                            </strong> <fmt:message key="messages.information.host-removed"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -171,14 +177,25 @@
                         </div>
                     </c:if>
                 </div>
-                <div class="col-3">
+                <div class="col-1">
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-12 koturno-style">
+                    <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-outline-light">
+                        <fmt:message key="submenu.label.new-host"/>
+                    </a>
+                    <a href="#importHostsModal" data-toggle="modal" data-target="#importHostsModal" class="btn btn-outline-light">
+                        <fmt:message key="submenu.label.import-hosts"/>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mt-4">
                 <div class="col-12 pb-3">
                     <c:if test="${hosts == null || hosts.size() == 0}">
-                        <p class="h1 text-center koturno-style"><fmt:message key="messages.information.hosts-are-empty"/></p>
+                        <p class="h1 koturno-style"><fmt:message key="messages.information.hosts-are-empty"/></p>
                     </c:if>
                     <c:if test="${hosts.size() > 0}">
                         <table class="table table-dark table-sm table-bordered text-center text-light koturno-style koturno-dark">
