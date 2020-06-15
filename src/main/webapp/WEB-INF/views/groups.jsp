@@ -30,7 +30,7 @@
                         <div class="modal-header koturno-dark text-light">
                             <h5 class="modal-title"><fmt:message key="modal.title.create-group"/></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
+                                <span aria-hidden="true" class="text-light">×</span>
                             </button>
                         </div>
                         <div class="modal-body koturno-dark text-light">
@@ -62,110 +62,111 @@
 
         <div class="col-10 koturno-dark text-light">
 
-        <div class="row mt-4">
-            <div class="col-4 pb-1 koturno-style">
-            <h1><span class="badge text-light koturno-darkest border border-secondary">
-                <fmt:message key="head.title.groups"/>
-            </span></h1>
+            <div class="row mt-4">
+                <div class="col-4 pb-1 koturno-style">
+                <h1><span class="badge text-light koturno-darkest border border-secondary">
+                    <fmt:message key="head.title.groups"/>
+                </span></h1>
+                </div>
+                <div class="col-8"></div>
             </div>
-            <div class="col-8"></div>
-        </div>
 
-        <div class="row mt-4">
-            <div class="col-1">
+            <div class="row mt-4">
+                <div class="col-1">
+                </div>
+                <div class="col-10" style="min-height: 5rem">
+                    <c:if test="${error.equals('group-created')}">
+                        <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.success"/>
+                            </strong> <fmt:message key="messages.information.group-created"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('group-exists')}">
+                        <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.group-exists"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('10')}">
+                        <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.success"/>
+                            </strong> <fmt:message key="messages.information.group-removed"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('11')}">
+                        <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.group-not-empty"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('12')}">
+                        <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.error"/>
+                            </strong> <fmt:message key="messages.error.default-group-is-not-removable"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                </div>
+                <div class="col-3">
+                </div>
             </div>
-            <div class="col-10" style="min-height: 5rem">
-                <c:if test="${error.equals('group-created')}">
-                    <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
-                        <strong>
-                            <fmt:message key="messages.title.success"/>
-                        </strong> <fmt:message key="messages.information.group-created"/>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
-                <c:if test="${error.equals('group-exists')}">
-                    <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
-                        <strong>
-                            <fmt:message key="messages.title.error"/>
-                        </strong> <fmt:message key="messages.error.group-exists"/>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
-                <c:if test="${error.equals('10')}">
-                    <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
-                        <strong>
-                            <fmt:message key="messages.title.success"/>
-                        </strong> <fmt:message key="messages.information.group-removed"/>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
-                <c:if test="${error.equals('11')}">
-                    <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
-                        <strong>
-                            <fmt:message key="messages.title.error"/>
-                        </strong> <fmt:message key="messages.error.group-not-empty"/>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
-                <c:if test="${error.equals('12')}">
-                    <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
-                        <strong>
-                            <fmt:message key="messages.title.error"/>
-                        </strong> <fmt:message key="messages.error.default-group-is-not-removable"/>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
-            </div>
-            <div class="col-3">
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12 koturno-style">
-                <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal" class="btn btn-outline-light">
-                    <fmt:message key="submenu.label.new-group"/>
-                </a>
+            <div class="row">
+                <div class="col-12 koturno-style">
+                    <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal" class="btn btn-outline-light">
+                        <fmt:message key="submenu.label.new-group"/>
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <div class="row mt-4">
-            <div class="col-12 pb-3">
-                <table class="table table-dark table-sm table-bordered text-center text-light koturno-style koturno-dark">
-                    <thead>
-                    <tr class="koturno-darker">
-                        <th><fmt:message key="table.head.number"/></th>
-                        <th><fmt:message key="table.head.name"/></th>
-                        <th><fmt:message key="table.head.description"/></th>
-                        <th><fmt:message key="table.head.hosts-count"/></th>
-                        <th><fmt:message key="table.head.actions"/></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${groups}" var="group" varStatus="groupStatus">
-                        <tr>
-                            <td class="align-middle">${groupStatus.count}</td>
-                            <td class="align-middle">${group.name}</td>
-                            <td class="align-middle">${group.description}</td>
-                            <td class="align-middle">${groupMembersCounter.get(group.name)}</td>
-                            <td>
-                                <a href=/group?id=${group.id}&action=info class="btn btn-outline-light btn-sm">
-                                    <fmt:message key="table.button-label.see"/>
-                                </a>
-                            </td>
+            <div class="row mt-4">
+                <div class="col-12 pb-3">
+                    <table class="table table-dark table-sm table-bordered text-center text-light koturno-style koturno-dark">
+                        <thead>
+                        <tr class="koturno-darker">
+                            <th><fmt:message key="table.head.number"/></th>
+                            <th><fmt:message key="table.head.name"/></th>
+                            <th><fmt:message key="table.head.description"/></th>
+                            <th><fmt:message key="table.head.hosts-count"/></th>
+                            <th><fmt:message key="table.head.actions"/></th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${groups}" var="group" varStatus="groupStatus">
+                            <tr>
+                                <td class="align-middle">${groupStatus.count}</td>
+                                <td class="align-middle">${group.name}</td>
+                                <td class="align-middle">${group.description}</td>
+                                <td class="align-middle">${groupMembersCounter.get(group.name)}</td>
+                                <td>
+                                    <a href=/group?id=${group.id}&action=info class="btn btn-outline-light btn-sm">
+                                        <fmt:message key="table.button-label.see"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
