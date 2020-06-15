@@ -2,6 +2,7 @@ package com.github.sacull.koturno.controllers;
 
 import com.github.sacull.koturno.entities.Inaccessibility;
 import com.github.sacull.koturno.services.InaccessibilityService;
+import com.github.sacull.koturno.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +19,30 @@ import java.util.List;
 @RequestMapping("/history")
 public class HistoryPageController {
 
-    private InaccessibilityService inaccessibilityService;
+    private final InaccessibilityService inaccessibilityService;
+    private final UserService userService;
 
     @Autowired
-    public HistoryPageController(InaccessibilityService inaccessibilityService) {
+    public HistoryPageController(InaccessibilityService inaccessibilityService,
+                                 UserService userService) {
         this.inaccessibilityService = inaccessibilityService;
+        this.userService = userService;
     }
 
     @GetMapping
     public String serveHistoryPage(Model model,
+                                   Principal principal,
                                    @RequestParam(required = false, defaultValue = "25") Integer limit,
                                    @RequestParam(required = false, defaultValue = "1") Integer page,
                                    @RequestParam(required = false, defaultValue = "5") Integer range) {
+
+        model.addAttribute("firstUser", userService.countUsers() == 0);
+
+        if (principal != null) {
+            model.addAttribute("loggedUser", principal.getName());
+        } else {
+            model.addAttribute("loggedUser", null);
+        }
 
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc();
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
@@ -66,7 +80,6 @@ public class HistoryPageController {
         model.addAttribute("range", range);
         model.addAttribute("page", page);
 
-        model.addAttribute("disabledMenuItem", "history");
         return "/WEB-INF/views/history.jsp";
     }
 }
