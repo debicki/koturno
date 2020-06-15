@@ -75,7 +75,7 @@
             <div class="col-1">
             </div>
             <div class="col-10" style="min-height: 5rem">
-                <c:if test="${error.equals('0')}">
+                <c:if test="${error.equals('group-created')}">
                     <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
                         <strong>
                             <fmt:message key="messages.title.success"/>
@@ -85,7 +85,7 @@
                         </button>
                     </div>
                 </c:if>
-                <c:if test="${error.equals('2')}">
+                <c:if test="${error.equals('group-exists')}">
                     <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
                         <strong>
                             <fmt:message key="messages.title.error"/>

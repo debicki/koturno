@@ -79,9 +79,9 @@ public class GroupsPageController {
         if (hGroupService.getGroupByName(name) == null) {
             HGroup hGroupToAdd = new HGroup(name, description);
             hGroupService.save(hGroupToAdd);
-            redirectAttributes.addFlashAttribute("error", "0");
+            redirectAttributes.addFlashAttribute("error", "group-created");
         } else {
-            redirectAttributes.addFlashAttribute("error", "2");
+            redirectAttributes.addFlashAttribute("error", "group-exists");
         }
 
         return "redirect:/groups";

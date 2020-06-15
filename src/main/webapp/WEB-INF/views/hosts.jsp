@@ -125,7 +125,7 @@
                 <div class="col-1">
                 </div>
                 <div class="col-10" style="min-height: 5rem">
-                    <c:if test="${error.equals('0')}">
+                    <c:if test="${error.equals('host-added')}">
                         <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
                             <strong>
                                 <fmt:message key="messages.title.success"/>
@@ -135,7 +135,7 @@
                             </button>
                         </div>
                     </c:if>
-                    <c:if test="${error.equals('1')}">
+                    <c:if test="${error.equals('host-exists')}">
                         <div class="alert koturno-alert-danger alert-dismissible fade show" role="alert">
                             <strong>
                                 <fmt:message key="messages.title.error"/>
@@ -145,7 +145,7 @@
                             </button>
                         </div>
                     </c:if>
-                    <c:if test="${error.equals('3')}">
+                    <c:if test="${error.equals('check-host')}">
                         <div class="alert koturno-alert-warning alert-dismissible fade show" role="alert">
                             <strong>
                                 <fmt:message key="messages.title.warning"/>

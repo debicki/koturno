@@ -25,11 +25,11 @@ import java.util.Map;
 @RequestMapping("/hosts")
 public class HostsPageController {
 
-    private HostService hostService;
-    private InaccessibilityService inaccessibilityService;
-    private HGroupService hGroupService;
-    private FileService fileService;
-    private UserService userService;
+    private final HostService hostService;
+    private final InaccessibilityService inaccessibilityService;
+    private final HGroupService hGroupService;
+    private final FileService fileService;
+    private final UserService userService;
 
     @Autowired
     public HostsPageController(HostService hostService,
@@ -112,12 +112,12 @@ public class HostsPageController {
             hostService.save(hostToAdd);
 
             if (fileService.isValidAddress(address)) {
-                redirectAttributes.addFlashAttribute("error", "0");
+                redirectAttributes.addFlashAttribute("error", "host-added");
             } else {
-                redirectAttributes.addFlashAttribute("error", "3");
+                redirectAttributes.addFlashAttribute("error", "check-host");
             }
         } else {
-            redirectAttributes.addFlashAttribute("error", "1");
+            redirectAttributes.addFlashAttribute("error", "host-exists");
         }
 
         return "redirect:/hosts";
