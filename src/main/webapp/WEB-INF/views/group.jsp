@@ -174,7 +174,7 @@
                     <div class="col-12 pb-3">
                         <table class="table table-dark table-sm table-bordered text-center text-light koturno-style koturno-dark">
                             <thead>
-                            <tr class="thead-dark">
+                            <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>

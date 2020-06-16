@@ -3,7 +3,6 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
-import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.HGroupService;
 import com.github.sacull.koturno.services.HostService;
 import com.github.sacull.koturno.services.InaccessibilityService;
@@ -24,25 +23,37 @@ import java.util.List;
 @RequestMapping("/host")
 public class HostPageController {
 
-    private InaccessibilityService inaccessibilityService;
-    private HostService hostService;
-    private HGroupService hGroupService;
+    private final InaccessibilityService inaccessibilityService;
+    private final HostService hostService;
+    private final HGroupService hGroupService;
+    private final UserService userService;
 
     @Autowired
     public HostPageController(InaccessibilityService inaccessibilityService,
                               HostService hostService,
-                              HGroupService hGroupService) {
+                              HGroupService hGroupService,
+                              UserService userService) {
 
         this.inaccessibilityService = inaccessibilityService;
         this.hostService = hostService;
         this.hGroupService = hGroupService;
+        this.userService = userService;
     }
 
     @GetMapping
     public String doSomethingWithHost(RedirectAttributes redirectAttributes,
                                       Model model,
+                                      Principal principal,
                                       Long id,
                                       @RequestParam(required = false, defaultValue = "info") String action) {
+
+        model.addAttribute("firstUser", userService.countUsers() == 0);
+
+        if (principal != null) {
+            model.addAttribute("loggedUser", principal.getName());
+        } else {
+            model.addAttribute("loggedUser", null);
+        }
 
         Host host = hostService.getHostById(id);
         model.addAttribute("host", host);
@@ -83,11 +94,7 @@ public class HostPageController {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
             hostToSave.setAddress(address);
 
-            if (activity.equalsIgnoreCase("Aktywny")) {
-                hostToSave.setActive(true);
-            } else {
-                hostToSave.setActive(false);
-            }
+            hostToSave.setActive(activity.equalsIgnoreCase("Aktywny"));
 
             hostToSave.setName(name);
             hostToSave.setDescription(description);
