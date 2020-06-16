@@ -66,7 +66,7 @@
                             <input type="password" required name="password" id="password" class="form-control koturno-dark text-light"
                                    placeholder="${providePassword}"/>
                         </div>
-                        <button class="btn btn-outline-success" type="submit"><fmt:message key="security.button.login"/></button>
+                        <button class="btn btn-outline-primary" type="submit"><fmt:message key="security.button.login"/></button>
                         <button class="btn btn-outline-light" type="reset"><fmt:message key="security.button.clear"/></button>
                         <sec:csrfInput/>
                     </form>

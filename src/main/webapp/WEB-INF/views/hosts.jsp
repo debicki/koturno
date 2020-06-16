@@ -99,7 +99,7 @@
                                 <label for="file" class="custom-file-label koturno-dark text-light"></label>
                                 <input type="file" required name="file" id="file" class="form-control custom-file-input"/>
                             </div>
-                            <button class="btn btn-outline-success" type="submit"><fmt:message key="modal.button.import"/></button>
+                            <button class="btn btn-outline-primary" type="submit"><fmt:message key="modal.button.import"/></button>
                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">
                                 <fmt:message key="modal.button.cancel"/>
                             </button>
