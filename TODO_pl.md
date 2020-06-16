@@ -51,3 +51,5 @@
 0. dodać ciemny motyw, ustawić jako domyślny
 0. dodać możliwość przełączania między jasnym i ciemnym
 0. dodać obsługę ciasteczek, gdzie będzie trzymany wybrany przez użytkownika motyw
+0. dodać przycisk "wyczyść bazę danych"
+0. w oknie "czyszczenia bazy danych" dać opcje niedostępności/hosty/użytkownicy
