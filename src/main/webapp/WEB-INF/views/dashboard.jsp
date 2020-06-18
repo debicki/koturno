@@ -80,70 +80,67 @@
                             <thead>
                             <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
+                                <th><fmt:message key="table.head.status"/></th>
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>
                                 <th><fmt:message key="table.head.last-seen"/></th>
                                 <th><fmt:message key="table.head.description"/></th>
-                                <th colspan="3"><fmt:message key="table.head.actions"/></th>
+                                <th colspan="2"><fmt:message key="table.head.actions"/></th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${instabilityHosts}" var="instabilityHost" varStatus="instabilityHostStatus">
                                 <tr>
                                     <td class="align-middle">${instabilityHostStatus.count}</td>
+                                    <c:if test="${instabilityHost.isOfflineStatus()}">
+                                        <td class="align-middle text-danger h5">&ofcir;</td>
+                                    </c:if>
+                                    <c:if test="${!instabilityHost.isOfflineStatus()}">
+                                        <td class="align-middle text-warning h5">&ofcir;</td>
+                                    </c:if>
                                     <td class="align-middle">${instabilityHost.host.name}</td>
-                                    <c:if test="${instabilityHost.isOfflineStatus()}">
-                                        <td class="bg-danger align-middle">
-                                            <a href=/host?id=${instabilityHost.host.id}&action=info
-                                                class="text-decoration-none text-light">
-                                                    ${instabilityHost.host.address}
-                                            </a>
-                                        </td>
+                                    <td class="align-middle">${instabilityHost.host.address}</td>
+                                    <jsp:useBean id="today" class="java.util.Date" />
+                                    <fmt:formatDate var="day" value="${today}" pattern="yyyy-MM-dd" />
+                                    <c:if test="${instabilityHost.dayOfBegin.equals(day)}">
+                                        <td class="align-middle">${instabilityHost.hourOfBegin}</td>
                                     </c:if>
-                                    <c:if test="${!instabilityHost.isOfflineStatus()}">
-                                        <td class="bg-warning align-middle">
-                                            <a href=/host?id=${instabilityHost.host.id}&action=info
-                                                class="text-decoration-none text-light">
-                                                    ${instabilityHost.host.address}
-                                            </a>
-                                        </td>
+                                    <c:if test="${!instabilityHost.dayOfBegin.equals(day)}">
+                                        <td class="align-middle">${instabilityHost.dayOfBegin}</td>
                                     </c:if>
-                                    <td class="align-middle">${instabilityHost.hourOfBegin}</td>
                                     <td class="align-middle">${instabilityHost.host.description}</td>
-                                    <c:if test="${!instabilityHost.isOfflineStatus()}">
-                                        <td colspan="2">
-                                            <a href=/inaccessibility?id=${instabilityHost.id}&action=info
-                                               class="btn btn-outline-light btn-sm">
-                                                <fmt:message key="table.button-label.see"/>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-outline-light btn-sm"
-                                               onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
-                                                <fmt:message key="table.button-label.ping"/>
-                                            </a>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${instabilityHost.isOfflineStatus()}">
-                                        <td>
-                                            <a href=/inaccessibility?id=${instabilityHost.id}&action=info
-                                               class="btn btn-outline-light btn-sm">
-                                                <fmt:message key="table.button-label.see"/>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href=/inaccessibility?id=${instabilityHost.id}&action=ignore
-                                               class="btn btn-outline-light btn-sm">
-                                                <fmt:message key="table.button-label.ignore"/>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-outline-light btn-sm"
-                                               onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
-                                                <fmt:message key="table.button-label.ping"/>
-                                            </a>
-                                        </td>
-                                    </c:if>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.host"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
+                                                <a class="dropdown-item text-light" href="/host?id=${instabilityHost.host.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
+                                                    <fmt:message key="table.button-label.ping"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button id="inaccessibilityButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.inaccessibility"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="inaccessibilityButton">
+                                                <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <c:if test="${instabilityHost.isOfflineStatus()}">
+                                                    <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=ignore">
+                                                        <fmt:message key="table.button-label.ignore"/>
+                                                    </a>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
