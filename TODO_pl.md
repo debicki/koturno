@@ -27,6 +27,7 @@
     - możliwość wyboru/podania numeru strony
 0. więcej filtrów
 0. dodać adnotację "zignorowany o ..."
+0. podzielić historię na dwie tabele, aktywne i archiwalne
 
 #### Niedostępności
 0. dodać możliwość grupowania niedostępności
