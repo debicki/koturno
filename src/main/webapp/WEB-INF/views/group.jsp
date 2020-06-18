@@ -176,6 +176,7 @@
                             <thead>
                             <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
+                                <th><fmt:message key="table.head.status"/></th>
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>
                                 <th><fmt:message key="table.head.description"/></th>
@@ -186,24 +187,35 @@
                             <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
                                 <tr>
                                     <td class="align-middle">${hostStatus.count}</td>
-                                    <td class="align-middle">${host.name}</td>
                                     <c:if test="${offlineHosts.contains(host)}">
-                                        <td class="bg-danger align-middle">${host.address}</td>
+                                        <td class="align-middle text-danger h5">&ofcir;</td>
                                     </c:if>
                                     <c:if test="${unstableHosts.contains(host)}">
-                                        <td class="bg-warning align-middle">${host.address}</td>
+                                        <td class="align-middle text-warning h5">&ofcir;</td>
                                     </c:if>
                                     <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                                        <td class="bg-success align-middle">${host.address}</td>
+                                        <td class="align-middle text-success h5">&ofcir;</td>
                                     </c:if>
                                     <c:if test="${!host.isActive()}">
-                                        <td class="bg-secondary align-middle">${host.address}</td>
+                                        <td class="align-middle text-secondary h5">&ofcir;</td>
                                     </c:if>
+                                    <td class="align-middle">${host.name}</td>
+                                    <td class="align-middle">${host.address}</td>
                                     <td>${host.description}</td>
                                     <td>
-                                        <a href=/host?id=${host.id}&action=info class="btn btn-outline-light btn-sm">
-                                            <fmt:message key="table.button-label.see"/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.host"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
+                                                <a class="dropdown-item text-light" href="/host?id=${host.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${host.address}','_blank');return false">
+                                                    <fmt:message key="table.button-label.ping"/>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
