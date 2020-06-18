@@ -158,9 +158,16 @@
                                 <td class="align-middle">${group.description}</td>
                                 <td class="align-middle">${groupMembersCounter.get(group.name)}</td>
                                 <td>
-                                    <a href=/group?id=${group.id}&action=info class="btn btn-outline-light btn-sm">
-                                        <fmt:message key="table.button-label.see"/>
-                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <button id="actionButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <fmt:message key="table.button-label.group"/>
+                                        </button>
+                                        <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="actionButton">
+                                            <a class="dropdown-item text-light" href="/group?id=${group.id}&action=info">
+                                                <fmt:message key="table.button-label.details"/>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>
