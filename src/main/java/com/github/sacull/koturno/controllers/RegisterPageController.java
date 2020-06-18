@@ -33,8 +33,8 @@ public class RegisterPageController {
 //            model.addAttribute("loggedUser", null);
 //        }
 
-        if (userService.countUsers() != 0 && principal == null) {
-            return "403";
+        if (userService.countActiveAdmins() != 0) {
+            return "redirect:/";
         } else {
             return "/WEB-INF/views/register.jsp";
         }
