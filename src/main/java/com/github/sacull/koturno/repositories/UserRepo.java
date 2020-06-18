@@ -8,4 +8,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
     Integer countAllByActive(Boolean active);
+
+    Integer countAllByActiveAndRole(Boolean active, String role);
 }
