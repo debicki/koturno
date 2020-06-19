@@ -63,9 +63,7 @@
                 <div class="col-6"></div>
             </div>
 
-            <br>
-
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-12 pb-3">
                     <c:if test="${limitedInaccessibilityList == null || limitedInaccessibilityList.size() == 0}">
                         <p class="h1 koturno-style"><fmt:message key="messages.information.history-is-empty"/></p>
@@ -87,7 +85,7 @@
                             <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility"
                                        varStatus="inaccessibilityStatus">
                                 <tr>
-                                    <td class="align-middle">${inaccessibilityStatus.count}</td>
+                                    <td class="align-middle">${inaccessibilityStatus.count + (page - 1) * limit}</td>
                                     <c:if test="${inaccessibility.isActive()}">
                                         <td class="align-middle"><fmt:message key="table.body.active"/></td>
                                     </c:if>

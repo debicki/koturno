@@ -49,26 +49,39 @@ public class HistoryPageController {
         List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
         List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
 
-        for (int i = (page - 1) * limit; i < allInaccessibilityList.size(); i++) {
+//        for (int i = (page - 1) * limit; i < allInaccessibilityList.size(); i++) {
+//            Inaccessibility inaccessibility = allInaccessibilityList.get(i);
+//            if (inaccessibility.isActive()) {
+//                activeInaccessibilityList.add(inaccessibility);
+//            } else {
+//                if (Duration
+//                        .between(inaccessibility.getStart(), inaccessibility.getEnd())
+//                        .toMinutes() >= Long.valueOf(range)) {
+//                    inactiveInaccessibilityList.add(inaccessibility);
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < limit && i < activeInaccessibilityList.size(); i++) {
+//            limitedInaccessibilityList.add(activeInaccessibilityList.get(i));
+//        }
+//
+//        if (limitedInaccessibilityList.size() < limit) {
+//            for (int i = limitedInaccessibilityList.size(); i < limit && i < inactiveInaccessibilityList.size(); i++) {
+//                limitedInaccessibilityList.add(inactiveInaccessibilityList.get(i));
+//            }
+//        }
+
+        for (int i = (page - 1) * limit; i < allInaccessibilityList.size() && i < page * limit; i++) {
             Inaccessibility inaccessibility = allInaccessibilityList.get(i);
             if (inaccessibility.isActive()) {
-                activeInaccessibilityList.add(inaccessibility);
+                limitedInaccessibilityList.add(inaccessibility);
             } else {
                 if (Duration
                         .between(inaccessibility.getStart(), inaccessibility.getEnd())
                         .toMinutes() >= Long.valueOf(range)) {
-                    inactiveInaccessibilityList.add(inaccessibility);
+                    limitedInaccessibilityList.add(inaccessibility);
                 }
-            }
-        }
-
-        for (int i = 0; i < limit && i < activeInaccessibilityList.size(); i++) {
-            limitedInaccessibilityList.add(activeInaccessibilityList.get(i));
-        }
-
-        if (limitedInaccessibilityList.size() < limit) {
-            for (int i = 0; i < limit && i < inactiveInaccessibilityList.size(); i++) {
-                limitedInaccessibilityList.add(inactiveInaccessibilityList.get(i));
             }
         }
         model.addAttribute("limitedInaccessibilityList", limitedInaccessibilityList);
