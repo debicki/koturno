@@ -178,7 +178,7 @@
                     <div class="lead">
                         <strong>
                             <fmt:message key="body.label.group"/>:
-                            <a href=/group?id=${host.hostGroup.id}&action=info> ${host.hostGroup.name}</a>
+                            <a class="text-decoration-none text-primary" href=/group?id=${host.hostGroup.id}&action=info> ${host.hostGroup.name}</a>
                         </strong>
                     </div>
                     <div class="lead"><strong><fmt:message key="body.label.added-at"/>: ${host.dayWhenCreated}</strong></div>
@@ -218,7 +218,7 @@
             <c:if test="${inaccessibilityList.size() == 0}">
                 <div class="row mt-4">
                     <div class="col-12 pb-3">
-                        <p class="h1 text-center koturno-style">
+                        <p class="h1 koturno-style">
                             <fmt:message key="messages.information.host-history-is-empty"/>
                         </p>
                     </div>
@@ -241,10 +241,10 @@
                             <c:forEach items="${inaccessibilityList}" var="inaccessibility" varStatus="inaccessibilityStatus">
                                 <tr>
                                     <c:if test="${inaccessibility.isOfflineStatus()}">
-                                        <td class="bg-danger align-middle">${inaccessibilityStatus.count}</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-danger">${inaccessibilityStatus.count}</div></td>
                                     </c:if>
                                     <c:if test="${!inaccessibility.isOfflineStatus()}">
-                                        <td class="bg-warning align-middle">${inaccessibilityStatus.count}</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-warning">${inaccessibilityStatus.count}</div></td>
                                     </c:if>
                                     <td class="align-middle">${inaccessibility.dayOfBegin}</td>
                                     <td class="align-middle">${inaccessibility.hourOfBegin}</td>
@@ -257,10 +257,16 @@
                                     </c:if>
                                     <td class="align-middle">${inaccessibility.description}</td>
                                     <td>
-                                        <a href=/inaccessibility?id=${inaccessibility.id}&action=info
-                                           class="btn btn-outline-light btn-sm">
-                                            <fmt:message key="table.button-label.see"/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button id="inaccessibilityButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.inaccessibility"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="inaccessibilityButton">
+                                                <a class="dropdown-item text-light" href="/inaccessibility?id=${inaccessibility.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
