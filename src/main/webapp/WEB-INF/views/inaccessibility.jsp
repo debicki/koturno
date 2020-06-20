@@ -94,7 +94,10 @@
             <div class="row">
                 <div class="col-12 koturno-style">
                     <div class="h1">${inaccessibility.host.name}</div>
-                    <div class="h2"><a href=/host?id=${inaccessibility.host.id}&action=info>${inaccessibility.host.address}</a>
+                    <div class="h2">
+                        <a class="text-decoration-none text-primary" href=/host?id=${inaccessibility.host.id}&action=info>
+                            ${inaccessibility.host.address}
+                        </a>
                     </div>
                     <div class="lead">
                         <strong><fmt:message key="body.label.start-date"/>: ${inaccessibility.dayOfBegin}</strong>
