@@ -85,7 +85,21 @@
                             <c:forEach items="${limitedInaccessibilityList}" var="inaccessibility"
                                        varStatus="inaccessibilityStatus">
                                 <tr>
-                                    <td class="align-middle">${inaccessibilityStatus.count + (page - 1) * limit}</td>
+                                    <c:if test="${inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-danger">${inaccessibilityStatus.count + (page - 1) * limit}</div>
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${!inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-warning">${inaccessibilityStatus.count + (page - 1) * limit}</div>
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${!inaccessibility.isActive()}">
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-secondary">${inaccessibilityStatus.count + (page - 1) * limit}</div>
+                                        </td>
+                                    </c:if>
                                     <c:if test="${inaccessibility.isActive()}">
                                         <td class="align-middle"><fmt:message key="table.body.active"/></td>
                                     </c:if>
@@ -93,30 +107,7 @@
                                         <td class="align-middle"><fmt:message key="table.body.archival"/></td>
                                     </c:if>
                                     <td class="align-middle">${inaccessibility.host.name}</td>
-                                    <c:if test="${inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
-                                        <td class="bg-danger text-light align-middle">
-                                            <a href=/host?id=${inaccessibility.host.id}&action=info
-                                                class="text-decoration-none text-light">
-                                                    ${inaccessibility.host.address}
-                                            </a>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${!inaccessibility.isOfflineStatus() && inaccessibility.isActive()}">
-                                        <td class="bg-warning text-light align-middle">
-                                            <a href=/host?id=${inaccessibility.host.id}&action=info
-                                                class="text-decoration-none text-light">
-                                                    ${inaccessibility.host.address}
-                                            </a>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${!inaccessibility.isActive()}">
-                                        <td class="bg-secondary text-light align-middle">
-                                            <a href=/host?id=${inaccessibility.host.id}&action=info
-                                                class="text-decoration-none text-light">
-                                                    ${inaccessibility.host.address}
-                                            </a>
-                                        </td>
-                                    </c:if>
+                                    <td class="align-middle">${inaccessibility.host.address}</td>
                                     <td class="align-middle">${inaccessibility.dayOfBegin}</td>
                                     <td class="align-middle">${inaccessibility.hourOfBegin}</td>
                                     <c:if test="${inaccessibility.isActive()}">
@@ -130,16 +121,34 @@
                                         <td class="align-middle">${inaccessibility.hourOfEnd}</td>
                                     </c:if>
                                     <td>
-                                        <a href=/inaccessibility?id=${inaccessibility.id}&action=info
-                                           class="btn btn-outline-light btn-sm">
-                                            <fmt:message key="table.button-label.see"/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.host"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
+                                                <a class="dropdown-item text-light" href="/host?id=${inaccessibility.host.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${inaccessibility.host.address}','_blank');return false">
+                                                    <fmt:message key="table.button-label.ping"/>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
-                                        <a href=/inaccessibility?id=${inaccessibility.id}&action=remove
-                                           class="btn btn-outline-danger btn-sm">
-                                            <fmt:message key="table.button-label.remove"/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button id="inaccessibilityButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.inaccessibility"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="inaccessibilityButton">
+                                                <a class="dropdown-item text-light" href="/inaccessibility?id=${inaccessibility.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <a class="dropdown-item text-danger" href="/inaccessibility?id=${inaccessibility.id}&action=remove">
+                                                    <fmt:message key="table.button-label.remove"/>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>

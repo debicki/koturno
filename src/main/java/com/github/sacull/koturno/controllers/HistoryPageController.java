@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/history")
@@ -45,9 +46,14 @@ public class HistoryPageController {
         }
 
         List<Inaccessibility> allInaccessibilityList = inaccessibilityService.findAllByOrderByStartDesc();
+        List<Inaccessibility> filteredInaccessibilityList = allInaccessibilityList.stream()
+                .filter(inaccessibility -> Duration
+                        .between(inaccessibility.getStart(), inaccessibility.getEnd())
+                        .toMinutes() >= Long.valueOf(range) || inaccessibility.isActive())
+                .collect(Collectors.toList());
         List<Inaccessibility> limitedInaccessibilityList = new ArrayList<>();
-        List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
-        List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
+//        List<Inaccessibility> activeInaccessibilityList = new ArrayList<>();
+//        List<Inaccessibility> inactiveInaccessibilityList = new ArrayList<>();
 
 //        for (int i = (page - 1) * limit; i < allInaccessibilityList.size(); i++) {
 //            Inaccessibility inaccessibility = allInaccessibilityList.get(i);
@@ -71,22 +77,25 @@ public class HistoryPageController {
 //                limitedInaccessibilityList.add(inactiveInaccessibilityList.get(i));
 //            }
 //        }
-
-        for (int i = (page - 1) * limit; i < allInaccessibilityList.size() && i < page * limit; i++) {
-            Inaccessibility inaccessibility = allInaccessibilityList.get(i);
-            if (inaccessibility.isActive()) {
-                limitedInaccessibilityList.add(inaccessibility);
-            } else {
-                if (Duration
-                        .between(inaccessibility.getStart(), inaccessibility.getEnd())
-                        .toMinutes() >= Long.valueOf(range)) {
-                    limitedInaccessibilityList.add(inaccessibility);
-                }
-            }
+        for (int i = (page - 1) * limit; i < filteredInaccessibilityList.size() && limitedInaccessibilityList.size() < limit; i++) {
+            limitedInaccessibilityList.add(filteredInaccessibilityList.get(i));
         }
+
+//        for (int i = (page - 1) * limit; i < filteredInaccessibilityList.size() && limitedInaccessibilityList.size() < limit; i++) {
+//            Inaccessibility inaccessibility = filteredInaccessibilityList.get(i);
+//            if (inaccessibility.isActive()) {
+//                limitedInaccessibilityList.add(inaccessibility);
+//            } else {
+//                if (Duration
+//                        .between(inaccessibility.getStart(), inaccessibility.getEnd())
+//                        .toMinutes() >= Long.valueOf(range)) {
+//                    limitedInaccessibilityList.add(inaccessibility);
+//                }
+//            }
+//        }
         model.addAttribute("limitedInaccessibilityList", limitedInaccessibilityList);
 
-        Integer numberOfPages = (allInaccessibilityList.size() - 1) / limit + 1;
+        Integer numberOfPages = (filteredInaccessibilityList.size() - 1) / limit + 1;
         model.addAttribute("numberOfPages", numberOfPages);
 
         model.addAttribute("limit", limit);
