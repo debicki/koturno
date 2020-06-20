@@ -205,7 +205,7 @@
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>
                                 <th><fmt:message key="table.head.description"/></th>
-                                <th colspan="2"><fmt:message key="table.head.actions"/></th>
+                                <th><fmt:message key="table.head.actions"/></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -235,15 +235,19 @@
                                     <td class="align-middle">${host.address}</td>
                                     <td class="align-middle">${host.description}</td>
                                     <td>
-                                        <a href=/host?id=${host.id}&action=info class="btn btn-outline-light btn-sm">
-                                            <fmt:message key="table.button-label.see"/>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-light btn-sm"
-                                           onclick="window.open('/ping?address=${host.address}','_blank');return false">
-                                            <fmt:message key="table.button-label.ping"/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <fmt:message key="table.button-label.host"/>
+                                            </button>
+                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
+                                                <a class="dropdown-item text-light" href="/host?id=${host.id}&action=info">
+                                                    <fmt:message key="table.button-label.details"/>
+                                                </a>
+                                                <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${host.address}','_blank');return false">
+                                                    <fmt:message key="table.button-label.ping"/>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
