@@ -214,16 +214,24 @@
                                     <td class="align-middle">${hostStatus.count}</td>
                                     <td class="align-middle">${host.name}</td>
                                     <c:if test="${host.isActive() && offlineHosts.contains(host)}">
-                                        <td class="bg-danger align-middle">${host.address}</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-danger">${host.address}</div>
+                                        </td>
                                     </c:if>
                                     <c:if test="${host.isActive() && unstableHosts.contains(host)}">
-                                        <td class="bg-warning align-middle">${host.address}</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-warning">${host.address}</div>
+                                        </td>
                                     </c:if>
                                     <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                                        <td class="bg-success align-middle">${host.address}</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-success">${host.address}</div>
+                                        </td>
                                     </c:if>
                                     <c:if test="${!host.isActive()}">
-                                        <td class="bg-secondary align-middle">${host.address}</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-secondary">${host.address}</div>
+                                        </td>
                                     </c:if>
                                     <td class="align-middle">${host.description}</td>
                                     <td>
