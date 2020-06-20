@@ -111,38 +111,43 @@
                                         <td class="align-middle">${instabilityHost.dayOfBegin}</td>
                                     </c:if>
                                     <td class="align-middle">${instabilityHost.host.description}</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <fmt:message key="table.button-label.host"/>
-                                            </button>
-                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
-                                                <a class="dropdown-item text-light" href="/host?id=${instabilityHost.host.id}&action=info">
-                                                    <fmt:message key="table.button-label.details"/>
-                                                </a>
-                                                <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
-                                                    <fmt:message key="table.button-label.ping"/>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button id="inaccessibilityButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <fmt:message key="table.button-label.inaccessibility"/>
-                                            </button>
-                                            <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="inaccessibilityButton">
-                                                <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=info">
-                                                    <fmt:message key="table.button-label.details"/>
-                                                </a>
-                                                <c:if test="${instabilityHost.isOfflineStatus()}">
-                                                    <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=ignore">
-                                                        <fmt:message key="table.button-label.ignore"/>
+                                    <sec:authorize access="!isAuthenticated()">
+                                        <td colspan="2"><fmt:message key="table.button-label.access-after-logging-in"/></td>
+                                    </sec:authorize>
+                                    <sec:authorize access="isAuthenticated()">
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button id="hostButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <fmt:message key="table.button-label.host"/>
+                                                </button>
+                                                <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="hostButton">
+                                                    <a class="dropdown-item text-light" href="/host?id=${instabilityHost.host.id}&action=info">
+                                                        <fmt:message key="table.button-label.details"/>
                                                     </a>
-                                                </c:if>
+                                                    <a class="dropdown-item text-light" href="#" onclick="window.open('/ping?address=${instabilityHost.host.address}','_blank');return false">
+                                                        <fmt:message key="table.button-label.ping"/>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button id="inaccessibilityButton" type="button" class="btn btn-outline-light btn-sm dropdown-toggle koturno-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <fmt:message key="table.button-label.inaccessibility"/>
+                                                </button>
+                                                <div class="dropdown-menu koturno-dark border-light rounded" aria-labelledby="inaccessibilityButton">
+                                                    <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=info">
+                                                        <fmt:message key="table.button-label.details"/>
+                                                    </a>
+                                                    <c:if test="${instabilityHost.isOfflineStatus()}">
+                                                        <a class="dropdown-item text-light" href="/inaccessibility?id=${instabilityHost.id}&action=ignore">
+                                                            <fmt:message key="table.button-label.ignore"/>
+                                                        </a>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </sec:authorize>
                                 </tr>
                             </c:forEach>
                             </tbody>
