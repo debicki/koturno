@@ -176,7 +176,6 @@
                             <thead>
                             <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
-                                <th><fmt:message key="table.head.status"/></th>
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>
                                 <th><fmt:message key="table.head.description"/></th>
@@ -186,18 +185,18 @@
                             <tbody>
                             <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
                                 <tr>
-                                    <td class="align-middle">${hostStatus.count}</td>
+
                                     <c:if test="${offlineHosts.contains(host)}">
-                                        <td class="align-middle text-danger h5">&ofcir;</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-danger">${hostStatus.count}</div></td>
                                     </c:if>
                                     <c:if test="${unstableHosts.contains(host)}">
-                                        <td class="align-middle text-warning h5">&ofcir;</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-warning">${hostStatus.count}</div></td>
                                     </c:if>
                                     <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
-                                        <td class="align-middle text-success h5">&ofcir;</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-success">${hostStatus.count}</div></td>
                                     </c:if>
                                     <c:if test="${!host.isActive()}">
-                                        <td class="align-middle text-secondary h5">&ofcir;</td>
+                                        <td class="align-middle"><div class="border-bottom border-top border-secondary">${hostStatus.count}</div></td>
                                     </c:if>
                                     <td class="align-middle">${host.name}</td>
                                     <td class="align-middle">${host.address}</td>
