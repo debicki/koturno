@@ -110,6 +110,31 @@
             </div>
         </div>
 
+        <div class="modal" id="importSummaryModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content koturno-style border border-light rounded">
+                    <div class="modal-header koturno-dark text-light">
+                        <h5 class="modal-title"><fmt:message key="submenu.label.import-summary"/></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body koturno-dark">
+                        <form>
+                            <div class="text-light mb-4">
+                                <fmt:message key="messages.summary.success"/>: ${importSuccess}<br>
+                                <fmt:message key="messages.summary.warnings"/>: ${importWarnings}<br>
+                                <fmt:message key="messages.summary.errors"/>: ${importErrors}
+                            </div>
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                                <fmt:message key="modal.button.close"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-10 koturno-dark text-light">
 
             <div class="row mt-4">
@@ -160,17 +185,6 @@
                             <strong>
                                 <fmt:message key="messages.title.success"/>
                             </strong> <fmt:message key="messages.information.host-removed"/>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </c:if>
-                    <c:if test="${importSuccess != null}">
-                        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                            <strong><fmt:message key="messages.summary.title"/></strong><br>
-                            <fmt:message key="messages.summary.success"/>: ${importSuccess}<br>
-                            <fmt:message key="messages.summary.warnings"/>: ${importWarnings}<br>
-                            <fmt:message key="messages.summary.errors"/>: ${importErrors}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -266,5 +280,12 @@
 <script src="/popper.min.js"></script>
 <script src="/bootstrap.min.js"></script>
 <script src="/koturno.uploader.js"></script>
+<c:if test="${importSuccess != null}">
+    <script>
+        $(document).ready(function(){
+            $("#importSummaryModal").modal('show');
+        });
+    </script>
+</c:if>
 </body>
 </html>
