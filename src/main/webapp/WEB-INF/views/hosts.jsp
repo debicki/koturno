@@ -211,28 +211,28 @@
                             <tbody>
                             <c:forEach items="${hosts}" var="host" varStatus="hostStatus">
                                 <tr>
-                                    <td class="align-middle">${hostStatus.count}</td>
-                                    <td class="align-middle">${host.name}</td>
                                     <c:if test="${host.isActive() && offlineHosts.contains(host)}">
                                         <td class="align-middle">
-                                            <div class="border-bottom border-top border-danger">${host.address}</div>
+                                            <div class="border-bottom border-top border-danger">${hostStatus.count}</div>
                                         </td>
                                     </c:if>
                                     <c:if test="${host.isActive() && unstableHosts.contains(host)}">
                                         <td class="align-middle">
-                                            <div class="border-bottom border-top border-warning">${host.address}</div>
+                                            <div class="border-bottom border-top border-warning">${hostStatus.count}</div>
                                         </td>
                                     </c:if>
                                     <c:if test="${host.isActive() && !offlineHosts.contains(host) && !unstableHosts.contains(host)}">
                                         <td class="align-middle">
-                                            <div class="border-bottom border-top border-success">${host.address}</div>
+                                            <div class="border-bottom border-top border-success">${hostStatus.count}</div>
                                         </td>
                                     </c:if>
                                     <c:if test="${!host.isActive()}">
                                         <td class="align-middle">
-                                            <div class="border-bottom border-top border-secondary">${host.address}</div>
+                                            <div class="border-bottom border-top border-secondary">${hostStatus.count}</div>
                                         </td>
                                     </c:if>
+                                    <td class="align-middle">${host.name}</td>
+                                    <td class="align-middle">${host.address}</td>
                                     <td class="align-middle">${host.description}</td>
                                     <td>
                                         <a href=/host?id=${host.id}&action=info class="btn btn-outline-light btn-sm">

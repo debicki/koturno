@@ -80,7 +80,6 @@
                             <thead>
                             <tr class="koturno-darker">
                                 <th><fmt:message key="table.head.number"/></th>
-                                <th><fmt:message key="table.head.status"/></th>
                                 <th><fmt:message key="table.head.name"/></th>
                                 <th><fmt:message key="table.head.address"/></th>
                                 <th><fmt:message key="table.head.last-seen"/></th>
@@ -91,12 +90,15 @@
                             <tbody>
                             <c:forEach items="${instabilityHosts}" var="instabilityHost" varStatus="instabilityHostStatus">
                                 <tr>
-                                    <td class="align-middle">${instabilityHostStatus.count}</td>
                                     <c:if test="${instabilityHost.isOfflineStatus()}">
-                                        <td class="align-middle text-danger h5">&ofcir;</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-danger">${instabilityHostStatus.count}</div>
+                                        </td>
                                     </c:if>
                                     <c:if test="${!instabilityHost.isOfflineStatus()}">
-                                        <td class="align-middle text-warning h5">&ofcir;</td>
+                                        <td class="align-middle">
+                                            <div class="border-bottom border-top border-warning">${instabilityHostStatus.count}</div>
+                                        </td>
                                     </c:if>
                                     <td class="align-middle">${instabilityHost.host.name}</td>
                                     <td class="align-middle">${instabilityHost.host.address}</td>
