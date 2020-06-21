@@ -81,12 +81,18 @@ public class HostPageController {
 
     @PostMapping
     public String editHost(RedirectAttributes redirectAttributes,
+                           Principal principal,
                            String originAddress,
                            String address,
                            String activity,
                            String name,
                            String description,
                            String hostGroupName) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")
+                && !userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_editor")) {
+            return "redirect:/";
+        }
 
         Host hostToSave = hostService.getHostByAddress(originAddress);
 

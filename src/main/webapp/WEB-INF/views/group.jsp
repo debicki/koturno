@@ -151,16 +151,18 @@
                 </div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-12 koturno-style">
-                    <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-outline-light">
-                        <fmt:message key="submenu.label.edit-group"/>
-                    </a>
-                    <a href="#removeGroupModal" data-toggle="modal" data-target="#removeGroupModal" class="btn btn-outline-danger">
-                        <fmt:message key="submenu.label.remove-group"/>
-                    </a>
+            <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
+                <div class="row mt-4">
+                    <div class="col-12 koturno-style">
+                        <a href="#editGroupModal" data-toggle="modal" data-target="#editGroupModal" class="btn btn-outline-light">
+                            <fmt:message key="submenu.label.edit-group"/>
+                        </a>
+                        <a href="#removeGroupModal" data-toggle="modal" data-target="#removeGroupModal" class="btn btn-outline-danger">
+                            <fmt:message key="submenu.label.remove-group"/>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </sec:authorize>
 
             <c:if test="${hosts.size() == 0}">
                 <div class="row mt-4">

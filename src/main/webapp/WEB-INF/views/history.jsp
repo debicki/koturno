@@ -144,9 +144,11 @@
                                                 <a class="dropdown-item text-light" href="/inaccessibility?id=${inaccessibility.id}&action=info">
                                                     <fmt:message key="table.button-label.details"/>
                                                 </a>
-                                                <a class="dropdown-item text-danger" href="/inaccessibility?id=${inaccessibility.id}&action=remove">
-                                                    <fmt:message key="table.button-label.remove"/>
-                                                </a>
+                                                <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
+                                                    <a class="dropdown-item text-danger" href="/inaccessibility?id=${inaccessibility.id}&action=remove">
+                                                        <fmt:message key="table.button-label.remove"/>
+                                                    </a>
+                                                </sec:authorize>
                                             </div>
                                         </div>
                                     </td>

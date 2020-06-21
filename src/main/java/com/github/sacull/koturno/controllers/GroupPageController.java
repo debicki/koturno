@@ -94,9 +94,15 @@ public class GroupPageController {
 
     @PostMapping
     public String editGroup(RedirectAttributes redirectAttributes,
+                            Principal principal,
                             String originName,
                             String name,
                             String description) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")
+                && !userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_editor")) {
+            return "redirect:/";
+        }
 
         HGroup groupToSave = hGroupService.getGroupByName(originName);
 

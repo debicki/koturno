@@ -82,12 +82,18 @@ public class HostsPageController {
 
     @PostMapping
     public String addNewHost(RedirectAttributes redirectAttributes,
+                             Principal principal,
                              String address,
                              String activity,
                              String name,
                              String description,
                              String externalLink,
                              String hostGroupName) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")
+                && !userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_editor")) {
+            return "redirect:/";
+        }
 
         if (name == null) {
             name = "";
@@ -125,7 +131,13 @@ public class HostsPageController {
 
     @PostMapping("/import")
     public String importHosts(RedirectAttributes redirectAttributes,
+                              Principal principal,
                               MultipartFile file) throws IOException, CsvException {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")
+                && !userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_editor")) {
+            return "redirect:/";
+        }
 
         Map<String, Integer> emptyReport = new HashMap<>();
         emptyReport.put("importSuccess", 0);

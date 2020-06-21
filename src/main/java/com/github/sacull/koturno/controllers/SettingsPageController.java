@@ -54,9 +54,9 @@ public class SettingsPageController {
 
     @PostMapping("/user/change-username")
     public String changeUsername(RedirectAttributes redirectAttributes,
-                             Principal principal,
-                             String newUsername,
-                             String password) {
+                                 Principal principal,
+                                 String newUsername,
+                                 String password) {
 
         if (principal == null) {
             return "redirect:/";
@@ -100,13 +100,14 @@ public class SettingsPageController {
 
     @PostMapping("/db")
     public String removeFromDatabase(RedirectAttributes redirectAttributes,
-                                 Principal principal,
-                                 String action,
-                                 String password) {
+                                     Principal principal,
+                                     String action,
+                                     String password) {
 
         if (principal != null) {
             UserDto user = userService.findByUsername(principal.getName());
-            if (!user.getRole().equalsIgnoreCase("role_admin")) {
+            if (!user.getRole().equalsIgnoreCase("role_admin")
+                    && !user.getRole().equalsIgnoreCase("role_editor")) {
                 return "redirect:/";
             } else if (!passwordEncoder.matches(password, user.getPassword())) {
                 redirectAttributes.addFlashAttribute("error", "wrong-password");
@@ -125,6 +126,9 @@ public class SettingsPageController {
                 hostService.removeAll();
                 break;
             case "clear-database":
+                if (!userService.findByUsername(principal.getName()).getRole().equalsIgnoreCase("role_admin")) {
+                    return "redirect:/";
+                }
                 inaccessibilityService.removeAll();
                 hostService.removeAll();
                 userService.removeAll();

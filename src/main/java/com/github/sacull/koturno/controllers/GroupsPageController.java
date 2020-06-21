@@ -69,8 +69,14 @@ public class GroupsPageController {
 
     @PostMapping
     public String addNewHost(RedirectAttributes redirectAttributes,
+                             Principal principal,
                              String name,
                              String description) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")
+                && !userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_editor")) {
+            return "redirect:/";
+        }
 
         if (description == null) {
             description = "";

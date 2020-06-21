@@ -196,6 +196,7 @@
             </div>
 
             <div class="row">
+            <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
                 <div class="col-12 koturno-style">
                     <a href="#newHostModal" data-toggle="modal" data-target="#newHostModal" class="btn btn-outline-light">
                         <fmt:message key="submenu.label.new-host"/>
@@ -204,6 +205,7 @@
                         <fmt:message key="submenu.label.import-hosts"/>
                     </a>
                 </div>
+            </sec:authorize>
             </div>
 
             <div class="row mt-4">

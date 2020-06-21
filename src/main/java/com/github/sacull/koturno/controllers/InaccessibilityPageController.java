@@ -61,9 +61,9 @@ public class InaccessibilityPageController {
     }
 
     @PostMapping
-    public String editHost(RedirectAttributes redirectAttributes,
-                           Long id,
-                           String description) {
+    public String editInaccessibilityDescription(RedirectAttributes redirectAttributes,
+                                                 Long id,
+                                                 String description) {
 
         Inaccessibility inaccessibilityToSave = inaccessibilityService.getInaccessibilityById(id);
         inaccessibilityToSave.setDescription(description);

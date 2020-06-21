@@ -131,11 +131,13 @@
             </div>
 
             <div class="row">
+            <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
                 <div class="col-12 koturno-style">
                     <a href="#newGroupModal" data-toggle="modal" data-target="#newGroupModal" class="btn btn-outline-light">
                         <fmt:message key="submenu.label.new-group"/>
                     </a>
                 </div>
+            </sec:authorize>
             </div>
 
             <div class="row mt-4">
