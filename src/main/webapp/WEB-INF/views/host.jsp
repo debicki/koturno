@@ -204,18 +204,21 @@
                 </div>
             </div>
 
-            <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
-                <div class="row mt-4">
-                    <div class="col-12 koturno-style">
+            <div class="row mt-4">
+                <div class="col-12 koturno-style">
+                    <sec:authorize access="hasRole('EDITOR') || hasRole('ADMIN')">
                         <a href="#editHostModal" data-toggle="modal" data-target="#editHostModal" class="btn btn-outline-light">
                             <fmt:message key="submenu.label.edit-host"/>
                         </a>
                         <a href="#removeHostModal" data-toggle="modal" data-target="#removeHostModal" class="btn btn-outline-danger">
                             <fmt:message key="submenu.label.remove-host"/>
                         </a>
-                    </div>
+                    </sec:authorize>
+                    <a href="#" onclick="window.open('/ping?address=${host.address}','_blank');return false" class="btn btn-outline-light">
+                        <fmt:message key="submenu.label.ping"/>
+                    </a>
                 </div>
-            </sec:authorize>
+            </div>
 
             <c:if test="${inaccessibilityList.size() == 0}">
                 <div class="row mt-4">
