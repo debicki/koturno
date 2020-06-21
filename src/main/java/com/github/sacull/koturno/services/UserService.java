@@ -103,4 +103,12 @@ public class UserService {
     public void removeAll() {
         userRepo.deleteAll();
     }
+
+    public void updateUser(UserDto user, String username, Boolean activity, String role) {
+        User userToUpdate = userRepo.findByUsername(user.getUsername());
+        userToUpdate.setUsername(username);
+        userToUpdate.setActive(activity);
+        userToUpdate.setRole(role);
+        userRepo.save(userToUpdate);
+    }
 }

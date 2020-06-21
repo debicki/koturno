@@ -69,7 +69,7 @@ public class UsersPageController {
         return "/WEB-INF/views/users.jsp";
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public String createUser(RedirectAttributes redirectAttributes,
                              String username,
                              String password,
@@ -88,5 +88,23 @@ public class UsersPageController {
             redirectAttributes.addFlashAttribute("error", "user-added");
             return "redirect:/users";
         }
+    }
+
+    @PostMapping("/edit")
+    public String editUser(RedirectAttributes redirectAttributes,
+                           String oldUsername,
+                           String username,
+                           String role,
+                           String activity) {
+
+        UserDto user = userService.findByUsername(oldUsername);
+        if (userService.findByName(username) != null && !oldUsername.equals(username)) {
+            redirectAttributes.addFlashAttribute("error", "user-exists");
+        } else {
+            userService.updateUser(user, username, Boolean.parseBoolean(activity), role);
+            redirectAttributes.addFlashAttribute("error", "user-updated");
+        }
+
+        return "redirect:/users";
     }
 }

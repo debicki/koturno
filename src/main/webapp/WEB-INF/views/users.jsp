@@ -33,7 +33,7 @@
                         </button>
                     </div>
                     <div class="modal-body koturno-dark text-light">
-                        <form method="post" action="/users">
+                        <form method="post" action="/users/add">
                             <div class="form-group">
                                 <label for="username"><fmt:message key="modal.body.username"/></label>
                                 <fmt:message key="form.placeholder.provide-username" var="provideUsername"/>
@@ -70,6 +70,53 @@
                                 </div>
                             </div>
                             <button class="btn btn-outline-success" type="submit"><fmt:message key="modal.button.add"/></button>
+                            <button class="btn btn-outline-light" type="reset"><fmt:message key="modal.button.clear"/></button>
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                                <fmt:message key="modal.button.cancel"/>
+                            </button>
+                            <sec:csrfInput/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="editUserModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content koturno-style border border-light rounded">
+                    <div class="modal-header koturno-dark text-light">
+                        <h5 class="modal-title"><fmt:message key="modal.title.edit-user"/></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body koturno-dark text-light">
+                        <form method="post" action="/users/edit">
+                            <input type="hidden" name="oldUsername" id="old-username" value=""/>
+                            <div class="form-group">
+                                <label for="new-username"><fmt:message key="modal.body.username"/></label>
+                                <fmt:message key="form.placeholder.provide-username" var="provideUsername"/>
+                                <input type="text" required name="username" id="new-username" class="form-control koturno-dark text-light"
+                                       value="" autofocus="autofocus" autocomplete="off"/>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="role"><fmt:message key="modal.body.role"/></label>
+                                    <select name="role" id="new-role" class="form-control koturno-dark text-light">
+                                        <option value="ROLE_USER" selected><fmt:message key="modal.body.user"/></option>
+                                        <option value="ROLE_EDITOR"><fmt:message key="modal.body.editor"/></option>
+                                        <option value="ROLE_ADMIN"><fmt:message key="modal.body.admin"/></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="activity"><fmt:message key="modal.body.activity"/></label>
+                                    <select name="activity" id="new-activity" class="form-control koturno-dark text-light">
+                                        <option value="true" selected><fmt:message key="modal.body.active"/></option>
+                                        <option value="false"><fmt:message key="modal.body.inactive"/></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-success" type="submit"><fmt:message key="modal.button.save"/></button>
                             <button class="btn btn-outline-light" type="reset"><fmt:message key="modal.button.clear"/></button>
                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">
                                 <fmt:message key="modal.button.cancel"/>
@@ -129,6 +176,16 @@
                             <strong>
                                 <fmt:message key="messages.title.success"/>
                             </strong> <fmt:message key="messages.information.user-added"/>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${error.equals('user-updated')}">
+                        <div class="alert koturno-alert-success alert-dismissible fade show" role="alert">
+                            <strong>
+                                <fmt:message key="messages.title.success"/>
+                            </strong> <fmt:message key="messages.information.user-updated"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -255,6 +312,9 @@
                                                     <fmt:message key="table.button-label.on"/>
                                                 </a>
                                             </c:if>
+                                            <a class="dropdown-item text-light" href="#editUserModal" data-toggle="modal" data-target="#editUserModal" data-username="${user.username}" data-role="${user.role}" data-activity="${user.active}">
+                                                <fmt:message key="table.button-label.edit"/>
+                                            </a>
                                             <a class="dropdown-item text-danger" href="#removeUserModal" data-toggle="modal" data-target="#removeUserModal" data-username="${user.username}">
                                                 <fmt:message key="table.button-label.remove"/>
                                             </a>
@@ -283,6 +343,19 @@ $('#removeUserModal').on('show.bs.modal', function (event) {
     var modal = $(this)
     $('#user-to-remove').val(username)
     $('#question').text('<fmt:message key="modal.body.remove-user-question"/>' + ' ' + username + '?')
+})
+</script>
+<script>
+$('#editUserModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var username = button.data('username')
+    var role = button.data('role')
+    var activity = button.data('activity').toString()
+    var modal = $(this)
+    $('#old-username').val(username)
+    $('#new-username').val(username)
+    $('#new-role').val(role)
+    $('#new-activity').val(activity)
 })
 </script>
 </body>
