@@ -71,11 +71,16 @@ public class UsersPageController {
 
     @PostMapping("/add")
     public String createUser(RedirectAttributes redirectAttributes,
+                             Principal principal,
                              String username,
                              String password,
                              String password2,
                              String role,
                              String activity) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")) {
+            return "redirect:/";
+        }
 
         if (userService.findByName(username) != null) {
             redirectAttributes.addFlashAttribute("error", "user-exists");
@@ -92,16 +97,48 @@ public class UsersPageController {
 
     @PostMapping("/edit")
     public String editUser(RedirectAttributes redirectAttributes,
+                           Principal principal,
                            String oldUsername,
                            String username,
                            String role,
                            String activity) {
 
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")) {
+            return "redirect:/";
+        }
+
         UserDto user = userService.findByUsername(oldUsername);
         if (userService.findByName(username) != null && !oldUsername.equals(username)) {
             redirectAttributes.addFlashAttribute("error", "user-exists");
+        } else if (principal.getName().equals(oldUsername) && userService.countActiveAdmins() <= 1) {
+            redirectAttributes.addFlashAttribute("error", "no-active-admin");
         } else {
             userService.updateUser(user, username, Boolean.parseBoolean(activity), role);
+            redirectAttributes.addFlashAttribute("error", "user-updated");
+            if (principal.getName().equals(oldUsername)) {
+                return "redirect:/logout";
+            }
+        }
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(RedirectAttributes redirectAttributes,
+                                 Principal principal,
+                                 String username,
+                                 String password,
+                                 String password2) {
+
+        if (!userService.findByName(principal.getName()).getRole().equalsIgnoreCase("role_admin")) {
+            return "redirect:/";
+        }
+
+        UserDto user = userService.findByUsername(username);
+        if (!password.equals(password2)) {
+            redirectAttributes.addFlashAttribute("error", "passwords-mismatch");
+        } else {
+            userService.updateUsersPassword(user, password);
             redirectAttributes.addFlashAttribute("error", "user-updated");
         }
 

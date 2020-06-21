@@ -128,6 +128,42 @@
             </div>
         </div>
 
+        <div class="modal" id="editUsersPasswordModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content koturno-style border border-light rounded">
+                    <div class="modal-header koturno-dark text-light">
+                        <h5 class="modal-title"><fmt:message key="modal.title.edit-user"/></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body koturno-dark text-light">
+                        <form method="post" action="/users/change-password">
+                            <input type="hidden" name="username" id="username-for-password" value=""/>
+                            <div class="form-group">
+                                <label for="password"><fmt:message key="body.label.password"/></label>
+                                <fmt:message key="form.placeholder.provide-password" var="providePassword"/>
+                                <input type="password" required name="password" id="password" class="form-control koturno-dark text-light"
+                                       placeholder="${providePassword}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="password2"><fmt:message key="body.label.repeat-password"/></label>
+                                <fmt:message key="form.placeholder.repeat-password" var="repeatPassword"/>
+                                <input type="password" required name="password2" id="password2" class="form-control koturno-dark text-light"
+                                       placeholder="${repeatPassword}"/>
+                            </div>
+                            <button class="btn btn-outline-success" type="submit"><fmt:message key="modal.button.save"/></button>
+                            <button class="btn btn-outline-light" type="reset"><fmt:message key="modal.button.clear"/></button>
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                                <fmt:message key="modal.button.cancel"/>
+                            </button>
+                            <sec:csrfInput/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal" id="removeUserModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content koturno-style border border-light rounded">
@@ -313,7 +349,10 @@
                                                 </a>
                                             </c:if>
                                             <a class="dropdown-item text-light" href="#editUserModal" data-toggle="modal" data-target="#editUserModal" data-username="${user.username}" data-role="${user.role}" data-activity="${user.active}">
-                                                <fmt:message key="table.button-label.edit"/>
+                                                <fmt:message key="table.button-label.edit-user"/>
+                                            </a>
+                                            <a class="dropdown-item text-light" href="#editUsersPasswordModal" data-toggle="modal" data-target="#editUsersPasswordModal" data-username="${user.username}">
+                                                <fmt:message key="table.button-label.edit-password"/>
                                             </a>
                                             <a class="dropdown-item text-danger" href="#removeUserModal" data-toggle="modal" data-target="#removeUserModal" data-username="${user.username}">
                                                 <fmt:message key="table.button-label.remove"/>
@@ -356,6 +395,14 @@ $('#editUserModal').on('show.bs.modal', function (event) {
     $('#new-username').val(username)
     $('#new-role').val(role)
     $('#new-activity').val(activity)
+})
+</script>
+<script>
+$('#editUsersPasswordModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var username = button.data('username')
+    var modal = $(this)
+    $('#username-for-password').val(username)
 })
 </script>
 </body>

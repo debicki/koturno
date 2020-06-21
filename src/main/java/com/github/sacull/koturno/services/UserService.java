@@ -111,4 +111,10 @@ public class UserService {
         userToUpdate.setRole(role);
         userRepo.save(userToUpdate);
     }
+
+    public void updateUsersPassword(UserDto user, String password) {
+        User userToUpdate = userRepo.findByUsername(user.getUsername());
+        userToUpdate.setPassword(passwordEncoder.encode(password));
+        userRepo.save(userToUpdate);
+    }
 }
