@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/groups").authenticated()
                 .antMatchers("/users").hasRole("ADMIN")
                 .antMatchers("/history").authenticated()
+                .antMatchers("/settings").authenticated()
                 .antMatchers("/host").authenticated()
                 .antMatchers("/group").authenticated()
                 .antMatchers("/inaccessibility").authenticated()

@@ -62,4 +62,8 @@ public class HostService {
     public Long countAllInactiveHost() {
         return hostRepo.countAllByActiveFalse();
     }
+
+    public void removeAll() {
+        hostRepo.deleteAll();
+    }
 }

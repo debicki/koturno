@@ -57,4 +57,8 @@ public class InaccessibilityService {
     public Inaccessibility getInaccessibilityById(Long id) {
         return inaccessibilityRepo.getOne(id);
     }
+
+    public void removeAll() {
+        inaccessibilityRepo.deleteAll();
+    }
 }

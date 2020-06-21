@@ -87,4 +87,20 @@ public class UserService {
         User user = userRepo.findByUsername(username);
         userRepo.delete(user);
     }
+
+    public void updateUsername(UserDto user, String newUsername) {
+        User userToUpdate = userRepo.findByUsername(user.getUsername());
+        userToUpdate.setUsername(newUsername);
+        userRepo.save(userToUpdate);
+    }
+
+    public void updatePassword(UserDto user, String password) {
+        User userToUpdate = userRepo.findByUsername(user.getUsername());
+        userToUpdate.setPassword(passwordEncoder.encode(password));
+        userRepo.save(userToUpdate);
+    }
+
+    public void removeAll() {
+        userRepo.deleteAll();
+    }
 }

@@ -57,7 +57,7 @@
                                     <label for="role"><fmt:message key="modal.body.role"/></label>
                                     <select name="role" id="role" class="form-control koturno-dark text-light">
                                         <option value="ROLE_USER" selected><fmt:message key="modal.body.user"/></option>
-                                        <option value="ROLE_MOD"><fmt:message key="modal.body.mod"/></option>
+                                        <option value="ROLE_EDITOR"><fmt:message key="modal.body.editor"/></option>
                                         <option value="ROLE_ADMIN"><fmt:message key="modal.body.admin"/></option>
                                     </select>
                                 </div>
@@ -233,8 +233,8 @@
                                 <c:if test="${user.role.equals('ROLE_ADMIN')}">
                                     <td class="align-middle"><fmt:message key="table.body.admin"/></td>
                                 </c:if>
-                                <c:if test="${user.role.equals('ROLE_MOD')}">
-                                    <td class="align-middle"><fmt:message key="table.body.mod"/></td>
+                                <c:if test="${user.role.equals('ROLE_EDITOR')}">
+                                    <td class="align-middle"><fmt:message key="table.body.editor"/></td>
                                 </c:if>
                                 <c:if test="${user.role.equals('ROLE_USER')}">
                                     <td class="align-middle"><fmt:message key="table.body.user"/></td>
