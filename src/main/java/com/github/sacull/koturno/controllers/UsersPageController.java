@@ -138,7 +138,7 @@ public class UsersPageController {
         if (!password.equals(password2)) {
             redirectAttributes.addFlashAttribute("error", "passwords-mismatch");
         } else {
-            userService.updateUsersPassword(user, password);
+            userService.updatePassword(user, password);
             redirectAttributes.addFlashAttribute("error", "user-updated");
         }
 

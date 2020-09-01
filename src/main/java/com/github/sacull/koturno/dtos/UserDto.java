@@ -12,6 +12,7 @@ public class UserDto {
     private final String password;
     private final Boolean active;
     private final String role;
+    private final String theme;
 
     public boolean isActive() {
         return active;

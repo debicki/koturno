@@ -23,6 +23,9 @@ public class Host implements Comparable<Host> {
     private String address;
     @Setter(AccessLevel.NONE)
     private LocalDateTime whenCreated;
+    @ManyToOne
+    @Setter(AccessLevel.NONE)
+    private User creator;
     @Getter(AccessLevel.NONE)
     private Boolean active;
     private String description;
@@ -33,12 +36,14 @@ public class Host implements Comparable<Host> {
     @Builder
     public Host(String name,
                 String address,
+                User creator,
                 String description,
                 String externalLink,
                 HGroup hostGroup) {
         this.name = name;
         this.address = address;
         this.whenCreated = LocalDateTime.now();
+        this.creator = creator;
         this.active = true;
         this.description = description;
         this.externalLink = externalLink;

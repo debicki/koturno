@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public void registerUser(String username, String password, boolean active, String role) {
-        userRepo.save(new User(username, passwordEncoder.encode(password), active, role));
+        userRepo.save(new User(username, passwordEncoder.encode(password), active, role, "dark"));
     }
 
     public User findByName(String name) {
@@ -65,7 +65,9 @@ public class UserService {
         List<UserDto> result = new ArrayList<>();
 
         for (User user : users) {
-            result.add(modelMapper.convert(user));
+            if (!user.isVoided()) {
+                result.add(modelMapper.convert(user));
+            }
         }
 
         return result;
@@ -85,7 +87,8 @@ public class UserService {
 
     public void removeUser(String username) {
         User user = userRepo.findByUsername(username);
-        userRepo.delete(user);
+        user.setVoided(true);
+        userRepo.save(user);
     }
 
     public void updateUsername(UserDto user, String newUsername) {
@@ -109,12 +112,6 @@ public class UserService {
         userToUpdate.setUsername(username);
         userToUpdate.setActive(activity);
         userToUpdate.setRole(role);
-        userRepo.save(userToUpdate);
-    }
-
-    public void updateUsersPassword(UserDto user, String password) {
-        User userToUpdate = userRepo.findByUsername(user.getUsername());
-        userToUpdate.setPassword(passwordEncoder.encode(password));
         userRepo.save(userToUpdate);
     }
 }

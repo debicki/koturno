@@ -2,6 +2,7 @@ package com.github.sacull.koturno.services;
 
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
+import com.github.sacull.koturno.entities.User;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -36,7 +37,8 @@ public class FileService {
     }
 
     public Map<String, Integer> hostsImport(Map<String, Integer> report,
-                                            MultipartFile file) throws IOException, CsvException {
+                                            MultipartFile file,
+                                            User user) throws IOException, CsvException {
 
         int importSuccess = 0;
         int importWarnings = 0;
@@ -52,7 +54,7 @@ public class FileService {
 
             while ((line = fileContent.readLine()) != null) {
                 if (!line.trim().startsWith("#") && !line.trim().startsWith("//") && !(line.trim().length() < 1)) {
-                    Host hostToAdd = this.parse(line);
+                    Host hostToAdd = this.parse(line, user);
                     importList.add(hostToAdd);
                 }
             }
@@ -96,7 +98,7 @@ public class FileService {
             // CSV file structure
             // address;name;description;group
             for (String[] line : linesList) {
-                Host hostToAdd = this.parse(line);
+                Host hostToAdd = this.parse(line, user);
                 if (!hostToAdd.getAddress().equals("") && hostToAdd.getHostGroup() == null) {
                     hostToAdd.setHostGroup(defaultGroup);
                 }
@@ -145,10 +147,10 @@ public class FileService {
         return true;
     }
 
-    public Host parse(String line) {
+    public Host parse(String line, User user) {
         if (line.trim().length() == 0)
         {
-            return new Host("", "", "", "", null);
+            return new Host("", "", user, "", "", null);
         }
         int charCounter = 0;
         line = line.replace('\t', ' ');
@@ -181,11 +183,11 @@ public class FileService {
             description.append(descriptionElements[0]);
         }
 
-        return new Host(name.toString(), address.toString(), description.toString(), "", null);
+        return new Host(name.toString(), address.toString(), user, description.toString(), "", null);
     }
 
-    public Host parse(String[] line) {
-        Host result = new Host("", "", "", "", null);
+    public Host parse(String[] line, User user) {
+        Host result = new Host("", "", user, "", "", null);
 
         if (line.length > 0 && !line[0].trim().startsWith("#") && !line[0].trim().startsWith("//")) {
             result.setAddress(line[0]);

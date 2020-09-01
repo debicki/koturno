@@ -182,6 +182,7 @@
                         </strong>
                     </div>
                     <div class="lead"><strong><fmt:message key="body.label.added-at"/>: ${host.dayWhenCreated}</strong></div>
+                    <div class="lead"><strong><fmt:message key="body.label.added-by"/>: ${host.creator.username}</strong></div>
                     <c:if test="${host.isActive()}">
                         <div class="lead">
                             <strong><fmt:message key="body.label.status"/>: <fmt:message key="body.label.active"/></strong>

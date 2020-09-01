@@ -3,6 +3,7 @@ package com.github.sacull.koturno.controllers;
 import com.github.sacull.koturno.entities.HGroup;
 import com.github.sacull.koturno.entities.Host;
 import com.github.sacull.koturno.entities.Inaccessibility;
+import com.github.sacull.koturno.entities.User;
 import com.github.sacull.koturno.services.*;
 import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,8 @@ public class HostsPageController {
 
         if (hostService.getHostByAddress(address) == null) {
             HGroup hostGroup = hGroupService.getGroupByName(hostGroupName);
-            Host hostToAdd = new Host(name, address, description, externalLink, hostGroup);
+            User user = userService.findByName(principal.getName());
+            Host hostToAdd = new Host(name, address, user, description, externalLink, hostGroup);
 
             if (activity.equalsIgnoreCase("Nieaktywny")) {
                 hostToAdd.setActive(false);
@@ -144,7 +146,8 @@ public class HostsPageController {
         emptyReport.put("importWarnings", 0);
         emptyReport.put("importErrors", 0);
 
-        Map<String, Integer> report = fileService.hostsImport(emptyReport, file);
+        User user = userService.findByName(principal.getName());
+        Map<String, Integer> report = fileService.hostsImport(emptyReport, file, user);
 
         redirectAttributes.addFlashAttribute("importSuccess", report.get("importSuccess"));
         redirectAttributes.addFlashAttribute("importWarnings", report.get("importWarnings"));
