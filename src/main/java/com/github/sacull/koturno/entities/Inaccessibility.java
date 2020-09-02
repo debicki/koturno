@@ -27,12 +27,14 @@ public class Inaccessibility {
     @Getter(AccessLevel.NONE)
     private Boolean offlineStatus;
     private String description;
+    private String externalLink;
     @ManyToOne
     private IGroup inaccessibilityGroup;
 
     @Builder
     public Inaccessibility(Host host,
                            String description,
+                           String externalLink,
                            IGroup inaccessibilityGroup) {
         this.host = host;
         this.start = LocalDateTime.now();
@@ -40,6 +42,7 @@ public class Inaccessibility {
         this.active = true;
         this.offlineStatus = false;
         this.description = description;
+        this.externalLink = externalLink;
         this.inaccessibilityGroup = inaccessibilityGroup;
     }
 

@@ -72,7 +72,7 @@ public class FileService {
                 } else {
                     HGroup group = hGroupService.getGroupByName(host.getName());
                     if (group == null) {
-                        group = new HGroup(host.getName(), "");
+                        group = new HGroup(host.getName(), "", "");
                         group = hGroupService.save(group);
                     }
                     host.setHostGroup(group);
@@ -198,7 +198,7 @@ public class FileService {
                     if (line.length > 3) {
                         HGroup group = hGroupService.getGroupByName(line[3]);
                         if (group == null) {
-                            group = new HGroup(line[3], "");
+                            group = new HGroup(line[3], "", "");
                             group = hGroupService.save(group);
                         }
                         result.setHostGroup(group);

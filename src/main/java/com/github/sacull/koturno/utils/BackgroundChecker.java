@@ -85,7 +85,7 @@ public class BackgroundChecker {
 
     private void setStartTime(Host host) {
         Inaccessibility inaccessibilityToOpen =
-                new Inaccessibility(host, "", iGroupService.getGroup("default"));
+                new Inaccessibility(host, "", "", iGroupService.getGroup("default"));
         inaccessibilityService.save(inaccessibilityToOpen);
     }
 

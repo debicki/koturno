@@ -38,14 +38,14 @@ public class KoturnoInitializer implements CommandLineRunner {
 
         HGroup defaultHGroup = hGroupService.getGroupByName("default");
         if (defaultHGroup == null) {
-            defaultHGroup = new HGroup("default", "Default group");
+            defaultHGroup = new HGroup("default", "Default group", "");
             hGroupService.save(defaultHGroup);
             log.info("Default host group created");
         }
 
         IGroup defaultIGroup = iGroupService.getGroupByName("default");
         if (defaultIGroup == null) {
-            defaultIGroup = new IGroup("default", "Default group");
+            defaultIGroup = new IGroup("default", "Default group", "");
             iGroupService.save(defaultIGroup);
             log.info("Default inaccessibility group created");
         }

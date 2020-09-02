@@ -20,9 +20,11 @@ public class IGroup {
     @Column(nullable = false)
     private String name;
     private String description;
+    private String externalLink;
 
-    public IGroup(String name, String description) {
+    public IGroup(String name, String description, String externalLink) {
         this.name = name;
         this.description = description;
+        this.externalLink = externalLink;
     }
 }

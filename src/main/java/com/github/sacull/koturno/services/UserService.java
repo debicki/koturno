@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public void registerUser(String username, String password, boolean active, String role) {
-        userRepo.save(new User(username, passwordEncoder.encode(password), active, role, "dark"));
+        userRepo.save(new User(username, passwordEncoder.encode(password), active, role, "", "dark"));
     }
 
     public User findByName(String name) {

@@ -20,9 +20,11 @@ public class HGroup {
     @Column(nullable = false)
     private String name;
     private String description;
+    private String externalLink;
 
-    public HGroup(String name, String description) {
+    public HGroup(String name, String description, String externalLink) {
         this.name = name;
         this.description = description;
+        this.externalLink = externalLink;
     }
 }

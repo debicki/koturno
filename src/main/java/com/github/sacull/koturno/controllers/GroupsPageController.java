@@ -83,7 +83,7 @@ public class GroupsPageController {
         }
 
         if (hGroupService.getGroupByName(name) == null) {
-            HGroup hGroupToAdd = new HGroup(name, description);
+            HGroup hGroupToAdd = new HGroup(name, description, "");
             hGroupService.save(hGroupToAdd);
             redirectAttributes.addFlashAttribute("error", "group-created");
         } else {

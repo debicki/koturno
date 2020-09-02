@@ -18,15 +18,17 @@ public class User {
     private String password;
     private Boolean active;
     private String role;
+    private String externalLink;
     private String theme;
     @Getter(value = AccessLevel.NONE)
     private Boolean voided;
 
-    public User(String username, String password, Boolean active, String role, String theme) {
+    public User(String username, String password, Boolean active, String role, String externalLink, String theme) {
         this.username = username;
         this.password = password;
         this.active = active;
         this.role = role;
+        this.externalLink = externalLink;
         this.theme = theme;
         this.voided = false;
     }
